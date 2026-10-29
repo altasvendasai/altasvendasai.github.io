@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documento de Entrega · AltasVendas AI</title>
+<meta name="description" content="O que a AltasVendas AI entrega enquanto a sua assinatura pré-paga da Automação de Atendimento Rápido estiver ativa.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AltasVendas AI">
+<meta property="og:title" content="Documento de Entrega · Automação de Atendimento Rápido">
+<meta property="og:description" content="Leia o que entregamos e confirme que está de acordo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* === BLOCO 1: CORES E BASE (mesmas da página do atendimento) === */
+:root{
+  --tinta:#0A1411;--tinta-2:#101F1A;--tinta-3:#16291F;--linha:#22382E;
+  --verde:#25D366;--gelo:#F5F7F6;--cinza:#A9B8B0;--cinza-2:#6F8379;--vermelho:#FF5A5A;--amarelo:#FFC814;
+  --raio:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--tinta);color:var(--gelo);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px}
+a{color:var(--verde)}
+b{color:var(--gelo)}
+
+/* === BLOCO 2: TOPO === */
+.topo{padding:28px 0 30px;background:radial-gradient(700px 400px at 90% 0%,rgba(37,211,102,.12),transparent 60%)}
+.logo{font-weight:900;font-size:20px;letter-spacing:-.02em}
+.logo span{color:var(--verde)}
+.selo{display:inline-flex;gap:8px;margin-top:26px;background:rgba(255,200,20,.1);color:var(--amarelo);border:1px solid rgba(255,200,20,.35);font-weight:700;font-size:14px;padding:7px 14px;border-radius:999px}
+h1{font-size:clamp(30px,5vw,42px);line-height:1.12;margin:14px 0 10px;letter-spacing:-.02em;font-weight:900}
+h1 span{color:var(--verde)}
+.sub{color:var(--cinza);font-size:18px;margin:0}
+
+/* === BLOCO 3: SEÇÕES DO DOCUMENTO === */
+main{padding-bottom:60px}
+.sec{background:var(--tinta-2);border:1px solid var(--linha);border-left:4px solid var(--verde);border-radius:var(--raio);padding:22px 24px;margin-bottom:14px}
+.sec h2{font-size:20px;margin:0 0 12px;display:flex;gap:12px;align-items:center;letter-spacing:-.01em}
+.n{width:32px;height:32px;flex:none;border-radius:9px;background:rgba(37,211,102,.12);color:var(--verde);display:grid;place-items:center;font-size:15px;font-weight:900}
+.sec p,.sec li{color:var(--cinza)}
+.sec p{margin:0 0 10px}
+.sec ul{margin:0;padding-left:22px}
+.sec li{margin-bottom:7px}
+.sec li::marker{color:var(--verde)}
+.sec.nao{border-left-color:var(--vermelho)}
+.sec.nao li::marker{color:var(--vermelho)}
+.duas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+
+/* === BLOCO 4: ACEITE === */
+.aceite{background:var(--tinta-2);border:2px solid var(--verde);border-radius:24px;padding:28px;margin-top:26px}
+.aceite h2{margin:0 0 6px;font-size:24px}
+.aceite > p{color:var(--cinza);margin:0 0 20px}
+.campo{margin-bottom:16px}
+.campo label{display:block;font-weight:600;font-size:15px;margin-bottom:8px}
+.campo input{width:100%;background:var(--tinta);border:1.5px solid var(--linha);color:var(--gelo);border-radius:12px;padding:14px 15px;font:inherit;font-size:16px}
+.campo input::placeholder{color:var(--cinza-2)}
+.campo input:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 4px rgba(37,211,102,.12)}
+.campos-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 14px}
+.check{display:flex;gap:12px;align-items:flex-start;background:var(--tinta);border:1.5px solid var(--linha);border-radius:12px;padding:14px 16px;cursor:pointer;margin:6px 0 18px}
+.check input{width:22px;height:22px;accent-color:var(--verde);flex:none;margin-top:2px}
+.check span{font-size:16px}
+.btn{display:flex;width:100%;align-items:center;justify-content:center;background:var(--verde);color:#062012;font-weight:800;font-size:17px;padding:16px 26px;border-radius:999px;border:0;font-family:inherit;cursor:pointer;box-shadow:0 10px 30px rgba(37,211,102,.25);transition:transform .15s,opacity .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.links{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:14px}
+.links a{color:var(--cinza);text-decoration:none}
+.links a:hover{color:var(--verde)}
+.aviso{color:var(--cinza-2);font-size:13px;text-align:center;margin:12px 0 0}
+footer{border-top:1px solid var(--linha);padding:26px 0;color:var(--cinza-2);font-size:14px;text-align:center}
+
+
+/* === BLOCO 4B: PIX === */
+.pix{display:none;margin-top:22px;border-top:1px solid var(--linha);padding-top:22px}
+.pix.on{display:block}
+.pix h3{margin:0 0 6px;font-size:21px}
+.pix > p{color:var(--cinza);margin:0 0 16px}
+.pix-caixa{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;background:var(--tinta);border:1.5px solid var(--linha);border-radius:16px;padding:18px}
+#qr{background:#fff;padding:10px;border-radius:10px;line-height:0}
+#qr img,#qr canvas{width:170px;height:170px}
+.pix-valor{font-size:30px;font-weight:900;color:var(--verde);line-height:1.1}
+.pix-info{color:var(--cinza);font-size:14px;margin:4px 0 12px}
+.copia{width:100%;background:var(--tinta-2);border:1.5px solid var(--linha);color:var(--cinza);border-radius:10px;padding:10px 12px;font:inherit;font-size:12px;resize:none;height:64px}
+.btn.sec{background:transparent;color:var(--gelo);border:1.5px solid var(--verde);box-shadow:none;margin-top:10px;padding:12px 20px;font-size:15px}
+.passos-pix{margin:16px 0 0;padding-left:22px;color:var(--cinza);font-size:15px}
+.passos-pix li{margin-bottom:6px}
+/* === BLOCO 5: CELULAR === */
+@media (max-width:640px){
+  .duas,.campos-2{grid-template-columns:minmax(0,1fr)}
+  .sec{padding:18px}
+  .aceite{padding:22px}
+  .pix-caixa{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- === BLOCO A: TOPO === -->
+<header class="topo"><div class="wrap">
+  <div class="logo">AltasVendas <span>AI</span></div>
+  <span class="selo">📄 Documento de entrega · versão de 29/10/2026</span>
+  <h1>Automação de Atendimento Rápido: <span>o que a gente entrega.</span></h1>
+  <p class="sub">Sem contrato e sem fidelidade. Leia o que entregamos enquanto a sua assinatura pré-paga estiver ativa e, no fim, confirme que está de acordo.</p>
+</div></header>
+
+<main class="wrap">
+
+<!-- === BLOCO B: ASSINATURA PRÉ-PAGA === -->
+<div class="sec">
+  <h2><span class="n">1</span>Como funciona a assinatura pré-paga</h2>
+  <ul>
+    <li>Você faz <b>uma recarga por mês, antes de usar</b>. Cada recarga libera <b>30 dias</b> de serviço.</li>
+    <li>Não tem contrato, fidelidade nem multa. <b>Se não recarregar, o serviço pausa</b> no fim dos 30 dias já pagos. Quando recarregar de novo, volta a funcionar.</li>
+    <li>A <b>implantação está inclusa</b> na primeira recarga.</li>
+    <li>O valor de <b>R$ 500</b> é a condição da Super Oferta Black Friday. O valor normal da recarga é R$ 1.200.</li>
+  </ul>
+</div>
+
+<!-- === BLOCO C: IMPLANTAÇÃO === -->
+<div class="sec">
+  <h2><span class="n">2</span>O que entregamos na implantação</h2>
+  <p>Em até <b>5 dias úteis</b> depois que você nos mandar as informações da empresa:</p>
+  <ul>
+    <li><b>Número da IA</b> configurado e conectado (o seu número principal não entra na automação).</li>
+    <li><b>IA treinada</b> com os seus produtos, preços, perguntas mais comuns e jeito de falar com o cliente.</li>
+    <li><b>Regras de qualificação</b>: as perguntas que separam o curioso de quem quer comprar.</li>
+    <li><b>Próximo passo do cliente</b> configurado: link da sua página de vendas ou de pagamento, agendamento no seu Google Agenda ou passagem pra você.</li>
+    <li><b>Passagem pra uma pessoa</b>: quando o cliente pede, a IA pausa só naquela conversa e te avisa.</li>
+    <li><b>Teste completo</b> com você antes de liberar pros clientes.</li>
+  </ul>
+</div>
+
+<!-- === BLOCO D: TODO MÊS === -->
+<div class="sec">
+  <h2><span class="n">3</span>O que entregamos todo mês, com a recarga ativa</h2>
+  <ul>
+    <li><b>Atendimento 24h, 7 dias</b>, respondendo quem chama no número da IA.</li>
+    <li><b>Até 3 mil mensagens</b> enviadas pela IA no mês. Se o seu volume chegar perto disso, a gente te avisa e conversa sobre o ajuste.</li>
+    <li><b>Qualificação com resumo</b>: você recebe o que o cliente quer, o orçamento e o prazo.</li>
+    <li><b>Relatório mensal</b>: quem chegou, o que perguntou, quem ficou pronto pra comprar e onde a venda trava.</li>
+    <li><b>Ajustes nas conversas</b> todo mês, com base no que os seus clientes perguntam e no relatório.</li>
+    <li><b>Suporte com gente de verdade</b> pelo WhatsApp da AltasVendas AI.</li>
+    <li><b>Registro de todos os contatos e conversas</b>: se algo acontecer com o número da IA, você não perde nenhum cliente.</li>
+  </ul>
+</div>
+
+<!-- === BLOCO E: SUA PARTE / NÃO INCLUSO === -->
+<div class="duas">
+  <div class="sec">
+    <h2><span class="n">4</span>O que fica com você</h2>
+    <ul>
+      <li>Mandar as informações da empresa pra implantação.</li>
+      <li>Avisar quando mudar preço, produto ou horário.</li>
+      <li>Atender os clientes que a IA passar pra você.</li>
+      <li>Manter a sua página de vendas ou link de pagamento funcionando.</li>
+      <li>Pagar o plano do chip da IA, direto com a operadora.</li>
+      <li>Fazer a recarga mensal pra manter o serviço ativo.</li>
+    </ul>
+  </div>
+  <div class="sec nao">
+    <h2><span class="n">5</span>O que não está incluso</h2>
+    <ul>
+      <li>Plano do chip da IA (pago à parte).</li>
+      <li>Anúncios pagos e a verba deles.</li>
+      <li>Criação de página de vendas ou checkout (orçamento à parte).</li>
+      <li>Disparo em massa ou envio pra listas compradas: a IA só responde quem chama.</li>
+      <li>Garantia de vendas ou de faturamento.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- === BLOCO F: RESULTADO E DADOS === -->
+<div class="sec">
+  <h2><span class="n">6</span>Resultado e dados</h2>
+  <p><b>Não garantimos número de vendas</b>, porque a venda depende da sua oferta, do seu preço e de quem atende. O que garantimos é a entrega descrita acima e o acompanhamento todo mês pra melhorar o resultado.</p>
+  <p>Os contatos e as conversas são <b>da sua empresa</b>. Usamos esses dados só pra operar o seu atendimento, não vendemos nem repassamos, seguindo a Lei Geral de Proteção de Dados (LGPD).</p>
+</div>
+
+<!-- === BLOCO G: ACEITE === -->
+<form class="aceite" id="form-aceite">
+  <h2>Está de acordo?</h2>
+  <p>Preencha e confirme. Sua confirmação chega pra gente pelo WhatsApp, com a data e a versão deste documento.</p>
+  <div class="campos-2">
+    <div class="campo"><label for="f-nome">Seu nome</label><input id="f-nome" required placeholder="Nome completo"></div>
+    <div class="campo"><label for="f-empresa">Empresa</label><input id="f-empresa" required placeholder="Nome da empresa"></div>
+  </div>
+  <div class="campo"><label for="f-doc">CPF ou CNPJ <span style="color:var(--cinza-2);font-weight:400;font-size:13px">opcional</span></label><input id="f-doc" inputmode="numeric" placeholder="Só números"></div>
+  <label class="check"><input type="checkbox" id="f-ok"><span>Li o documento de entrega e <b>concordo</b> com o que está escrito.</span></label>
+  <div class="pix" id="pix">
+    <h3>Pague a primeira recarga pelo Pix</h3>
+    <p>Com o pagamento confirmado, a gente começa a implantação.</p>
+    <div class="pix-caixa">
+      <div id="qr"></div>
+      <div>
+        <div class="pix-valor" id="pix-valor"></div>
+        <div class="pix-info" id="pix-info"></div>
+        <textarea class="copia" id="pix-copia" readonly hidden></textarea>
+        <button class="btn sec" type="button" id="btn-copia">Copiar código Pix</button>
+      </div>
+    </div>
+    <ol class="passos-pix">
+      <li>Abra o app do seu banco, escolha <b>Pix → Ler QR Code</b> ou <b>Pix Copia e Cola</b>.</li>
+      <li>Confira o valor e o nome do recebedor e pague.</li>
+      <li>Toque em <b>Confirmar pelo WhatsApp</b> aqui embaixo e mande o comprovante na conversa.</li>
+    </ol>
+  </div>
+  <button class="btn" type="submit" id="btn-ok" disabled>Confirmar pelo WhatsApp</button>
+  <p class="aviso">Abre o WhatsApp com a confirmação pronta. Nada é enviado sem você apertar enviar.</p>
+  <div class="links">
+    <a href="Documento-de-Entrega-AltasVendas-AI.pdf" download>⬇ Baixar este documento em PDF</a>
+    <a href="#" id="duvida">Ainda tenho dúvidas</a>
+  </div>
+</form>
+
+</main>
+
+<footer><div class="wrap">AltasVendas AI · Consultoria de planejamento estratégico e aceleradora de vendas · Porto Alegre/RS</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// === BLOCO 1: CONFIGURAÇÃO ===
+const CONFIG = {
+  whatsapp: "5551982276577",
+  versao: "29/10/2026",
+  recarga: "R$ 500 (Super Oferta Black Friday)",
+  // Pix: preencher a chave pra liberar o QR Code. Sem chave, o bloco do Pix não aparece.
+  pix: { chave: "+5551982276577", nome: "ELTON DE OLIVEIRA LONGARAY", cidade: "PORTO ALEGRE", valor: 500.00, id: "RECARGA1" }
+};
+
+// === BLOCO 2: UTILITÁRIOS ===
+const $ = id => document.getElementById(id);
+const zap = msg => window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
+
+// === BLOCO 3: PREENCHE PELO LINK (?nome=&empresa=) QUANDO VIER ===
+const qs = new URLSearchParams(location.search);
+["nome", "empresa"].forEach(k => { if (qs.get(k)) $("f-" + k).value = qs.get(k); });
+
+// === BLOCO 4: CÓDIGO PIX (Copia e Cola, padrão do Banco Central) ===
+const campo = (id, v) => id + String(v.length).padStart(2, "0") + v;
+const semAcento = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+function crc16(t) {
+  let c = 0xFFFF;
+  for (let i = 0; i < t.length; i++) {
+    c ^= t.charCodeAt(i) << 8;
+    for (let j = 0; j < 8; j++) c = c & 0x8000 ? (c << 1) ^ 0x1021 : c << 1;
+  }
+  return (c & 0xFFFF).toString(16).toUpperCase().padStart(4, "0");
+}
+function codigoPix({ chave, nome, cidade, valor, id }) {
+  const corpo = campo("00", "01") +
+    campo("26", campo("00", "br.gov.bcb.pix") + campo("01", chave)) +
+    campo("52", "0000") + campo("53", "986") + campo("54", valor.toFixed(2)) +
+    campo("58", "BR") + campo("59", semAcento(nome).slice(0, 25)) + campo("60", semAcento(cidade).slice(0, 15)) +
+    campo("62", campo("05", id)) + "6304";
+  return corpo + crc16(corpo);
+}
+const temPix = !!CONFIG.pix.chave;
+if (temPix) {
+  const cod = codigoPix(CONFIG.pix);
+  $("pix-valor").textContent = CONFIG.pix.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  $("pix-info").textContent = "Recebedor: " + CONFIG.pix.nome;
+  $("pix-copia").value = cod;
+  if (window.QRCode) new QRCode($("qr"), { text: cod, width: 170, height: 170, correctLevel: QRCode.CorrectLevel.M });
+  $("btn-copia").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(cod); } catch (_) { const t = $("pix-copia"); t.hidden = false; t.select(); document.execCommand("copy"); t.hidden = true; }
+    $("btn-copia").textContent = "Código copiado ✓";
+  });
+}
+
+// === BLOCO 4B: SÓ LIBERA O BOTÃO (E O PIX) COM O "CONCORDO" MARCADO ===
+$("f-ok").addEventListener("change", e => {
+  $("btn-ok").disabled = !e.target.checked;
+  if (temPix) $("pix").classList.toggle("on", e.target.checked);
+});
+
+// === BLOCO 5: ACEITE → WHATSAPP ===
+$("form-aceite").addEventListener("submit", e => {
+  e.preventDefault();
+  if (!$("f-ok").checked) return;
+  const agora = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+  zap([
+    "✅ CONCORDO COM O DOCUMENTO DE ENTREGA",
+    "",
+    "Li o documento de entrega da Automação de Atendimento Rápido e concordo com o que está escrito.",
+    "",
+    `Nome: ${$("f-nome").value.trim()}`,
+    `Empresa: ${$("f-empresa").value.trim()}`,
+    `CPF/CNPJ: ${$("f-doc").value.trim() || "não informado"}`,
+    `Recarga mensal: ${CONFIG.recarga}`,
+    `Versão do documento: ${CONFIG.versao}`,
+    `Confirmado em: ${agora}`,
+    `Documento: ${location.origin}${location.pathname}`,
+    ...(temPix ? ["", "Fiz o Pix da primeira recarga e envio o comprovante aqui."] : [])
+  ].join("\n"));
+});
+$("duvida").addEventListener("click", e => { e.preventDefault(); zap("Oi! Li o documento de entrega e ainda tenho dúvidas."); });
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diagnóstico · AltasVendas AI</title>
+<meta name="description" content="Responda algumas perguntas rápidas pra gente montar uma proposta sob medida pro seu negócio.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A1411">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 1: IDENTIDADE (mesma paleta da página AltasVendas AI)
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --tinta:#0A1411; --verde:#128C4A; --verde-escuro:#0B5E31; --verde-vivo:#25D366;
+  --gelo:#F5F7F6; --branco:#FFFFFF; --texto:#0F1A16; --cinza:#5B6762; --cinza-claro:#A9B8B2;
+  --linha:#E3E9E6; --linha-esc:rgba(255,255,255,.09); --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--gelo);color:var(--texto);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:18px;line-height:1.55;
+  min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--verde);outline-offset:3px}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 2: TOPO E PROGRESSO
+   ═══════════════════════════════════════════════════════════════ */
+.topo{background:var(--tinta);border-bottom:1px solid var(--linha-esc)}
+.topo .in{max-width:36rem;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.03em;color:#fff;font-size:1rem;white-space:nowrap}
+.logo i{width:32px;height:32px;border-radius:9px;background:var(--verde-vivo);display:grid;place-items:center;flex:none}
+.logo i svg{width:18px;height:18px}
+.contador{color:var(--cinza-claro);font-size:.78rem;font-weight:700;white-space:nowrap}
+.barra{height:4px;background:rgba(255,255,255,.1)}
+.barra i{display:block;height:100%;width:0;background:var(--verde-vivo);transition:width .4s var(--ease)}
+
+.wrap{flex:1;width:100%;max-width:36rem;margin:0 auto;padding:28px 20px 40px;display:flex;flex-direction:column}
+.tela{flex:1;display:flex;flex-direction:column;animation:entra .35s var(--ease) both}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tela{animation:none}.barra i{transition:none}}
+
+.eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--verde)}
+h1{font-size:clamp(1.9rem,7.5vw,2.5rem);line-height:1.2;letter-spacing:-.025em;font-weight:800;margin:.5rem 0 1rem;text-wrap:balance}
+h1 em{font-style:normal;color:var(--verde)}
+.lead{color:var(--cinza);margin-bottom:.9rem}
+.q{font-size:clamp(1.45rem,6vw,1.85rem);line-height:1.25;letter-spacing:-.02em;font-weight:800;margin:.4rem 0 .6rem;text-wrap:balance}
+.ajuda{font-size:.92rem;color:var(--cinza);margin-bottom:.9rem}
+.opc{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza-claro);font-weight:700;margin-left:.4rem;vertical-align:middle}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 3: CAMPOS
+   ═══════════════════════════════════════════════════════════════ */
+input[type=text],input[type=tel],textarea{width:100%;font:inherit;font-size:1.05rem;color:var(--texto);background:var(--branco);
+  border:1.5px solid var(--linha);border-radius:14px;padding:.9rem 1rem;margin-top:.3rem}
+textarea{min-height:8.5rem;resize:vertical;line-height:1.45}
+input:focus,textarea:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 3px rgba(18,140,74,.15)}
+.ops{display:flex;flex-direction:column;gap:.55rem;margin-top:.4rem}
+.op{text-align:left;font-size:1rem;font-weight:600;color:var(--texto);background:var(--branco);border:1.5px solid var(--linha);border-radius:14px;
+  padding:.9rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.75rem;transition:border-color .15s,background .15s}
+.op:hover{border-color:var(--verde)}
+.op .dot{flex:none;width:1.1rem;height:1.1rem;border-radius:50%;border:2px solid var(--cinza-claro);display:grid;place-items:center}
+.op[aria-checked="true"]{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.op[aria-checked="true"] .dot{border-color:var(--verde-vivo)}
+.op[aria-checked="true"] .dot::after{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--verde-vivo)}
+.outro{margin-top:.55rem}
+.erro{color:#B42318;font-size:.9rem;margin-top:.6rem;min-height:1.3rem}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 4: NAVEGAÇÃO E TELA FINAL
+   ═══════════════════════════════════════════════════════════════ */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.4rem}
+.btn{border:none;cursor:pointer;background:var(--verde-vivo);color:#06231A;font-weight:800;font-size:1.05rem;padding:1rem 1.7rem;border-radius:999px;
+  box-shadow:0 8px 24px rgba(37,211,102,.28);text-decoration:none;display:inline-block}
+.btn:hover{background:#2FE374}.btn:disabled{opacity:.55;cursor:wait}
+.voltar{background:none;border:none;color:var(--cinza);font-size:.95rem;font-weight:600;cursor:pointer;padding:.5rem 0}
+.dica{font-size:.8rem;color:var(--cinza-claro);margin-top:.7rem}
+.rodape{margin-top:auto;padding-top:2rem;font-size:.78rem;color:var(--cinza-claro);text-align:center}
+.final{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:1rem 0}
+.final .selo{width:64px;height:64px;border-radius:50%;background:rgba(37,211,102,.15);display:grid;place-items:center;margin:0 auto 1.2rem;font-size:1.8rem}
+.final .caixa{background:var(--branco);border:1px solid var(--linha);border-radius:18px;padding:1rem 1.2rem;color:var(--cinza);font-size:.95rem;margin:1rem 0 1.4rem}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="in">
+    <span class="logo"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></svg></i>ALTASVENDAS AI</span>
+    <span class="contador" id="contador"></span>
+  </div>
+  <div class="barra"><i id="barra"></i></div>
+</header>
+<main class="wrap" id="app" aria-live="polite"><p class="lead">Carregando…</p></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="perguntas.js?v=10"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 5: CONFIG E ESTADO
+// Link padrão (todas as perguntas): /diagnostico/
+// Link de cliente (só o que falta): /diagnostico/?c=CODIGO (criado no painel)
+// ═══════════════════════════════════════════════════════════════
+const sb = window.supabase.createClient(DIAG.supabaseUrl, DIAG.supabaseKey);
+const TOKEN = new URLSearchParams(location.search).get("c") || "";
+// Modo teste (&teste=1): passa sem responder e NÃO envia nada
+const TESTE = new URLSearchParams(location.search).has("teste");
+const CHAVE = "acelera-diag-v1" + (TOKEN ? "-" + TOKEN : "") + (new URLSearchParams(location.search).has("teste") ? "-teste" : "");
+let P = DIAG.perguntas.slice();
+let nomeConhecido = "";
+let st = {i:-1, r:{}};
+try{ const s = JSON.parse(localStorage.getItem(CHAVE)||"null"); if(s && s.r) st = s; }catch(e){}
+const salvar = () => { try{ localStorage.setItem(CHAVE, JSON.stringify(st)); }catch(e){} };
+const app = document.getElementById("app");
+const esc = s => String(s??"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function progresso(){
+  const pct = st.i < 0 ? 0 : Math.round((st.i/P.length)*100);
+  document.getElementById("barra").style.width = pct + "%";
+  document.getElementById("contador").textContent = (TESTE ? "TESTE · " : "") + (st.i >= 0 ? `Pergunta ${st.i+1} de ${P.length}` : "");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 6: TELAS
+// ═══════════════════════════════════════════════════════════════
+function telaIntro(){
+  const retomar = Object.keys(st.r).length > 0;
+  const oi = nomeConhecido ? `Oi, ${esc(nomeConhecido)}! ` : "";
+  app.innerHTML = `<section class="tela">
+    <p class="eyebrow">Proposta sob medida</p>
+    <h1>${oi}Vamos montar <em>a sua</em> proposta.</h1>
+    <p class="lead">${nomeConhecido ? "O que você já me contou no WhatsApp está guardado. Faltam só estas perguntas" : "São perguntas rápidas"}: ${P.length} no total, uns ${Math.max(3, Math.round(P.length/3))} minutos.</p>
+    <p class="lead">Com elas eu calculo uma proposta que se paga e cabe no seu bolso.</p>
+    <div class="nav"><span></span><button class="btn" id="go">${retomar ? "Continuar de onde parei" : "Começar"} →</button></div>
+    <p class="rodape">Suas respostas ficam só entre nós.</p></section>`;
+  document.getElementById("go").onclick = () => { st.i = retomar ? Math.min(Math.max(st.i,0), P.length-1) : 0; salvar(); telaPergunta(); };
+  progresso();
+}
+
+function telaPergunta(){
+  const p = P[st.i], v = st.r[p.id] ?? "";
+  let campo = "";
+  if(p.tipo==="texto"||p.tipo==="tel"){
+    campo = `<input id="f" type="${p.tipo==="tel"?"tel":"text"}" inputmode="${p.tipo==="tel"?"tel":"text"}" placeholder="${esc(p.ph||"")}" value="${esc(v)}" autocomplete="${p.id==="nome"?"given-name":p.tipo==="tel"?"tel":"off"}">`;
+  } else if(p.tipo==="longo"){
+    campo = `<textarea id="f" placeholder="${esc(p.ph||"Escreva aqui…")}">${esc(v)}</textarea>`;
+  } else {
+    const ehOutro = p.outro && v && !p.ops.includes(v);
+    campo = `<div class="ops" role="radiogroup" aria-label="${esc(p.q)}">` +
+      p.ops.map(o => `<button type="button" class="op" role="radio" aria-checked="${v===o}" data-v="${esc(o)}"><span class="dot"></span>${esc(o)}</button>`).join("") +
+      (p.outro ? `<button type="button" class="op" role="radio" aria-checked="${ehOutro}" data-v="__outro"><span class="dot"></span>Outro</button>` : "") +
+      `</div>` + (p.outro ? `<input id="outro" class="outro" type="text" placeholder="Conta qual…" value="${ehOutro?esc(v):""}" ${ehOutro?"":"hidden"}>` : "");
+  }
+  app.innerHTML = `<section class="tela">
+    <p class="eyebrow">${esc(p.grupo)}</p>
+    <h2 class="q">${esc(p.q)}${p.opcional?'<span class="opc">opcional</span>':""}</h2>
+    ${p.ajuda ? `<p class="ajuda">${esc(p.ajuda)}</p>` : ""}
+    ${campo}
+    <p class="erro" id="erro" role="alert"></p>
+    <div class="nav"><button class="voltar" id="volta" type="button">← Voltar</button>
+      <button class="btn" id="seg" type="button">${st.i===P.length-1 ? "Enviar Respostas" : "Continuar →"}</button></div>
+    ${p.tipo==="longo" ? `<p class="dica">Escreve do seu jeito, como você falaria.</p>` : ""}
+  </section>`;
+  progresso();
+
+  const f = document.getElementById("f");
+  if(f){ setTimeout(()=>f.focus(), 60);
+    f.addEventListener("input", () => { st.r[p.id] = p.tipo==="tel" ? mascara(f.value) : f.value; if(p.tipo==="tel") f.value = st.r[p.id]; salvar(); });
+    if(p.tipo!=="longo") f.addEventListener("keydown", e => { if(e.key==="Enter"){ e.preventDefault(); avancar(); } });
+  }
+  app.querySelectorAll(".op").forEach(b => b.onclick = () => {
+    app.querySelectorAll(".op").forEach(x => x.setAttribute("aria-checked","false"));
+    b.setAttribute("aria-checked","true");
+    const out = document.getElementById("outro");
+    if(b.dataset.v==="__outro"){ out.hidden=false; out.focus(); st.r[p.id] = out.value.trim(); salvar(); return; }
+    if(out) out.hidden = true;
+    st.r[p.id] = b.dataset.v; salvar(); setTimeout(avancar, 220);
+  });
+  const out = document.getElementById("outro");
+  if(out){ out.addEventListener("input", () => { st.r[p.id] = out.value; salvar(); });
+    out.addEventListener("keydown", e => { if(e.key==="Enter"){ e.preventDefault(); avancar(); } }); }
+  document.getElementById("seg").onclick = avancar;
+  document.getElementById("volta").onclick = () => { if(st.i===0){ st.i=-1; salvar(); telaIntro(); } else { st.i--; salvar(); telaPergunta(); } };
+}
+
+function mascara(v){
+  const d = v.replace(/\D/g,"").slice(0,11);
+  if(d.length<=2) return d; if(d.length<=7) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+  return `(${d.slice(0,2)}) ${d.slice(2,d.length-4)}-${d.slice(-4)}`;
+}
+
+function valido(p){
+  if(TESTE) return "";
+  const v = String(st.r[p.id]??"").trim();
+  if(p.opcional) return "";
+  if(!v) return p.tipo==="escolha" ? "Escolhe uma opção pra continuar." : "Responde essa pra gente continuar.";
+  if(p.id==="whatsapp" && v.replace(/\D/g,"").length < 10) return "Confere o número com DDD.";
+  return "";
+}
+
+function avancar(){
+  const p = P[st.i], e = valido(p);
+  if(e){ document.getElementById("erro").textContent = e; return; }
+  if(st.i < P.length-1){ st.i++; salvar(); telaPergunta(); window.scrollTo({top:0}); }
+  else enviar();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 7: ENVIO (a proposta NÃO aparece aqui: só o Élton vê no painel)
+// ═══════════════════════════════════════════════════════════════
+async function enviar(){
+  if(TESTE) return telaFinal(nomeConhecido || st.r.nome);
+  const b = document.getElementById("seg"); b.disabled = true; b.textContent = "Enviando…";
+  const resp = {}; P.forEach(p => { const v = String(st.r[p.id]??"").trim(); if(v) resp[p.id] = v; });
+  if(resp.instagram && !resp.instagram.startsWith("@")) resp.instagram = "@" + resp.instagram;
+  let error;
+  if(TOKEN){
+    const r = await sb.rpc("acelera_diag_enviar", { p_token: TOKEN, p_respostas: resp });
+    error = r.error || (r.data === false ? {message:"link já usado"} : null);
+  } else {
+    error = (await sb.from(DIAG.tabela).insert({ respostas: resp, enviado_em: new Date().toISOString() })).error;
+  }
+  if(error){
+    b.disabled = false; b.textContent = "Tentar Enviar De Novo";
+    document.getElementById("erro").textContent = "Não consegui enviar agora. Suas respostas estão salvas aqui: tenta de novo em instantes.";
+    console.error(error); return;
+  }
+  try{ localStorage.removeItem(CHAVE); }catch(e){}
+  telaFinal(resp.nome || nomeConhecido);
+}
+
+function telaFinal(nome, jaEnviado){
+  const primeiro = esc(String(nome||"").trim().split(" ")[0]);
+  document.getElementById("barra").style.width = "100%";
+  document.getElementById("contador").textContent = "";
+  app.innerHTML = `<section class="final tela">
+    <div class="selo" aria-hidden="true">✓</div>
+    <p class="eyebrow">${jaEnviado ? "Respostas já recebidas" : "Respostas recebidas"}</p>
+    <h1>Obrigado${primeiro ? ", " + primeiro : ""}!</h1>
+    <p class="lead">Agora eu vou analisar tudo com calma e calcular as opções que fazem sentido pro seu negócio.</p>
+    <div class="caixa">Em breve eu te mando a proposta pelo WhatsApp. Se lembrar de mais alguma coisa, é só me chamar por lá.</div>
+    <p><a class="btn" href="https://wa.me/${DIAG.whatsapp}" target="_blank" rel="noopener">Falar No WhatsApp</a></p>
+    <p class="rodape">AltasVendas AI · Página desenvolvida por Elton Longaray</p>
+  </section>`;
+  window.scrollTo({top:0});
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 8: INÍCIO (no link de cliente, tira o que já foi respondido)
+// ═══════════════════════════════════════════════════════════════
+(async function(){
+  if(TOKEN){
+    const { data, error } = await sb.rpc("acelera_diag_abrir", { p_token: TOKEN });
+    if(error || !data){
+      app.innerHTML = `<section class="tela"><p class="eyebrow">Link inválido</p><h1>Esse link não funcionou.</h1>
+        <p class="lead">Me chama no WhatsApp que eu te mando o certo.</p>
+        <p><a class="btn" href="https://wa.me/${DIAG.whatsapp}" target="_blank" rel="noopener">Falar No WhatsApp</a></p></section>`;
+      return;
+    }
+    if(data.enviado) return telaFinal(data.nome, true);
+    nomeConhecido = data.nome || "";
+    const pular = new Set(data.pular || []);
+    P = P.filter(p => !pular.has(p.id));
+  }
+  if(st.i >= P.length) st.i = P.length - 1;
+  if(st.i >= 0) telaPergunta(); else telaIntro();
+})();
+</script>
+</body>
+</html>

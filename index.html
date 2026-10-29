@@ -1,0 +1,1127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AltasVendas AI — Só compradores</title>
+<meta name="description" content="Afaste quem não vai comprar e transforme pessoas interessadas em compradores fiéis. Teste por 20 dias.">
+<meta name="theme-color" content="#0A1411">
+<!-- Prévia do link (WhatsApp, Instagram, Facebook, LinkedIn): imagem precisa de endereço completo -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AltasVendas AI">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://altasvendasai.github.io/">
+<meta property="og:title" content="AltasVendas AI | Só compradores no seu WhatsApp">
+<meta property="og:description" content="Afaste quem não vai comprar e transforme pessoas interessadas em compradores fiéis. Teste por 20 dias.">
+<meta property="og:image" content="https://altasvendasai.github.io/img/previa.jpg?v=6">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AltasVendas AI: afaste quem não vai comprar e transforme pessoas interessadas em compradores fiéis">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 1: CONFIGURAÇÃO (mude os números aqui)
+// ═══════════════════════════════════════════════════════════════
+window.CONFIG = {
+  whatsapp: "5551982276577",          // DDI + DDD + número, só dígitos
+  vagasPorMes: 10,                    // testes abertos por mês
+  diasTeste: 20,
+  diasExtensao: 10,                   // se a venda não sair no dia 20
+  entrega: {
+    reunioes: "até 5 reuniões com interessados",
+    quentes:  "10 contatos quentes no seu WhatsApp",
+    vende:    "1 a 2 vendas fechadas"
+  },
+  // Ainda em decisão pelos sócios: true mostra "em 6 meses o processo é seu"
+  mostrarTransferencia6Meses: false,
+  simulacao: { conversao: 0.02 }      // 2% da lista comprando de novo
+};
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 2: TOKENS (paleta aprovada em 24/10)
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --tinta:#0A1411;
+  --tinta-2:#111E1A;
+  --verde:#128C4A;
+  --verde-escuro:#0B5E31;
+  --verde-vivo:#25D366;
+  --gelo:#F5F7F6;
+  --branco:#FFFFFF;
+  --texto:#0F1A16;
+  --cinza:#5B6762;
+  --cinza-claro:#A9B8B2;
+  --linha:#E3E9E6;
+  --linha-esc:rgba(255,255,255,.09);
+  --amarelo:#FFC814;
+  --raio:18px;
+  --max:72rem;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:70px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--gelo);color:var(--texto);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:18px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+@media (min-width:768px){body{font-size:19px}}
+img{max-width:100%;display:block}
+h1,h2,h3{line-height:1.25;letter-spacing:-.025em;margin:0 0 .55em;font-weight:800}
+h2{font-size:clamp(1.75rem,6vw,2.6rem)}
+h3{font-size:1.15rem;letter-spacing:-.01em}
+p{margin:0 0 1em}
+strong{font-weight:800}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.estreito{max-width:44rem}
+section{padding:72px 0}
+.muted{color:var(--cinza)}
+.small{font-size:.86em}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 3: COMPONENTES
+   ═══════════════════════════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:58px;padding:16px 24px;border:0;border-radius:14px;cursor:pointer;background:var(--verde);color:#fff;text-decoration:none;font:800 1rem/1.2 "Plus Jakarta Sans",sans-serif;text-align:center;transition:transform .12s var(--ease),background .15s,box-shadow .15s;width:100%}
+.btn:hover{background:var(--verde-escuro)}
+.btn:active{transform:scale(.98)}
+.btn--vivo{background:var(--verde-vivo);color:#06231A}
+.btn--vivo:hover{background:#3EE07A}
+.btn--fantasma{background:transparent;color:var(--verde-escuro);border:2px solid var(--linha)}
+.btn--fantasma:hover{background:var(--branco)}
+@media (min-width:768px){.btn{width:auto}}
+.btn:focus-visible,.opt:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-offset:3px}
+
+.chip{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--linha-esc);background:rgba(255,255,255,.04);border-radius:99px;padding:7px 13px;font-size:.8rem;font-weight:600;color:#CFE0D8}
+.chip b{width:8px;height:8px;border-radius:50%;background:var(--verde-vivo);box-shadow:0 0 0 4px rgba(37,211,102,.18)}
+.rotulo{display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--verde);margin-bottom:14px}
+.escuro .rotulo{color:var(--verde-vivo)}
+.card{background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);padding:24px}
+.grid{display:grid;gap:16px}
+@media (min-width:860px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+.check{list-style:none;padding:0;margin:0}
+.check li{position:relative;padding-left:34px;margin-bottom:12px}
+.check li::before{content:"";position:absolute;left:0;top:.2em;width:22px;height:22px;border-radius:50%;background:var(--verde) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/14px no-repeat}
+
+/* Blocos escuros */
+.escuro{background:var(--tinta);color:#E3ECE8;position:relative;overflow:hidden}
+.escuro h2,.escuro h3{color:#fff}
+.escuro .muted{color:var(--cinza-claro)}
+.escuro .card{background:var(--tinta-2);border-color:var(--linha-esc);color:#DCE6E2}
+.brilho::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 360px at 88% 0%,rgba(37,211,102,.14),transparent 62%);pointer-events:none}
+.escuro>.wrap{position:relative}
+.vivo{color:var(--verde-vivo)}
+
+/* Personalização pelo desafio */
+[data-v]{display:none}
+body[data-desafio="0"] [data-v~="0"],body[data-desafio="A"] [data-v~="A"],body[data-desafio="B"] [data-v~="B"],body[data-desafio="C"] [data-v~="C"],body[data-desafio="D"] [data-v~="D"]{display:block}
+
+/* Personalização por quem cuida das vendas (sozinho x equipe) */
+[data-t]{display:none}
+[data-f]{display:none}
+body[data-fora="sim"] [data-f="sim"],body[data-fora="nao"] [data-f="nao"]{display:revert}
+body[data-time="so"] [data-t~="so"],body[data-time="eq"] [data-t~="eq"]{display:block}
+
+/* Aparecer ao rolar */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv.on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 4: TOPO, PROGRESSO E HERÓI
+   ═══════════════════════════════════════════════════════════════ */
+.topo{position:sticky;top:0;z-index:40;background:rgba(10,20,17,.92);backdrop-filter:blur(10px) saturate(1.3);border-bottom:1px solid var(--linha-esc)}
+.topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;height:62px}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.03em;color:#fff;text-decoration:none;font-size:1rem}
+.logo i{width:32px;height:32px;border-radius:9px;background:var(--verde-vivo);display:grid;place-items:center;flex:none}
+.logo i svg{width:18px;height:18px}
+.etapas{display:flex;align-items:center;gap:10px;color:var(--cinza-claro);font-size:.78rem;font-weight:700;white-space:nowrap}
+.etapas .pts{display:flex;gap:5px}
+.etapas .pts i{width:22px;height:6px;border-radius:99px;background:rgba(255,255,255,.14);transition:background .3s}
+.etapas .pts i.on{background:var(--verde-vivo)}
+.logo{white-space:nowrap}
+@media (max-width:420px){.etapas .pts{display:none}}
+/* TEMPORÁRIO: seta pra voltar etapa enquanto testa as respostas (tirar depois) */
+.volta-temp{width:30px;height:30px;border-radius:99px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font:700 1rem/1 "Plus Jakarta Sans",sans-serif;opacity:.55;cursor:pointer;display:grid;place-items:center;padding:0}
+.volta-temp:hover,.volta-temp:focus-visible{opacity:1}
+
+.heroi{padding:28px 0 56px}
+.heroi .in{display:grid;gap:40px;align-items:center}
+@media (min-width:960px){.heroi .in{grid-template-columns:1.1fr .9fr}.heroi{padding:40px 0 72px}}
+.heroi h1{font-size:clamp(2rem,7vw,3.1rem);color:#fff;margin:0 0 16px;text-wrap:balance}
+.heroi h1 em{font-style:normal;color:var(--verde-vivo)}
+.heroi .sub{color:var(--cinza-claro);font-size:1.05em;max-width:36rem;margin-bottom:24px}
+.heroi .btn,.final .btn{font-size:1.35rem;min-height:66px;padding:18px 32px}
+.heroi .prova{display:flex;gap:10px 18px;flex-wrap:wrap;margin-top:20px;font-size:.84rem;color:#93A59E}
+.heroi .prova > span::before{content:"✓ ";color:var(--verde-vivo);font-weight:800}
+
+/* Celular com a conversa da IA */
+.fone{background:#0E1A16;border:1px solid var(--linha-esc);border-radius:28px;padding:14px;max-width:360px;width:100%;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.fone .bar{display:flex;align-items:center;gap:10px;padding:6px 6px 12px;border-bottom:1px solid var(--linha-esc)}
+.fone .av{width:34px;height:34px;border-radius:50%;background:var(--verde);display:grid;place-items:center;font-size:.78rem;font-weight:800;color:#fff;flex:none}
+.fone .bar strong{font-size:.9rem;color:#fff;display:block}
+.fone .bar small{color:#7E918A;font-size:.72rem}
+.msgs{display:flex;flex-direction:column;gap:8px;padding:14px 4px 6px;min-height:330px}
+.m{max-width:84%;padding:9px 12px;border-radius:14px;font-size:.85rem;line-height:1.4;color:#E7F0EC;opacity:0;transform:translateY(6px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.m.on{opacity:1;transform:none}
+.m.c{background:#1D2B26;align-self:flex-start;border-bottom-left-radius:4px}
+.m.ia{background:#0F5132;align-self:flex-end;border-bottom-right-radius:4px}
+.m.sel{align-self:center;background:rgba(255,200,20,.12);color:var(--amarelo);border:1px solid rgba(255,200,20,.35);font-weight:800;font-size:.76rem;border-radius:99px}
+.m.fora{align-self:center;background:rgba(255,255,255,.05);color:#90A29B;border:1px solid var(--linha-esc);font-weight:700;font-size:.76rem;border-radius:99px}
+
+/* Faixa do que entregamos (sempre visível) */
+.entregas{background:var(--tinta-2);border-top:1px solid var(--linha-esc);border-bottom:1px solid var(--linha-esc);padding:26px 0;color:#DCE6E2}
+/* Roda de cartões (como a barra do Falcon): o do centro em tamanho normal,
+   os vizinhos menores e apagados nas laterais. Todos na mesma célula do grid. */
+.entregas{overflow:hidden}
+.rota{display:grid;justify-items:center;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.slide{grid-area:1/1;width:min(80%,25rem);display:flex;gap:14px;align-items:center;background:var(--tinta);border:1px solid var(--linha-esc);border-radius:16px;padding:16px 18px;opacity:0;transform:translateX(0) scale(.78);transition:transform .6s var(--ease),opacity .6s var(--ease),border-color .3s;cursor:pointer}
+.slide.on{border-color:rgba(37,211,102,.4);cursor:default}
+.slide .ic{flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center}
+.slide strong{color:#fff;display:block;font-size:1.08rem}
+.slide span{font-size:.92rem;color:var(--cinza-claro)}
+.slide.intro{justify-content:center;align-self:stretch}
+.slide.intro strong{font-size:clamp(1.15rem,4.6vw,1.4rem);letter-spacing:-.02em}
+.slide .seta{color:var(--verde-vivo);font-weight:800;font-size:1.4rem}
+.slide strong span{font-size:inherit;color:inherit}
+.slide.fim.on{border-color:var(--verde-vivo);background:#0E2A1B}
+.rota-pts{display:flex;justify-content:center;gap:6px;margin-top:16px}
+.rota-pts i{width:18px;height:4px;border-radius:99px;background:rgba(255,255,255,.14);transition:background .3s,width .3s}
+.rota-pts i.on{background:var(--verde-vivo);width:30px}
+/* Sem movimento: as 4 mensagens aparecem em lista */
+@media (prefers-reduced-motion:reduce){.rota{gap:12px}.slide{grid-area:auto;opacity:1!important;transform:none!important;transition:none}.rota-pts{display:none}}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 5: PORTÕES (perguntas que liberam a página)
+   ═══════════════════════════════════════════════════════════════ */
+.portao{padding:56px 0}
+.portao .caixa{background:var(--branco);border:1px solid var(--linha);border-radius:24px;padding:26px 20px;box-shadow:0 18px 50px rgba(10,20,17,.08);max-width:40rem;margin:0 auto}
+@media (min-width:768px){.portao .caixa{padding:34px}}
+.topo-p{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.etq{font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--verde)}
+.cont{font-size:.8rem;font-weight:700;color:var(--cinza);white-space:nowrap}
+.barra{height:8px;background:var(--gelo);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.barra i{display:block;height:100%;width:0;background:var(--verde);border-radius:99px;transition:width .45s var(--ease)}
+.cartao{animation:entra .38s var(--ease)}
+.cartao.volta{animation:entraVolta .38s var(--ease)}
+@keyframes entra{from{opacity:0;transform:translateX(44px)}to{opacity:1;transform:none}}
+@keyframes entraVolta{from{opacity:0;transform:translateX(-44px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.cartao,.cartao.volta{animation:none}}
+.cartao .anima{display:inline-block;background:rgba(255,200,20,.18);color:#6B5100;border-radius:8px;padding:5px 10px;font-weight:800;font-size:.8rem;margin-bottom:12px}
+.cartao h3{font-size:clamp(1.3rem,5.4vw,1.6rem);margin-bottom:.35em}
+.cartao .dica{color:var(--cinza);font-size:.9em;margin:0}
+.opts{display:grid;gap:10px;margin-top:18px}
+.opt{width:100%;text-align:left;cursor:pointer;min-height:58px;padding:14px 16px;background:var(--branco);border:1.5px solid var(--linha);border-radius:14px;font:700 1rem/1.3 "Plus Jakarta Sans";color:var(--texto);display:flex;align-items:center;gap:12px;transition:border-color .15s,background .15s,transform .1s}
+.opt:hover{border-color:#B9D3C4}
+.opt:active{transform:scale(.985)}
+.opt .box{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #B9CDC2}
+.opt.multi .box{border-radius:7px}
+.opt[aria-pressed="true"]{border-color:var(--verde);background:#EEF8F2}
+.opt[aria-pressed="true"] .box{background:var(--verde);border-color:var(--verde);box-shadow:inset 0 0 0 4px #EEF8F2}
+.campo{display:block;margin-top:14px}
+.campo input{width:100%;min-height:58px;padding:14px 16px;border:1.5px solid var(--linha);border-radius:14px;font:600 1.05rem "Plus Jakarta Sans";color:var(--texto);background:var(--branco)}
+.campo input:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 4px rgba(18,140,74,.14)}
+.oculto{position:absolute;left:-9999px}
+.erro{color:#B42318;font-weight:700;font-size:.88em;min-height:1.3em;margin:8px 0 0}
+.cartao .btn{width:100%;margin-top:14px}
+.acoes-p{display:flex;justify-content:space-between;align-items:center;margin-top:14px;min-height:40px}
+.voltar{background:none;border:0;color:var(--verde-escuro);font:700 .92rem "Plus Jakarta Sans";cursor:pointer;padding:8px 0;visibility:hidden}
+.voltar.on{visibility:visible}
+.portao.feito .caixa{display:none}
+.portao.feito{display:none}
+
+/* Partes trancadas */
+.parte[hidden],.portao[hidden]{display:none!important}
+.parte.abre{animation:abre .7s var(--ease)}
+@keyframes abre{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 6: SEÇÕES DE CONTEÚDO
+   ═══════════════════════════════════════════════════════════════ */
+.dor p{font-size:1.05em}
+.fecho{font-size:clamp(1.4rem,5.4vw,2rem);font-weight:800;letter-spacing:-.02em;line-height:1.2;color:#fff;margin:30px 0 0}
+.fecho em{font-style:normal;color:var(--verde-vivo)}
+.porque{display:grid;gap:22px;margin-top:8px}
+@media (min-width:900px){.porque{grid-template-columns:1.1fr .9fr;align-items:start}}
+.culpa{display:grid;gap:10px;margin:20px 0}
+.balao{background:var(--branco);border:1px solid var(--linha);border-radius:16px 16px 16px 4px;padding:12px 14px;font-weight:600;max-width:24rem}
+.balao small{display:block;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);margin-bottom:4px}
+.balao:nth-child(2){margin-left:24px;border-radius:16px 16px 4px 16px}
+.stat{background:var(--tinta);color:#DCE6E2;border-radius:var(--raio);padding:24px}
+.stat .n{font-size:3.4rem;font-weight:800;line-height:1;color:var(--verde-vivo);letter-spacing:-.03em}
+.stat p{margin:10px 0 0;font-size:.95em}
+.stat cite{display:block;font-style:normal;color:#7E918A;font-size:.78rem;margin-top:10px}
+
+.passos{display:grid;gap:14px;margin-top:28px}
+@media (min-width:900px){.passos{grid-template-columns:repeat(4,1fr)}}
+.passo .n{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:rgba(37,211,102,.14);color:var(--verde-vivo);font-weight:800;margin-bottom:12px}
+.passo h3{margin-bottom:.35em}
+.passo p{margin:0;font-size:.92em;color:var(--cinza-claro)}
+.seucaso{margin-top:22px;border:1px solid rgba(37,211,102,.35);background:rgba(37,211,102,.08);border-radius:14px;padding:16px 18px;color:#E7F3ED}
+.seucaso b{color:var(--verde-vivo)}
+.curioso{margin-top:16px}
+
+.sim{margin-top:22px}
+.sim label{display:flex;justify-content:space-between;font-weight:700;margin:14px 0 4px;font-size:.95rem}
+.sim label output{color:var(--verde-escuro);font-weight:800}
+.sim input[type=range]{width:100%;accent-color:var(--verde);height:30px}
+.sim .res{margin-top:14px;background:var(--tinta);color:#DCE6E2;border-radius:14px;padding:18px;text-align:center}
+.sim .res b{display:block;font-size:2.2rem;line-height:1.1;color:var(--verde-vivo);margin:4px 0}
+
+.cam{position:relative;transition:border-color .2s,box-shadow .2s}
+.cam .ic{font-size:1.8rem;line-height:1;margin-bottom:12px}
+.ic.num{font-weight:800;font-size:1.1rem;color:var(--verde-vivo);background:rgba(37,211,102,.12)}
+.cam .ic.num{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;color:var(--verde);background:#EEF8F2}
+.cam .meta{margin-top:14px;padding-top:12px;border-top:1px dashed var(--linha);font-size:.9em}
+.cam .meta b{color:var(--verde-escuro)}
+.cam.destaque{border-color:var(--verde);box-shadow:0 0 0 2px var(--verde),0 18px 40px rgba(18,140,74,.14)}
+.cam.destaque::after{content:"Sua escolha";position:absolute;top:-12px;left:18px;background:var(--verde);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.04em;padding:5px 10px;border-radius:99px}
+.linha-tempo{display:grid;gap:12px;margin-top:20px}
+@media (min-width:860px){.linha-tempo{grid-template-columns:repeat(4,1fr)}}
+.linha-tempo .card{padding:18px}
+.linha-tempo b{display:block;color:var(--verde);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+
+.compromisso{display:grid;gap:22px;align-items:center}
+@media (min-width:860px){.compromisso{grid-template-columns:auto 1fr}}
+.selo-ext{width:128px;height:128px;border-radius:50%;border:2px dashed var(--verde-vivo);display:grid;place-items:center;text-align:center;color:#fff;font-weight:800;font-size:2rem;line-height:1}
+.selo-ext small{display:block;font-size:.66rem;letter-spacing:.08em;color:var(--verde-vivo);margin-top:6px}
+
+.socio{display:grid;gap:20px;align-items:center}
+@media (min-width:700px){.socio{grid-template-columns:200px 1fr}}
+.socio img{width:100%;max-width:220px;margin:0 auto;aspect-ratio:4/5;height:auto;object-fit:cover;object-position:50% 30%;border-radius:16px}
+.socio .papel{color:var(--verde-vivo);font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.cred{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.cred li{background:rgba(255,255,255,.04);border:1px solid var(--linha-esc);border-radius:10px;padding:10px 12px;font-size:.88em;color:#DCE6E2}
+.reservado{border:1.5px dashed rgba(255,255,255,.2);border-radius:var(--raio);padding:22px;text-align:center;color:var(--cinza-claro);display:flex;flex-direction:column;justify-content:center}
+.reservado .ph{display:flex;justify-content:center;gap:12px;margin-bottom:12px}
+.reservado .ph i{width:68px;height:68px;border-radius:50%;border:1.5px dashed rgba(255,255,255,.25);display:grid;place-items:center;font-style:normal;font-size:1.3rem}
+.reservado b{color:#fff}
+
+.zero{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.zero b{font-size:3rem;line-height:1;color:var(--verde);letter-spacing:-.03em}
+
+/* Proposta */
+.prop{background:var(--branco);border:1px solid var(--linha);border-radius:24px;overflow:hidden;box-shadow:0 18px 50px rgba(10,20,17,.1);max-width:44rem;margin:0 auto}
+.prop header{background:var(--tinta);color:#fff;padding:26px 22px;position:relative;overflow:hidden}
+.prop header::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 90% 0%,rgba(37,211,102,.2),transparent 65%)}
+.prop header *{position:relative}
+.prop header h2{color:#fff;font-size:clamp(1.5rem,6vw,2.1rem);margin:12px 0 0}
+.prop dl{margin:0;padding:6px 22px 4px}
+.prop dt{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--verde);margin-top:18px}
+.prop dd{margin:6px 0 0;padding-bottom:16px;border-bottom:1px solid var(--linha)}
+.prop dd:last-of-type{border-bottom:0}
+.prop .acoes{display:grid;gap:12px;padding:8px 22px 26px}
+.prop .acoes .btn{width:100%}
+.refazer{display:block;margin:16px auto 0;background:none;border:0;color:var(--verde-escuro);text-decoration:underline;font:700 .88rem "Plus Jakarta Sans";cursor:pointer}
+
+/* FAQ e final */
+.faq details{border-bottom:1px solid var(--linha)}
+.faq summary{list-style:none;cursor:pointer;padding:20px 44px 20px 0;position:relative;font-weight:800;font-size:1.02rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:0;top:15px;width:30px;height:30px;border-radius:50%;background:var(--branco);border:1px solid var(--linha);display:grid;place-items:center;color:var(--verde);font-size:1.2rem}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0 0 20px;color:var(--cinza)}
+.faq a{color:var(--verde);font-weight:800}
+.final{text-align:center}
+.final .garantias{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px;text-align:center}
+.final .garantias > div{padding:14px 6px 12px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.04)}
+.final .garantias b{display:block;font-size:1.7rem;line-height:1;font-weight:800;color:var(--verde-vivo);letter-spacing:-.02em}
+.final .garantias small{display:block;margin-top:6px;font-size:.78rem;line-height:1.3;color:var(--cinza-claro)}
+.aviso-priv{text-align:center;font-size:.8rem;color:var(--cinza);margin:10px 0 0}
+.aviso-priv a{color:inherit}
+footer{background:var(--tinta);color:#7E918A;padding:28px 0 calc(28px + env(safe-area-inset-bottom));text-align:center;font-size:.85rem;border-top:1px solid var(--linha-esc)}
+footer a{color:var(--verde-vivo);font-weight:700}
+
+
+/* Barra de teste (só fora do site oficial) */
+.teste{position:fixed;right:max(12px, env(safe-area-inset-right, 0px));top:calc(72px + env(safe-area-inset-top, 0px));z-index:50;display:flex;gap:6px;align-items:center;background:rgba(255,200,20,.96);color:#1B1400;border-radius:99px;padding:6px 6px 6px 12px;font:800 .72rem/1 "Plus Jakarta Sans",sans-serif;letter-spacing:.06em;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+/* display:flex acima venceria o atributo hidden; isso garante que some no site oficial */
+.teste[hidden]{display:none!important}
+.teste button{border:0;border-radius:99px;background:#1B1400;color:#FFE27A;font:700 .78rem/1 "Plus Jakarta Sans",sans-serif;padding:8px 10px;cursor:pointer}
+.teste button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+</style>
+</head>
+
+<body data-desafio="0" data-time="eq" data-fora="nao">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 7: TOPO (logo + etapas)
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="topo">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="AltasVendas AI, início">
+      <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></svg></i>
+      ALTASVENDAS AI
+    </a>
+    <div class="etapas" aria-label="Seu progresso"><button type="button" class="volta-temp" id="voltaTemp" aria-label="Voltar uma etapa">←</button><span id="etapaTxt">Etapa 1 de 4</span><span class="pts"><i></i><i></i><i></i><i></i></span></div>
+  </div>
+</header>
+
+<main id="inicio">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 8: HERÓI (promessa + conversa da IA)
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="escuro brilho heroi">
+  <div class="wrap in">
+    <div>
+      <h1>Afaste Quem Não Vai Comprar &amp; Transforme Pessoas Interessadas Em <em>Compradores Fiéis.</em></h1>
+      <p class="sub">A gente traz gente nova ou acorda a sua lista parada, filtra no WhatsApp quem quer comprar e entrega o cliente pronto pra fechar.</p>
+      <a class="btn btn--vivo" href="#p1">Quero Vender Mais</a>
+      <div class="prova"><span>Gestão</span><span>Automação</span><span>Vendas</span></div>
+    </div>
+    <div class="fone" aria-label="Exemplo: a IA conversando com dois contatos no WhatsApp">
+      <div class="bar"><span class="av">AA</span><div><strong>Solar Sul</strong><small>assistente digital · online</small></div></div>
+      <div class="msgs" id="msgs">
+        <div class="m c">Oi, quanto custa a placa?</div>
+        <div class="m ia">Oi! Depende da sua conta de luz. Quanto ela vem por mês?</div>
+        <div class="m c">Só tô pesquisando, valeu.</div>
+        <div class="m fora">Curioso · fica na lista pra depois</div>
+        <div class="m c">Vem uns R$ 600. Quero instalar esse mês.</div>
+        <div class="m ia">Dá pra reduzir bem isso. Posso marcar uma conversa hoje às 14h30?</div>
+        <div class="m sel">🔥 Comprador · enviado pra fechamento</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 9: O QUE ENTREGAMOS (sempre visível)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="entregas">
+  <div class="wrap">
+    <div class="rota" id="rota" aria-roledescription="carrossel" aria-label="O que entregamos">
+      <div class="slide intro on"><span class="seta" aria-hidden="true">→</span><strong>Você decide como vai ser</strong></div>
+      <div class="slide"><span class="ic num" aria-hidden="true">1</span><div><strong>Contatos quentes</strong><span>no seu WhatsApp, prontos pra comprar</span></div></div>
+      <div class="slide"><span class="ic num" aria-hidden="true">2</span><div><strong>Reuniões agendadas</strong><span>para você fechar, com quem tem interesse de verdade</span></div></div>
+      <div class="slide"><span class="ic num" aria-hidden="true">3</span><div><strong>A venda feita</strong><span>a gente vende online ou agenda a reunião pra você</span></div></div>
+      <div class="slide intro fim"><span class="seta" aria-hidden="true">✓</span><strong>Teste gratuitamente por <span class="js-dias">20</span> dias</strong></div>
+    </div>
+    <div class="rota-pts" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 10: PORTÃO 1 → DOR + POR QUE ACONTECE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="portao" id="p1" data-portao="1">
+  <div class="wrap">
+    <div class="caixa" data-quiz="1"></div>
+  </div>
+</section>
+
+<div class="parte" data-parte="1" hidden>
+  <section class="escuro dor">
+    <div class="wrap estreito rv">
+      <span class="rotulo">O que está acontecendo</span>
+      <!-- Sem escolha ("ver página inteira"): texto geral -->
+      <div data-v="0">
+        <h2>Tem dinheiro parado no seu WhatsApp. <span class="vivo">E ele esfria a cada hora.</span></h2>
+        <p>Se você sente que está se esforçando pra caramba e a venda não acompanha… a gente entende.</p>
+        <p>Você responde cliente de manhã, de tarde e de noite. Manda preço, manda foto, manda áudio. Metade some. A outra metade "vai pensar".</p>
+        <p>Enquanto isso, quem queria comprar de verdade ficou esperando, esfriou e <strong style="color:#fff">comprou do concorrente que respondeu primeiro.</strong></p>
+      </div>
+      <!-- A: captação + qualificação -->
+      <div data-v="A">
+        <h2>Cliente novo não chega. <span class="vivo">E quando chega, só quer saber o preço.</span></h2>
+        <p>O movimento depende de indicação e de sorte. Quando você paga anúncio, o WhatsApp enche de gente perguntando preço, e quase ninguém compra.</p>
+        <p data-t="eq">Sua equipe passa o dia respondendo curioso. Enquanto isso, quem queria comprar de verdade ficou esperando, esfriou e <strong style="color:#fff">comprou do concorrente que respondeu primeiro.</strong></p>
+        <p data-t="so">Você passa o dia respondendo curioso. Enquanto isso, quem queria comprar de verdade ficou esperando, esfriou e <strong style="color:#fff">comprou do concorrente que respondeu primeiro.</strong></p>
+      </div>
+      <!-- B: só qualificação da lista -->
+      <div data-v="B">
+        <h2>Tem dinheiro parado na sua lista de contatos. <span class="vivo">E ele esfria a cada dia.</span></h2>
+        <p>São centenas de pessoas que já compraram de você ou pediram orçamento. E ninguém fala com elas há meses.</p>
+        <p>No meio dessa lista tem gente pronta pra comprar de novo. Só que ninguém sabe quem é, e quem não é lembrado <strong style="color:#fff">acaba comprando do concorrente.</strong></p>
+      </div>
+      <!-- C: qualificação + venda -->
+      <div data-v="C">
+        <h2>O interessado chega. <span class="vivo">Mas a venda não fecha.</span></h2>
+        <p>Ele pede preço, você manda. Ele diz que vai pensar. E some.</p>
+        <p>Ninguém volta a chamar, ninguém conduz a conversa até o fim, e você nem sabe em que momento <strong style="color:#fff">perdeu a venda.</strong></p>
+      </div>
+      <!-- D: captação + qualificação + venda -->
+      <div data-v="D">
+        <div data-t="so">
+          <h2><span data-f="nao">Você faz tudo sozinho.</span><span data-f="sim">Você cuida das vendas sozinho.</span> <span class="vivo">E a venda não acompanha.</span></h2>
+          <p data-f="nao">Tem que trazer cliente novo, responder o WhatsApp de manhã, de tarde e de noite, negociar e fechar. Não sobra tempo pra cuidar da empresa.</p>
+          <p data-f="sim">A agência traz os contatos, mas é você quem responde o WhatsApp de manhã, de tarde e de noite, negocia e fecha. Não sobra tempo pra empresa.</p>
+        </div>
+        <div data-t="eq">
+          <h2>Sua equipe corre o dia inteiro. <span class="vivo">E a venda não acompanha.</span></h2>
+          <p><span data-f="nao">Um traz cliente novo, outro responde</span><span data-f="sim">A agência de tráfego traz os contatos, um responde</span> o WhatsApp, outro negocia. Cada um faz um pedaço, ninguém acompanha o contato do começo ao fim, e você não sabe onde a venda se perde.</p>
+        </div>
+        <p>Enquanto isso, quem queria comprar ficou esperando, esfriou e <strong style="color:#fff">comprou do concorrente que respondeu primeiro.</strong></p>
+      </div>
+      <p class="fecho">Não é falta de esforço. <em>É falta de processo.</em></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap rv">
+      <span class="rotulo">Por que isso acontece</span>
+      <h2 class="estreito">Por que a venda trava no meio do caminho</h2>
+      <div class="porque">
+        <div>
+          <div data-t="eq">
+            <div class="culpa">
+              <div class="balao"><small><span data-f="nao">Marketing</span><span data-f="sim">Agência de tráfego</span></small>"Eu entreguei os contatos."</div>
+              <div class="balao"><small>Time comercial</small>"Os contatos eram ruins."</div>
+            </div>
+            <p>E os dois têm um pouco de razão: <strong>no meio do caminho, ninguém filtra quem quer comprar.</strong></p>
+            <p class="muted" style="margin:0">Aí quem vende gasta o dia com curioso, o comprador cansa de esperar, e você paga o anúncio, <span data-f="sim">a agência, </span>a equipe e a venda que não veio.</p>
+          </div>
+          <div data-t="so">
+            <div data-f="nao"><div class="culpa">
+              <div class="balao"><small>Você, de manhã</small>"Hoje eu respondo todo mundo."</div>
+              <div class="balao"><small>Você, à noite</small>"Não deu tempo de voltar em quem queria comprar."</div>
+            </div></div>
+            <div data-f="sim"><div class="culpa">
+              <div class="balao"><small>Agência de tráfego</small>"Eu entreguei os contatos."</div>
+              <div class="balao"><small>Você</small>"Os contatos eram ruins."</div>
+            </div></div>
+            <p><span data-f="nao">E não é falta de vontade</span><span data-f="sim">E os dois têm um pouco de razão</span>: <strong>no meio do caminho, ninguém filtra quem quer comprar.</strong></p>
+            <p class="muted" style="margin:0">Aí você gasta o dia com curioso, o comprador cansa de esperar, e você paga o anúncio, <span data-f="sim">a agência, </span>o seu tempo e a venda que não veio.</p>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="n">7x</div>
+          <p>Empresas que respondem um contato em até <strong style="color:#fff">1 hora</strong> têm quase <strong style="color:#fff">7 vezes mais chance</strong> de qualificar esse contato do que quem demora mais.</p>
+          <cite>Pesquisa publicada na Harvard Business Review</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 11: PORTÃO 2 → COMO FUNCIONA + SIMULAÇÃO
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="portao" id="p2" data-portao="2" hidden>
+  <div class="wrap">
+    <div class="caixa" data-quiz="2"></div>
+  </div>
+</section>
+
+<div class="parte" data-parte="2" hidden>
+  <section class="escuro brilho">
+    <div class="wrap rv">
+      <span class="rotulo">Como funciona</span>
+      <h2 class="estreito">Um processo só, da primeira mensagem até a venda.</h2>
+      <p class="muted estreito">A AltasVendas AI acompanha a sua empresa da estratégia à execução: estrutura e otimiza a parte comercial com tecnologia, automação e suporte humano, trabalhando ao seu lado pra transformar oportunidades em crescimento.</p>
+      <div class="passos">
+        <div class="card passo"><span class="n">1</span><h3>Captação</h3><p>A gente cria o conteúdo isca, com funil de vendas integrado, nos canais que fazem sentido pro seu produto e pra sua verba: principalmente o Instagram, e também YouTube e Google. Ele já seleciona quem se interessa e traz direto pra automação de atendimento no WhatsApp. A verba de anúncio é&nbsp;sua.</p></div>
+        <div class="card passo"><span class="n">2</span><h3>Filtro</h3><p>Nossa IA conversa com cada contato, na hora, a qualquer hora, e separa quem quer comprar de quem é só curioso.</p></div>
+        <div class="card passo"><span class="n">3</span><h3>Fechamento</h3><p>Você recebe só os compradores, com o resumo da conversa. Ou a gente vende por você, com página de vendas e checkout. Se a venda precisa de reunião, ela já chega agendada pra você, e a gente te dá o feedback se não fechar.</p></div>
+        <div class="card passo"><span class="n">4</span><h3>Fidelização e indicação</h3><p>Quem comprou volta a ser chamado no momento certo. E, logo depois de uma boa experiência, a IA pede indicação: o próprio cliente apresenta amigos, família ou parceiros, com um link pronto pra mandar no WhatsApp e um incentivo pros dois lados, como desconto, brinde ou bônus. Comprador fiel traz o próximo&nbsp;comprador.</p></div>
+      </div>
+      <div class="seucaso" data-v="A">No seu caso, começamos pela <b>captação + filtro</b>: gente nova chegando já filtrada.</div>
+      <div class="seucaso" data-v="B">No seu caso, começamos pelo <b>filtro da sua lista</b>: acordar quem já te conhece e achar quem quer comprar agora.</div>
+      <div class="seucaso" data-v="C">No seu caso, começamos pelo <b>filtro + venda</b>: o interessado é atendido na hora e a gente conduz até a compra. Se precisar de reunião, ela já chega agendada: você só aparece e grava, e a gente te dá o feedback se não fechar.</div>
+      <div class="seucaso" data-v="D">No seu caso, é o <b>processo completo</b>: a gente traz gente nova, filtra no WhatsApp e conduz até a compra. Se precisar de reunião, ela já chega agendada: você só aparece e grava, e a gente te dá o feedback se não fechar.</div>
+      <div class="card curioso">
+        <h3>E você para de pagar por curioso.</h3>
+        <p style="margin:0">A isca já faz a primeira seleção: só chega quem se interessou pelo conteúdo. Depois, a conversa no WhatsApp separa quem vai comprar de quem é só curioso, e quem vai comprar segue pra página de vendas e checkout, ou pra reunião, se precisar. Ninguém mais gasta o dia com quem não vai comprar. <strong style="color:#fff">Menos gasto pra vender, mais venda com o mesmo time.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap estreito rv">
+      <span class="rotulo">A prova é o seu resultado</span>
+      <h2>Quanto pode estar parado na sua lista?</h2>
+      <p class="muted">A gente podia encher essa página de print. Preferimos que a prova aconteça no seu negócio, com os seus clientes.</p>
+      <div class="card sim">
+        <label for="simContatos">Contatos na sua lista <output id="outContatos">500</output></label>
+        <input type="range" id="simContatos" min="50" max="3000" step="50" value="500">
+        <label for="simTicket">Valor médio de cada venda <output id="outTicket">R$ 800</output></label>
+        <input type="range" id="simTicket" min="100" max="10000" step="100" value="800">
+        <div class="res" aria-live="polite">
+          <span>Se só <span id="simPct">2%</span> deles comprarem de novo:</span>
+          <b id="simValor">R$ 8.000</b>
+          <span id="simVendas">10 vendas que hoje estão dormindo.</span>
+        </div>
+        <p class="muted small" style="margin:12px 0 0">Simulação ilustrativa, não é promessa de resultado.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 12: PORTÃO 3 → CAMINHOS, OFERTA, COMPROMISSO, SÓCIOS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="portao" id="p3" data-portao="3" hidden>
+  <div class="wrap">
+    <div class="caixa" data-quiz="3"></div>
+  </div>
+</section>
+
+<div class="parte" data-parte="3" hidden>
+  <section>
+    <div class="wrap rv">
+      <span class="rotulo">O seu teste</span>
+      <h2 class="estreito">Três caminhos. Você escolhe qual quer provar.</h2>
+      <div class="grid g3" style="margin-top:26px">
+        <div class="card cam" data-cam="quentes"><div class="ic num" aria-hidden="true">1</div><h3>Contatos quentes</h3><p style="margin:0">A IA conversa, filtra e te entrega quem já quer comprar, com o resumo da conversa.</p><div class="meta">Meta do teste: <b class="js-entrega" data-k="quentes"></b></div></div>
+        <div class="card cam" data-cam="reunioes"><div class="ic num" aria-hidden="true">2</div><h3>Reuniões agendadas para você fechar</h3><p style="margin:0">Marcamos conversas com interessados da sua base. Você só aparece na hora marcada.</p><div class="meta">Meta do teste: <b class="js-entrega" data-k="reunioes"></b></div></div>
+        <div class="card cam" data-cam="vende"><div class="ic num" aria-hidden="true">3</div><h3>A venda feita</h3><p style="margin:0">Se o seu cliente compra sem reunião, a gente vende: página de vendas, checkout e WhatsApp. Se precisa de reunião, ela já chega agendada: você só aparece, grava e manda pra gente. Se a venda não fechar, você recebe um feedback com começo, meio e fim, mais um áudio explicando cada ponto, pra fechar nas próximas reuniões.</p><div class="meta">Meta do teste: <b class="js-entrega" data-k="vende"></b></div></div>
+      </div>
+
+      <h3 style="margin-top:44px">Como funcionam os <span class="js-dias">20</span> dias</h3>
+      <div class="linha-tempo">
+        <div class="card"><b>Dia 1</b>Conversa de início: combinamos lista, produto e quem atende.</div>
+        <div class="card"><b>Dias 2 a 5</b>Montamos tudo: assistente, mensagens e o que mais precisar.</div>
+        <div class="card"><b>Dias 6 a <span class="js-dias">20</span></b>O processo rodando, e você recebendo os resultados.</div>
+        <div class="card"><b>Dia <span class="js-dias">20</span></b>Reunião de resultado, com números na mesa.</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap rv">
+      <div class="grid g2">
+        <div class="card">
+          <span class="rotulo">O que entra no teste</span>
+          <ul class="check">
+            <li>Diagnóstico do seu negócio</li>
+            <li>Assistente de IA configurado para o seu produto</li>
+            <li>Filtro dos seus contatos</li>
+            <li>A entrega que você escolheu</li>
+            <li>Reunião de resultado no dia&nbsp;<span class="js-dias">20</span></li>
+          </ul>
+          <p class="muted small" style="margin:10px 0 0">Se precisar, a gente cria também a página de vendas e o checkout, e acompanha as suas reuniões de&nbsp;venda.</p>
+        </div>
+        <div class="card">
+          <span class="rotulo">Investimento nos <span class="js-dias">20</span> dias</span>
+          <div class="zero"><b>R$ 0</b><span>de setup e de mensalidade</span></div>
+          <p class="small muted" style="margin:12px 0 0">Se o teste incluir página de vendas e checkout, as vendas que passarem por eles têm comissão, combinada antes de começar.</p>
+          <hr style="border:0;border-top:1px solid var(--linha);margin:18px 0">
+          <p style="margin:0"><strong>Depois do teste, só se fizer sentido pra você:</strong> um plano com setup, mensalidade e comissão sobre as vendas que passam pelo nosso processo. Quanto mais completo o plano, mais a gente faz por você.</p>
+          <p id="transferencia" class="small muted" style="margin:12px 0 0;display:none">Em até 6 meses, o processo é seu: sua equipe toca tudo o que a gente construiu junto, e você paga só a manutenção do sistema.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="escuro brilho">
+    <div class="wrap rv">
+      <div class="compromisso">
+        <div class="selo-ext" aria-hidden="true"><div>+<span class="js-ext">10</span><small>DIAS SEM CUSTO</small></div></div>
+        <div>
+          <span class="rotulo">Nosso compromisso</span>
+          <h2>O teste é pra sair venda.</h2>
+          <p style="margin:0">O objetivo dos <span class="js-dias">20</span> dias é sair <strong style="color:#fff">pelo menos 1 ou 2 vendas.</strong> Chegou no dia <span class="js-dias">20</span> e a venda ainda não saiu? <strong style="color:#fff">A gente estende o teste por mais <span class="js-ext">10</span> dias, sem custo</strong>, e entra pra vender junto com você.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:44px">O que precisamos de você</h3>
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card"><strong style="color:#fff">Em todos os casos</strong><p style="margin:6px 0 0">Sua lista ou o acesso aos seus contatos, e as informações do produto (preços, formas de pagamento, entrega).</p></div>
+        <div class="card"><strong style="color:#fff" id="precisaTit">E pelo caminho que você escolher</strong><p style="margin:6px 0 0" id="precisaTxt"></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="escuro" style="padding-top:0">
+    <div class="wrap rv">
+      <span class="rotulo">Quem faz</span>
+      <h2 class="estreito">Três sócios. Uma missão: fazer a sua venda acontecer.</h2>
+      <div class="grid g2" style="margin-top:24px;align-items:stretch">
+        <div class="card socio">
+          <img src="img/elton.jpg" alt="Elton Longaray, sócio da AltasVendas AI" width="637" height="960" loading="lazy">
+          <div>
+            <div class="papel">Tecnologia e inteligência artificial</div>
+            <h3 style="margin:0 0 .3em">Elton Longaray</h3>
+            <p style="margin:0" class="muted">Monta o assistente que atende seu cliente na hora, 24 horas.</p>
+            <ul class="cred">
+              <li>Líder da comunidade <strong>Falcon Hunters</strong></li>
+              <li>Desenvolvedor do <strong>Falcon.app</strong>, o app mais completo de organização e desenvolvimento pessoal</li>
+              <li>Aluno da <strong>FIAP</strong>, a maior faculdade de tecnologia do Brasil</li>
+              <li>Formado no <strong>Dale Carnegie Course</strong>, o maior curso de comunicação e liderança do mundo</li>
+            </ul>
+          </div>
+        </div>
+        <div class="reservado">
+          <div class="ph" aria-hidden="true"><i>📷</i><i>📷</i></div>
+          <p style="margin:0 0 6px"><b>Taimara Marcon</b> · conteúdo e aquisição. Faz gente nova chegar até você.</p>
+          <p style="margin:0 0 12px"><b>Everton</b> · qualificação e fechamento. Transforma interessado em cliente.</p>
+          <p class="small" style="margin:0">Espaço reservado para as fotos e credenciais da Taimara e do Everton.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 13: PORTÃO 4 → PROPOSTA SOB MEDIDA
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="portao" id="p4" data-portao="4" hidden>
+  <div class="wrap">
+    <div style="max-width:40rem;margin:0 auto 22px;text-align:center">
+      <span class="rotulo">Última etapa · <span class="js-vagas">10</span> vagas por mês</span>
+      <h2>Agora a sua proposta sob medida.</h2>
+      <p class="muted" style="margin:0">Mais algumas respostas rápidas. No fim, a proposta aparece na hora e você fala direto com a gente no WhatsApp.</p>
+    </div>
+    <div class="caixa" data-quiz="4"></div>
+  </div>
+</section>
+
+<div class="parte" data-parte="4" hidden>
+  <section id="proposta" style="padding-top:20px"><div class="wrap"><div id="propostaBox" aria-live="polite"></div></div></section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 14: FAQ (sempre visível)
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="faq" style="background:var(--branco)">
+  <div class="wrap estreito">
+    <span class="rotulo">Dúvidas</span>
+    <h2>Dúvidas frequentes</h2>
+    <details><summary>O teste é grátis mesmo?</summary><p>Os <span class="js-dias">20</span> dias não têm setup nem mensalidade. Se o teste incluir página de vendas e checkout, as vendas que passarem por eles têm comissão, combinada antes de começar.</p></details>
+    <details><summary>E depois do teste?</summary><p>Se fizer sentido seguir, montamos um plano com setup, mensalidade e comissão sobre as vendas que passam pelo nosso processo. Os valores dependem do plano e são combinados na reunião de alinhamento. Se não quiser seguir, cada um segue seu caminho.</p></details>
+    <details><summary>Como vocês sabem quais vendas vieram de vocês?</summary><p>Cada contato que a gente filtra e entrega fica registrado com a conversa. As vendas que saem pela página de vendas ou pelo checkout que a gente monta ficam registradas lá. Assim, os dois lados enxergam os mesmos números.</p></details>
+    <details><summary>O resultado é garantido?</summary><p>A meta do teste é sair venda. Se em <span class="js-dias">20</span> dias a venda não sair, a gente estende por mais <span class="js-ext">10</span> dias, sem custo, e entra para vender junto com você.</p></details>
+    <details><summary>Vou ter que mexer em tecnologia?</summary><p>Não. A gente monta tudo. Você só recebe os compradores, as reuniões ou a página pronta.</p></details>
+    <details><summary>Vocês vão mandar mensagem em massa pros meus clientes?</summary><p>Não. A gente só fala com quem já é seu cliente, pediu orçamento, veio de anúncio ou foi indicado. Nada de lista comprada.</p></details>
+    <details><summary>Eu já pago agência e tenho equipe de vendas. Vocês substituem?</summary><p>Não precisa. A gente entra no meio: filtra os contatos que a agência traz e entrega só os compradores pra sua equipe. Aí fica claro o que funciona e o que dá pra cortar.</p></details>
+    <details><summary>Preciso de verba de anúncio?</summary><p>Só se o seu desafio for cliente novo e você quiser captação. Se você já tem lista, não precisa.</p></details>
+    <details><summary>Ainda tenho uma dúvida. Posso falar com vocês?</summary><p>Claro! <a class="js-wa-duvida" href="#" target="_blank" rel="noopener">Chama a gente no WhatsApp</a>.</p></details>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 15: ÚLTIMO CTA
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="escuro brilho final">
+  <div class="wrap estreito rv">
+    <h2>Você não abriu uma empresa pra viver <span class="vivo">correndo atrás de cliente.</span></h2>
+    <p class="muted">Teste por <span class="js-dias">20</span> dias. Se funcionar, você vai se perguntar por que não fez isso antes.</p>
+    <a class="btn btn--vivo" href="#" id="ctaFinal">Quero Vender Mais</a>
+    <div class="garantias"><div><b class="js-vagas">10</b><small>vagas por mês</small></div><div><b class="js-dias">20</b><small>dias de teste</small></div><div><b>+<span class="js-ext">10</span></b><small>dias se a venda não sair</small></div></div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BLOCO 16: RODAPÉ + BARRA FIXA (celular)
+     ═══════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="wrap"><strong style="color:#fff">AltasVendas AI</strong> · estratégia, tecnologia e suporte humano para ver suas vendas crescerem de forma escalável · © 2026<br>Página desenvolvida por Elton Longaray<br><a href="privacidade.html">Política de Privacidade</a></div>
+</footer>
+<div class="teste" id="barraTeste" hidden aria-label="Ferramentas de teste">TESTE<button type="button" id="tVoltar">← Etapa</button><button type="button" id="tZerar">↺ Recomeçar</button></div>
+
+<script>
+(function(){
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 17: ESTADO E ARMAZENAMENTO (progresso salvo no navegador)
+  // ═══════════════════════════════════════════════════════════════
+  const C = window.CONFIG;
+  const CHAVE = "aceleraai_v2";
+  let estado = { r:{}, liberado:0, passo:{1:0,2:0,3:0,4:0}, fim:false };
+  const salvar = () => { try{ localStorage.setItem(CHAVE, JSON.stringify(estado)); }catch(e){} };
+  try{
+    const s = JSON.parse(localStorage.getItem(CHAVE) || "null");
+    if(s && s.r) estado = Object.assign(estado, s);
+  }catch(e){}
+
+  const $ = (s, el=document) => el.querySelector(s);
+  const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+  const reduz = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 18: NÚMEROS DA CONFIGURAÇÃO E LINKS DO WHATSAPP
+  // ═══════════════════════════════════════════════════════════════
+  $$(".js-dias").forEach(e => e.textContent = C.diasTeste);
+  $$(".js-ext").forEach(e => e.textContent = C.diasExtensao);
+  $$(".js-vagas").forEach(e => e.textContent = C.vagasPorMes);
+  $$(".js-entrega").forEach(e => e.textContent = C.entrega[e.dataset.k]);
+  if(C.mostrarTransferencia6Meses) $("#transferencia").style.display = "block";
+  const num = C.whatsapp.replace(/\D/g, "");
+  if($("#numFmt")) $("#numFmt").textContent = num.length >= 12 ? `(${num.slice(2,4)}) ${num.slice(4, num.length-4)}-${num.slice(-4)}` : num;
+  const linkWa = t => `https://wa.me/${num}?text=${encodeURIComponent(t)}`;
+  $$(".js-wa-duvida").forEach(a => a.href = linkWa("Vim da página e tenho dúvidas sobre o teste."));
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 19: CONVERSA ANIMADA DA IA (herói)
+  // ═══════════════════════════════════════════════════════════════
+  const msgs = $$("#msgs .m");
+  if(reduz()) msgs.forEach(m => m.classList.add("on"));
+  else {
+    let i = 0;
+    const passo = () => {
+      if(i < msgs.length){ msgs[i++].classList.add("on"); setTimeout(passo, 900); }
+      else setTimeout(() => { msgs.forEach(m => m.classList.remove("on")); i = 0; setTimeout(passo, 700); }, 4200);
+    };
+    setTimeout(passo, 500);
+  }
+
+  // Faixa "o que entregamos": roda pros lados a cada 4,5 s; arrastar ou tocar no vizinho também gira
+  const slides = $$("#rota .slide"), pts = $$(".rota-pts i");
+  if(slides.length){
+    const rota = $("#rota"), n = slides.length;
+    let atual = 0, pausa = false;
+    const posicionar = () => slides.forEach((sl, k) => {
+      let d = k - atual;
+      if(d > n / 2) d -= n;
+      if(d < -n / 2) d += n;
+      // no celular os vizinhos ficam atrás do central; na tela larga, lado a lado sem encostar
+      const passo = rota.clientWidth > 700 ? 102 : 74;
+      sl.style.transform = `translateX(${d * passo}%) scale(${d ? .78 : 1})`;
+      sl.style.opacity = Math.abs(d) > 1 ? 0 : (d ? .4 : 1);
+      sl.style.zIndex = 10 - Math.abs(d);
+      sl.classList.toggle("on", d === 0);
+      sl.setAttribute("aria-hidden", String(d !== 0));
+      pts[k] && pts[k].classList.toggle("on", d === 0);
+    });
+    const ir = k => { atual = (k + n) % n; posicionar(); };
+    slides.forEach((sl, k) => sl.addEventListener("click", () => { if(k !== atual) ir(k); }));
+    let x0 = null;
+    rota.addEventListener("pointerdown", e => { x0 = e.clientX; pausa = true; });
+    rota.addEventListener("pointerup", e => {
+      if(x0 !== null && Math.abs(e.clientX - x0) > 40) ir(atual + (e.clientX < x0 ? 1 : -1));
+      x0 = null; pausa = false;
+    });
+    rota.addEventListener("pointerleave", () => { x0 = null; pausa = false; });
+    rota.addEventListener("mouseenter", () => pausa = true);
+    posicionar();
+    addEventListener("resize", posicionar);
+    if(!reduz()) setInterval(() => { if(!pausa && !document.hidden) ir(atual + 1); }, 4500);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 20: PERGUNTAS (agrupadas por portão)
+  // ═══════════════════════════════════════════════════════════════
+  const DESAFIOS = {
+    A:"Preciso de captação e qualificação de clientes novos",
+    B:"Preciso somente de qualificação na minha lista de contatos",
+    C:"Preciso de qualificação e venda feita por vocês",
+    D:"Preciso de captação, qualificação e venda feita por vocês"
+  };
+  const ESCOLHAS = { quentes:"Contatos quentes no seu WhatsApp", reunioes:"Reuniões agendadas para você fechar", vende:"A venda feita" };
+  const PRECISA = {
+    reunioes:"Alguém da sua empresa para participar das reuniões nos horários combinados.",
+    quentes:"Uma pessoa para atender os compradores em até 1 hora, no horário comercial. Quente esfria rápido.",
+    vende:"As regras da negociação (preço, até quanto pode dar de desconto, condições), quem faz a entrega depois da venda e, se a venda precisar de reunião, a gravação delas."
+  };
+  const SERVICO = {
+    A:"Captação + filtro: a gente cria o conteúdo isca, com funil de vendas integrado, que leva o cliente certo pra automação de atendimento no WhatsApp (a verba de anúncio é sua), e a IA separa na conversa quem quer comprar.",
+    B:"Filtro da sua lista: a IA chama quem já te conhece, descobre quem quer comprar agora e te entrega pronto.",
+    C:"Filtro + venda: o interessado é atendido na hora e a gente vende pela página de vendas, checkout e WhatsApp. Se precisar de reunião, ela já chega agendada: você só aparece, grava e manda pra gente e, se a venda não fechar, te passa um feedback com começo, meio e fim, mais um áudio, pra fechar nas próximas reuniões.",
+    D:"Processo completo: captação (a verba de anúncio é sua), filtro no WhatsApp com IA e venda pela página de vendas e checkout. Se precisar de reunião, ela já chega agendada: você só aparece, grava e manda pra gente e, se a venda não fechar, te passa um feedback com começo, meio e fim, mais um áudio, pra fechar nas próximas reuniões."
+  };
+
+  const P = {
+    desafio:{ tipo:"um", q:"Do que você precisa hoje?", ops:["B","A","C","D"].map(k => [k, DESAFIOS[k]]) },
+    publico:{ tipo:"um", q:"Pra quem você vende?", ops:["Consumidor final","Empresas","Os dois"] },
+    base:{ tipo:"um", q:"Quantos contatos você tem na sua base?", dica:"Clientes, ex-clientes, orçamentos, interessados.", ops:["Até 200","201 a 500","501 a 1.000","Mais de 1.000"] },
+    escolha:{ tipo:"um", q:"Como você quer receber esses clientes?", ops:[["quentes","1 · Contatos quentes no meu WhatsApp"],["reunioes","2 · Reuniões agendadas para eu fechar"]] },
+    nome:{ tipo:"texto", q:"Como você se chama?", campos:[["nome","Seu nome","given-name"]] },
+    empresa:{ tipo:"texto", q:"Qual o nome da sua empresa e a cidade?", campos:[["empresa","Nome da empresa","organization"],["cidade","Cidade","address-level2"]] },
+    vende:{ tipo:"texto", q:"O que a sua empresa vende?", campos:[["vende","Ex.: energia solar, planos de academia…",""]] },
+    ticket:{ tipo:"um", q:"Qual o valor médio de cada venda?", ops:["Até R$ 500","R$ 501 a R$ 1.500","Acima de R$ 1.500"] },
+    fatHoje:{ tipo:"um", q:"Quanto você fatura por mês hoje, em média?", ops:["Até R$ 10 mil","R$ 10 a 30 mil","R$ 30 a 100 mil","Acima de R$ 100 mil"] },
+    meta6:{ tipo:"um", q:"Daqui a 6 meses, quanto você quer estar faturando por mês?", ops:["Até R$ 20 mil","R$ 20 a 50 mil","R$ 50 a 150 mil","Acima de R$ 150 mil"] },
+    gasto:{ tipo:"um", q:"Quanto você gasta por mês hoje pra vender?", dica:"Anúncio, agência, equipe de atendimento e vendas.", ops:["Até R$ 5 mil","R$ 5 a 20 mil","R$ 20 a 50 mil","Acima de R$ 50 mil"] },
+    reducao:{ tipo:"um", q:"Se a gente pudesse reduzir esse gasto, quanto seria o ideal?", ops:["10% a menos","20% a menos","30% ou mais a menos","Não sei, quero ajuda pra ver"] },
+    canais:{ tipo:"varios", q:"Como você vende hoje?", dica:"Pode marcar mais de um.", ops:["WhatsApp","Instagram","Loja física","Site","Indicação"] },
+    atende:{ tipo:"um", q:"Hoje, quantas pessoas cuidam das suas vendas?", dica:"Conte só quem traz clientes, atende no WhatsApp e fecha a venda.", ops:["Faço tudo sozinho","Eu e mais 1 a 3 pessoas","De 4 a 10 pessoas","Mais de 10 pessoas"] },
+    trafego:{ tipo:"um", q:"Quem cuida do seu tráfego pago?", dica:"No Instagram, Facebook ou Google.", ops:["Eu mesmo","Alguém da minha equipe","Agência ou gestor de fora","Não faço anúncio"] },
+    whats:{ tipo:"fone", q:"Qual o seu WhatsApp?", campos:[["whats","(51) 99999-9999","tel"]] }
+  };
+  const PORTOES = {
+    1:{ ids:["desafio","atende","trafego"], nome:"Sua necessidade" },
+    2:{ ids:["publico","base"], nome:"Seu negócio" },
+    3:{ get ids(){ return pulaTeste() ? [] : ["escolha"]; }, nome:"Seu teste" },
+    4:{ ids:["nome","empresa","vende","ticket","fatHoje","meta6","gasto","reducao","canais","whats"], nome:"Sua proposta" }
+  };
+  // Quem pediu "venda feita por vocês" na 1ª pergunta já escolheu o teste: a pergunta do teste some
+  function pulaTeste(){ return ["C","D"].includes(estado.r.desafio); }
+  const total = () => Object.values(PORTOES).reduce((n, g) => n + g.ids.length, 0);
+  const antesDe = g => Object.keys(PORTOES).filter(k => +k < g).reduce((n, k) => n + PORTOES[k].ids.length, 0);
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 21: CARTÕES (render, avançar, voltar)
+  // ═══════════════════════════════════════════════════════════════
+  const opV = o => Array.isArray(o) ? o[0] : o;
+  const opL = o => Array.isArray(o) ? o[1] : o;
+  function mascara(v){
+    const d = v.replace(/\D/g, "").slice(0, 11);
+    if(d.length <= 2) return d.length ? `(${d}` : "";
+    if(d.length <= 6) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+    if(d.length <= 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+    return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+  }
+
+  function render(g, dir){
+    const box = $(`[data-quiz="${g}"]`);
+    const ids = PORTOES[g].ids;
+    const idx = Math.min(estado.passo[g] || 0, ids.length - 1);
+    const id = ids[idx], q = P[id];
+    const feitos = antesDe(g) + idx;
+    let h = `<div class="topo-p"><span class="etq">Etapa ${g} de 4 · ${PORTOES[g].nome}</span><span class="cont">${feitos + 1} de ${total()}</span></div>
+      <div class="barra"><i style="width:${feitos / total() * 100}%"></i></div>
+      <div class="cartao${dir === "volta" ? " volta" : ""}">`;
+    if(q.anima) h += `<span class="anima">${esc(q.anima)}</span>`;
+    h += `<h3>${esc(q.q)}</h3>`;
+    if(q.dica) h += `<p class="dica">${esc(q.dica)}</p>`;
+    if(q.tipo === "texto" || q.tipo === "fone"){
+      q.campos.forEach(([k, ph, ac], i) => {
+        h += `<label class="campo"><span class="oculto">${esc(ph)}</span><input name="${k}" placeholder="${esc(ph)}" value="${esc(estado.r[k] || "")}" ${ac ? `autocomplete="${ac}"` : ""} ${q.tipo === "fone" ? 'type="tel" inputmode="tel"' : 'type="text" autocapitalize="words"'} ${i === 0 ? "data-first" : ""}></label>`;
+      });
+      const ultimo = g === 4 && idx === ids.length - 1;
+      h += `<p class="erro"></p><button type="button" class="btn" data-seguir>${ultimo ? "Ver minha proposta →" : "Continuar →"}</button>`;
+    } else {
+      const atual = estado.r[id];
+      h += `<div class="opts" role="group" aria-label="${esc(q.q)}">`;
+      q.ops.forEach(o => {
+        const v = opV(o);
+        const on = q.tipo === "varios" ? (atual || []).includes(v) : atual === v;
+        h += `<button type="button" class="opt${q.tipo === "varios" ? " multi" : ""}" data-val="${esc(v)}" aria-pressed="${on}"><span class="box" aria-hidden="true"></span>${esc(opL(o))}</button>`;
+      });
+      h += `</div>`;
+      if(q.tipo === "varios") h += `<p class="erro"></p><button type="button" class="btn" data-seguir>Continuar →</button>`;
+    }
+    h += `</div><div class="acoes-p"><button type="button" class="voltar${idx > 0 ? " on" : ""}" data-voltar>← Voltar</button></div>`;
+    box.innerHTML = h;
+    ligar(g, box, id, q);
+  }
+
+  function ligar(g, box, id, q){
+    const erro = m => { const e = $(".erro", box); if(e) e.textContent = m; };
+    $("[data-voltar]", box).addEventListener("click", () => { if(estado.passo[g] > 0){ estado.passo[g]--; salvar(); render(g, "volta"); } });
+
+    if(q.tipo === "um") $$(".opt", box).forEach(b => b.addEventListener("click", () => {
+      estado.r[id] = b.dataset.val;
+      $$(".opt", box).forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      personalizar(); salvar();
+      setTimeout(() => avancar(g), 230);
+    }));
+    if(q.tipo === "varios"){
+      $$(".opt", box).forEach(b => b.addEventListener("click", () => {
+        const s = new Set(estado.r[id] || []);
+        s.has(b.dataset.val) ? s.delete(b.dataset.val) : s.add(b.dataset.val);
+        estado.r[id] = Array.from(s); b.setAttribute("aria-pressed", String(s.has(b.dataset.val))); salvar();
+      }));
+      $("[data-seguir]", box).addEventListener("click", () => (estado.r[id] || []).length ? avancar(g) : erro("Marca pelo menos uma opção."));
+    }
+    if(q.tipo === "texto" || q.tipo === "fone"){
+      const ins = $$("input", box);
+      ins.forEach(inp => {
+        inp.addEventListener("input", () => { if(q.tipo === "fone") inp.value = mascara(inp.value); estado.r[inp.name] = inp.value.trim(); salvar(); });
+        inp.addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); $("[data-seguir]", box).click(); } });
+      });
+      $("[data-seguir]", box).addEventListener("click", () => {
+        for(const inp of ins) if(!inp.value.trim()){ inp.focus(); return erro("Preenche esse campo pra continuar."); }
+        if(q.tipo === "fone" && ins[0].value.replace(/\D/g, "").length < 10){ ins[0].focus(); return erro("Confere o número com DDD."); }
+        ins.forEach(inp => estado.r[inp.name] = inp.value.trim());
+        avancar(g);
+      });
+      const r = box.getBoundingClientRect();
+      if(r.top < innerHeight && r.bottom > 0 && (estado.passo[g] || 0) > 0){ const f = $("[data-first]", box); f && f.focus({ preventScroll:true }); }
+    }
+  }
+
+  function avancar(g){
+    const ids = PORTOES[g].ids;
+    if((estado.passo[g] || 0) < ids.length - 1){ estado.passo[g]++; salvar(); render(g, "vai"); }
+    else liberar(g, true);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 22: LIBERAR PARTES DA PÁGINA
+  // ═══════════════════════════════════════════════════════════════
+  function liberar(g, rolar){
+    estado.liberado = Math.max(estado.liberado, g);
+    if(g === 4) estado.fim = true;
+    salvar(); aplicarLiberado(g, rolar);
+  }
+
+  // Um portão some quando foi respondido; quem pulou ("ver tudo") ainda vê as perguntas que faltam
+  const respondido = g => PORTOES[g].ids.every(id => estado.r[id] !== undefined && estado.r[id] !== "" && !(Array.isArray(estado.r[id]) && !estado.r[id].length));
+
+  function aplicarLiberado(recente, rolar){
+    if(estado.liberado === 2 && pulaTeste()){ estado.liberado = 3; salvar(); }
+    for(let g = 1; g <= 4; g++){
+      const portao = $(`[data-portao="${g}"]`), parte = $(`[data-parte="${g}"]`);
+      const alcancado = g === 1 || estado.liberado >= g - 1;
+      const feito = g < 4 ? respondido(g) && estado.liberado >= g : estado.liberado >= 4;
+      portao.hidden = !alcancado || (g === 4 && feito);
+      portao.classList.toggle("feito", feito && g < 4);
+      if(alcancado && !feito && !$(`[data-quiz="${g}"]`).innerHTML) render(g, "vai");
+      if(estado.liberado < g && !parte.hidden){ parte.hidden = true; parte.classList.remove("abre"); }
+      if(estado.liberado >= g && parte.hidden){
+        parte.hidden = false;
+        if(g === recente) parte.classList.add("abre");
+        $$(".rv", parte).forEach(el => io.observe(el));
+      }
+    }
+    if(estado.liberado >= 4) montarProposta();
+    atualizarEtapas();
+    if(rolar && recente){
+      const alvo = recente === 4 ? $("#proposta") : $(`[data-parte="${recente}"]`);
+      setTimeout(() => alvo.scrollIntoView({ behavior: reduz() ? "auto" : "smooth", block:"start" }), 120);
+    }
+  }
+
+  function atualizarEtapas(){
+    const n = [1,2,3,4].filter(g => g < 4 ? respondido(g) && estado.liberado >= g : estado.liberado >= 4).length;
+    $("#etapaTxt").textContent = n >= 4 ? "Proposta pronta" : `Etapa ${n + 1} de 4`;
+    $$(".etapas .pts i").forEach((i, k) => i.classList.toggle("on", k < n));
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 23: PERSONALIZAÇÃO (desafio, caminho escolhido, base)
+  // ═══════════════════════════════════════════════════════════════
+  const CAMINHO_POR_DESAFIO = { A:"quentes", B:"quentes", C:"vende", D:"vende" };
+  const MAPA_BASE = { "Até 200":150, "201 a 500":350, "501 a 1.000":750, "Mais de 1.000":1500 };
+  let simTocado = false;
+  function personalizar(){
+    const d = estado.r.desafio || "0";
+    document.body.dataset.desafio = d;
+    if(pulaTeste()) estado.r.escolha = "vende";
+    else if(estado.r.escolha === "vende") delete estado.r.escolha;
+    document.body.dataset.time = estado.r.atende === "Faço tudo sozinho" ? "so" : "eq";
+    document.body.dataset.fora = estado.r.trafego === "Agência ou gestor de fora" ? "sim" : "nao";
+    const cam = estado.r.escolha || CAMINHO_POR_DESAFIO[d] || "quentes";
+    $$("[data-cam]").forEach(c => c.classList.toggle("destaque", c.dataset.cam === estado.r.escolha));
+    $("#precisaTxt").textContent = PRECISA[cam];
+    $("#precisaTit").textContent = estado.r.escolha ? `E para ${ESCOLHAS[estado.r.escolha].toLowerCase()}` : "E pelo caminho mais provável pra você";
+    if(MAPA_BASE[estado.r.base] && !simTocado){ $("#simContatos").value = MAPA_BASE[estado.r.base]; simular(); }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 24: SIMULAÇÃO (quanto está parado na lista)
+  // ═══════════════════════════════════════════════════════════════
+  const brl = v => "R$ " + Math.round(v).toLocaleString("pt-BR");
+  function simular(){
+    const c = +$("#simContatos").value, t = +$("#simTicket").value;
+    const vendas = Math.max(1, Math.round(c * C.simulacao.conversao));
+    $("#outContatos").textContent = c.toLocaleString("pt-BR");
+    $("#outTicket").textContent = brl(t);
+    $("#simPct").textContent = Math.round(C.simulacao.conversao * 100) + "%";
+    $("#simValor").textContent = brl(vendas * t);
+    $("#simVendas").textContent = `${vendas} ${vendas === 1 ? "venda que hoje está dormindo" : "vendas que hoje estão dormindo"}.`;
+  }
+  ["simContatos","simTicket"].forEach(id => $("#" + id).addEventListener("input", () => { simTocado = true; simular(); }));
+  simular();
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 25: PROPOSTA SOB MEDIDA + MENSAGEM DO WHATSAPP
+  // ═══════════════════════════════════════════════════════════════
+  const minus = s => String(s || "").replace(/^Até/, "até").replace(/^Acima/, "acima");
+  function montarProposta(){
+    const r = estado.r;
+    if(!r.escolha || !r.whats) return;
+    const d = r.desafio || "B";
+    const primeiro = (r.nome || "").split(" ")[0];
+    const reducao = r.reducao === "Não sei, quero ajuda pra ver" ? "e a gente te ajuda a ver quanto dá pra cortar" : `pra você chegar perto dos ${String(r.reducao).replace(" a menos", "")} que quer cortar`;
+    const folego = r.escolha === "quentes" && ["501 a 1.000","Mais de 1.000"].includes(r.base) ? `<br><strong>Com ${esc(r.base.toLowerCase())} contatos, a sua lista tem fôlego de sobra para o teste.</strong>` : "";
+    const invest = r.escolha === "vende"
+      ? `<span class="zero"><b style="font-size:2rem">R$ 0</b> de setup e mensalidade</span><span class="small muted">As vendas que passarem pela página e pelo checkout que a gente montar têm comissão, combinada na reunião de alinhamento.</span>`
+      : `<span class="zero"><b style="font-size:2rem">R$ 0</b> de setup e mensalidade nos ${C.diasTeste} dias</span>`;
+
+    $("#propostaBox").innerHTML = `
+      <article class="prop">
+        <header><span class="chip"><b></b>Proposta sob medida</span><h2>${esc(primeiro)}, aqui está a proposta da ${esc(r.empresa)}</h2></header>
+        <dl>
+          <dt>Onde você quer chegar</dt><dd>De <strong>${esc(r.fatHoje)}</strong> para <strong>${esc(r.meta6)}</strong> por mês, em 6 meses.</dd>
+          <dt>Do que você precisa</dt><dd>${esc(DESAFIOS[d])}</dd>
+          <dt>Onde dá pra economizar</dt><dd>Hoje você gasta <strong>${esc(minus(r.gasto))}</strong> por mês pra vender. No teste, a gente mostra quanto disso vai para curioso, ${esc(reducao)}.</dd>
+          <dt>O que a gente faz</dt><dd>${esc(SERVICO[d])}</dd>
+          <dt>O que você vai testar</dt><dd><strong>${esc(ESCOLHAS[r.escolha])}</strong> → meta: <strong>${esc(C.entrega[r.escolha])}</strong>${folego}</dd>
+          <dt>Prazo</dt><dd>${C.diasTeste} dias a partir da reunião de alinhamento. Se a venda não sair, mais ${C.diasExtensao} dias sem custo.</dd>
+          <dt>O que precisamos de você</dt><dd>Sua lista · informações do produto · ${esc(PRECISA[r.escolha].replace(/\.$/, "").replace(/^./, c => c.toLowerCase()))}</dd>
+          <dt>Investimento no teste</dt><dd style="display:grid;gap:6px">${invest}</dd>
+          <dt>Depois</dt><dd>Só se fizer sentido pra você: plano com setup, mensalidade e comissão sobre as vendas que passam pelo nosso processo, combinado na reunião de alinhamento.</dd>
+        </dl>
+        <div class="acoes">
+          <a class="btn btn--vivo" id="waComecar" target="_blank" rel="noopener">Agendar Meu Alinhamento</a>
+          <a class="btn btn--fantasma js-wa-duvida2" target="_blank" rel="noopener">Tenho dúvidas</a>
+        </div>
+      </article>
+      <button type="button" class="refazer" id="refazer">Refazer as respostas</button>
+      <p class="aviso-priv">Ao enviar, você concorda com a nossa <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>`;
+
+    const msg = [
+      `Oi! Terminei a página e quero agendar o alinhamento pra começar meus ${C.diasTeste} dias grátis.`,
+      `Minhas respostas:`,
+      `Nome: ${r.nome} · Empresa: ${r.empresa}, ${r.cidade}`,
+      `Vende: ${r.vende} · Para: ${r.publico}`,
+      `Precisa de: ${DESAFIOS[d].replace(/^Preciso (somente )?de /, "")} · Base: ${r.base} contatos · Ticket: ${r.ticket}`,
+      `Faturamento/mês hoje: ${r.fatHoje} · Meta em 6 meses: ${r.meta6}/mês`,
+      `Gasto/mês pra vender: ${r.gasto} · Redução ideal: ${r.reducao}`,
+      `Vende por: ${(r.canais || []).join(", ")} · Operação: ${r.atende} · Tráfego pago: ${r.trafego}`,
+      `Quero testar: ${ESCOLHAS[r.escolha]}`,
+      `Meu WhatsApp: ${r.whats}`
+    ].join("\n");
+    $("#waComecar").href = linkWa(msg);
+    $(".js-wa-duvida2").href = linkWa("Vim da página e tenho dúvidas sobre o teste.");
+    $("#refazer").addEventListener("click", () => {
+      try{ localStorage.removeItem(CHAVE); }catch(e){}
+      location.replace(location.pathname);
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 26: ROLAGEM (aparecer, botões que levam à próxima etapa)
+  // ═══════════════════════════════════════════════════════════════
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add("on"); io.unobserve(e.target); } }), { rootMargin:"0px 0px -8% 0px" });
+  $$(".rv").forEach(el => { if(!el.closest(".parte[hidden]")) io.observe(el); });
+
+  const proximoAlvo = () => {
+    for(let g = 1; g <= 4; g++){
+      const p = $(`[data-portao="${g}"]`);
+      if(!p.hidden && !p.classList.contains("feito")) return p;
+    }
+    return $("#proposta");
+  };
+  ["#ctaFinal"].forEach(s => $(s).addEventListener("click", e => {
+    e.preventDefault(); const a = proximoAlvo(); a && a.scrollIntoView({ behavior: reduz() ? "auto" : "smooth" });
+  }));
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 27: MODO TESTE (voltar uma etapa, recomeçar)
+  // ═══════════════════════════════════════════════════════════════
+  const CHAVES_EXTRAS = { 4:["cidade"] };
+  function voltarEtapa(){
+    let n = estado.liberado;
+    if(n < 1) return;
+    if(n === 3 && pulaTeste()) estado.liberado = n = 2;
+    PORTOES[n].ids.concat(CHAVES_EXTRAS[n] || []).forEach(id => delete estado.r[id]);
+    estado.passo[n] = 0; estado.liberado = n - 1; estado.fim = false; salvar();
+    $(`[data-quiz="${n}"]`).innerHTML = "";
+    if(n === 4) $("#propostaBox").innerHTML = "";
+    personalizar(); aplicarLiberado(0, false);
+    const alvo = $(`[data-portao="${n}"]`);
+    setTimeout(() => alvo.scrollIntoView({ behavior: reduz() ? "auto" : "smooth" }), 60);
+  }
+  function recomecar(){
+    estado = { r:{}, liberado:0, passo:{1:0,2:0,3:0,4:0}, fim:false }; salvar();
+    $$("[data-quiz]").forEach(b => b.innerHTML = ""); $("#propostaBox").innerHTML = "";
+    simTocado = false; personalizar(); aplicarLiberado(0, false);
+    scrollTo({ top:0, behavior: reduz() ? "auto" : "smooth" });
+  }
+  // TEMPORÁRIO: seta do topo volta uma etapa (tirar depois dos testes)
+  $("#voltaTemp").addEventListener("click", voltarEtapa);
+  if(!/github\.io$/.test(location.hostname)){
+    $("#barraTeste").hidden = false;
+    $("#tVoltar").addEventListener("click", voltarEtapa);
+    $("#tZerar").addEventListener("click", recomecar);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOCO 28: INÍCIO
+  // ═══════════════════════════════════════════════════════════════
+  personalizar();
+  aplicarLiberado(0, false);
+})();
+</script>
+</body>
+</html>

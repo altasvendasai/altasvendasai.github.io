@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel · Diagnóstico AltasVendas AI</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A1411">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 1: ESTILO
+   ═══════════════════════════════════════════════════════════════ */
+:root{ --tinta:#0A1411; --verde:#128C4A; --verde-vivo:#25D366; --gelo:#F5F7F6; --branco:#fff; --texto:#0F1A16;
+  --cinza:#5B6762; --cinza-claro:#A9B8B2; --linha:#E3E9E6; --amarelo:#FFC814; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Plus Jakarta Sans",system-ui,sans-serif;background:var(--gelo);color:var(--texto);line-height:1.5;font-size:16px;-webkit-font-smoothing:antialiased}
+.topo{background:var(--tinta);color:#fff;padding:0 16px}
+.topo .in{max-width:60rem;margin:0 auto;height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+.logo i{width:30px;height:30px;border-radius:9px;background:var(--verde-vivo);display:grid;place-items:center}
+.logo i svg{width:17px;height:17px}
+.topo small{color:var(--cinza-claro);font-weight:700;font-size:.78rem}
+.wrap{max-width:60rem;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.6rem;letter-spacing:-.02em;font-weight:800;margin:.2rem 0 1rem;line-height:1.25}
+h2{font-size:1.15rem;font-weight:800;margin:0 0 .7rem}
+h3{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza);margin:1rem 0 .4rem}
+.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--verde)}
+.btn{border:none;cursor:pointer;background:var(--verde-vivo);color:#06231A;font-weight:800;font-size:.92rem;padding:.7rem 1.1rem;border-radius:999px;font-family:inherit;text-decoration:none;display:inline-block}
+.btn.esc{background:var(--tinta);color:#fff}
+.btn.ghost{background:transparent;color:var(--texto);border:1.5px solid var(--linha)}
+.btn.perigo{background:transparent;color:#B42318;border:1.5px solid #F2C4BF}
+input,select,textarea{font-family:inherit;font-size:.95rem;padding:.65rem .8rem;border:1.5px solid var(--linha);border-radius:10px;background:var(--branco);width:100%;color:var(--texto)}
+textarea{min-height:4.5rem;resize:vertical}
+label{font-size:.85rem;font-weight:700;display:block;margin:.6rem 0 .25rem}
+.login{max-width:22rem;margin:3rem auto}
+.login input{margin-bottom:.6rem}
+.erro{color:#B42318;font-size:.88rem;min-height:1.2rem}
+.card{background:var(--branco);border:1px solid var(--linha);border-radius:16px;padding:1rem 1.1rem;margin-bottom:.8rem}
+.lista .card{cursor:pointer;display:flex;flex-wrap:wrap;gap:.3rem .8rem;align-items:center}
+.lista .card:hover{border-color:var(--verde)}
+.lista .nome{font-weight:800;font-size:1.05rem}
+.lista .data{margin-left:auto;color:var(--cinza);font-size:.8rem}
+.tag{font-size:.72rem;font-weight:800;border-radius:999px;padding:.15rem .6rem;background:#E8F7EE;color:var(--verde)}
+.tag.espera{background:#FFF6D6;color:#8A6A00}
+.tag.wpp{background:#EEF1F0;color:var(--cinza)}
+.barra{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:1rem}
+.barra .esq{margin-right:auto}
+dl{display:grid;gap:.15rem}
+dt{font-size:.78rem;color:var(--cinza);margin-top:.55rem;font-weight:600}
+dd{white-space:pre-wrap;font-size:.95rem}
+dd .tag{margin-left:.4rem;vertical-align:middle}
+dd.vazio{color:var(--cinza-claro)}
+.link{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;background:#F0F5F2;border-radius:12px;padding:.6rem .8rem;font-size:.85rem;word-break:break-all}
+.grade{display:grid;gap:.8rem}
+@media (min-width:760px){.grade.tres{grid-template-columns:repeat(3,1fr)}.grade.duas{grid-template-columns:repeat(2,1fr)}}
+.op{border:1.5px solid var(--linha);border-radius:14px;padding:.9rem;background:var(--branco)}
+.op.rec{border-color:var(--verde-vivo);box-shadow:0 0 0 3px rgba(37,211,102,.15)}
+.chk{display:flex;align-items:center;gap:.45rem;font-size:.9rem;margin:.25rem 0;font-weight:600}
+.chk input{width:auto}
+.num{display:flex;justify-content:space-between;font-size:.88rem;padding:.15rem 0}
+.num b{font-variant-numeric:tabular-nums}
+.total{border-top:1px solid var(--linha);margin-top:.4rem;padding-top:.4rem;font-size:1rem}
+.aviso{background:#FFF6D6;border-radius:10px;padding:.6rem .8rem;font-size:.85rem;color:#6B5200;margin:.6rem 0}
+.ok{color:var(--verde);font-weight:700;font-size:.88rem;min-height:1.2rem}
+.vazio-lista{color:var(--cinza);text-align:center;padding:2.5rem 1rem}
+</style>
+</head>
+<body>
+<header class="topo"><div class="in">
+  <span class="logo"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></svg></i>ALTASVENDAS AI</span>
+  <small>Painel do diagnóstico</small>
+</div></header>
+<main class="wrap" id="app"><p class="vazio-lista">Carregando…</p></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../perguntas.js?v=10"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 2: CONFIG DA PROPOSTA (mude os números aqui)
+// Verba por dia de cada canal. Só a Meta cobra imposto por cima (12,15%).
+// Estimativa: R$ 545 de anúncio = ~20 clientes prontos (mesma base da página Black).
+// ═══════════════════════════════════════════════════════════════
+const CANAIS = {
+  meta:    { nome:"Instagram + Facebook", dia:40, imposto:0.1215 },
+  google:  { nome:"Google (busca)",       dia:22, imposto:0 },
+  youtube: { nome:"YouTube",              dia:11, imposto:0 }
+};
+const BASE_VERBA = 545, BASE_CLIENTES = 20, TAXA_COMPRA = 0.3;
+const PADRAO = {
+  servico: 0, extraCanal: 0, desconto: 10, ticket: 0, recomendada: 1,
+  opcoes: [
+    { nome:"Essencial",   canais:["meta"],                     semanas:1 },
+    { nome:"Recomendada", canais:["meta","google","youtube"],  semanas:1 },
+    { nome:"Completa",    canais:["meta","google","youtube"],  semanas:2 }
+  ]
+};
+
+const sb = window.supabase.createClient(DIAG.supabaseUrl, DIAG.supabaseKey);
+const app = document.getElementById("app");
+const P = DIAG.perguntas;
+const esc = s => String(s??"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const brl = v => (Math.round(v)||0).toLocaleString("pt-BR", { style:"currency", currency:"BRL", maximumFractionDigits:0 });
+const BASE_URL = location.href.replace(/diagnostico\/painel\/.*$/, "");
+let linhas = [];
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 3: LOGIN (mesmo login do castelo)
+// ═══════════════════════════════════════════════════════════════
+function telaLogin(msg){
+  app.innerHTML = `<div class="login"><p class="eyebrow">Diagnóstico</p><h1>Entrar no painel</h1>
+    <input id="em" type="email" placeholder="E-mail" autocomplete="username">
+    <input id="pw" type="password" placeholder="Senha" autocomplete="current-password">
+    <p class="erro">${esc(msg||"")}</p><button class="btn" id="ent">Entrar</button>
+    <p style="font-size:.82rem;color:var(--cinza);margin-top:1rem">Use o mesmo login do castelo.</p></div>`;
+  const ir = async () => {
+    const { error } = await sb.auth.signInWithPassword({ email: em.value.trim(), password: pw.value });
+    if(error) return telaLogin("E-mail ou senha incorretos."); carregar();
+  };
+  ent.onclick = ir; pw.onkeydown = e => { if(e.key==="Enter") ir(); };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 4: LISTA
+// ═══════════════════════════════════════════════════════════════
+async function carregar(){
+  const { data:{ session } } = await sb.auth.getSession();
+  if(!session) return telaLogin();
+  const { data, error } = await sb.from(DIAG.tabela).select("*").order("criado_em",{ascending:false});
+  if(error) return app.innerHTML = `<p class="vazio-lista">Erro ao carregar: ${esc(error.message)}<br>Já rodou o SQL (diagnostico/sql.html)?</p>`;
+  linhas = data || [];
+  const id = Number(location.hash.slice(1));
+  if(id && linhas.find(l => l.id === id)) return telaDetalhe(id);
+  telaLista();
+}
+
+const tudo = l => Object.assign({}, l.previas || {}, l.respostas || {});
+const titulo = l => { const r = tudo(l); return r.nome || l.cliente || "Sem nome"; };
+
+function telaLista(){
+  history.replaceState(null, "", location.pathname);
+  app.innerHTML = `<div class="barra"><h1 class="esq">Diagnósticos</h1>
+      <button class="btn" id="novo">+ Link De Cliente</button>
+      <a class="btn ghost" href="../" target="_blank" rel="noopener">Formulário padrão</a></div>
+    <div class="lista">${linhas.length ? linhas.map(l => {
+      const r = tudo(l);
+      return `<div class="card" data-id="${l.id}"><span class="nome">${esc(titulo(l))}</span>
+        ${r.negocio ? `<span style="color:var(--cinza)">${esc(r.negocio)}</span>` : ""}
+        <span class="tag ${l.enviado_em ? "" : "espera"}">${l.enviado_em ? "Respondeu" : "Aguardando"}</span>
+        ${l.proposta ? `<span class="tag wpp">Proposta montada</span>` : ""}
+        <span class="data">${new Date(l.criado_em).toLocaleDateString("pt-BR")}</span></div>`;
+    }).join("") : `<p class="vazio-lista">Nenhum diagnóstico ainda.</p>`}</div>`;
+  novo.onclick = telaNovo;
+  app.querySelectorAll(".lista .card").forEach(c => c.onclick = () => telaDetalhe(Number(c.dataset.id)));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 5: NOVO LINK DE CLIENTE (o que já foi respondido no WhatsApp fica guardado
+// e sai do formulário dela)
+// ═══════════════════════════════════════════════════════════════
+function telaNovo(){
+  let grupo = "";
+  app.innerHTML = `<div class="barra"><button class="btn ghost" id="volta">← Voltar</button></div>
+    <h1>Novo link de cliente</h1>
+    <p style="color:var(--cinza);font-size:.92rem">Preencha só o que a pessoa já te respondeu (no WhatsApp, por exemplo). O que ficar em branco é o que ela vai responder no link.</p>
+    <label for="cli">Nome pra você identificar</label><input id="cli" placeholder="Ex.: Ale, Espaço Viver">
+    <div class="card" style="margin-top:1rem">${P.map(p => {
+      const g = p.grupo !== grupo ? `<h3>${esc(grupo = p.grupo)}</h3>` : "";
+      const ops = p.ops ? `<datalist id="dl-${p.id}">${p.ops.map(o => `<option value="${esc(o)}">`).join("")}</datalist>` : "";
+      return g + `<label for="pv-${p.id}">${esc(p.q)}</label>` + (p.tipo==="longo"
+        ? `<textarea id="pv-${p.id}"></textarea>` : `<input id="pv-${p.id}" ${p.ops?`list="dl-${p.id}"`:""}>${ops}`);
+    }).join("")}</div>
+    <p class="erro" id="er"></p><button class="btn" id="criar">Criar Link</button>`;
+  volta.onclick = telaLista;
+  criar.onclick = async () => {
+    const previas = {};
+    P.forEach(p => { const v = document.getElementById("pv-"+p.id).value.trim(); if(v) previas[p.id] = v; });
+    const token = Array.from(crypto.getRandomValues(new Uint8Array(9)), b => "abcdefghjkmnpqrstuvwxyz23456789"[b % 31]).join("");
+    criar.disabled = true;
+    const { data, error } = await sb.from(DIAG.tabela).insert({ token, cliente: cli.value.trim() || previas.nome || null, previas }).select().single();
+    if(error){ criar.disabled = false; return er.textContent = "Não consegui criar: " + error.message; }
+    linhas.unshift(data); telaDetalhe(data.id);
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 6: DETALHE (respostas + proposta)
+// ═══════════════════════════════════════════════════════════════
+function telaDetalhe(id){
+  const l = linhas.find(x => x.id === id); if(!l) return telaLista();
+  history.replaceState(null, "", "#" + id);
+  const pv = l.previas || {}, rs = l.respostas || {};
+  const linkCli = l.token ? `${BASE_URL}diagnostico/?c=${l.token}` : "";
+  const faltam = l.token ? P.filter(p => !pv[p.id]).length : 0;
+  let grupo = "";
+  const dl = P.map(p => {
+    const g = p.grupo !== grupo ? `<h3>${esc(grupo = p.grupo)}</h3>` : "";
+    const v = rs[p.id] ?? pv[p.id];
+    const origem = rs[p.id] ? "" : pv[p.id] ? `<span class="tag wpp">WhatsApp</span>` : "";
+    return g + `<dt>${esc(p.q)}</dt><dd class="${v?"":"vazio"}">${v ? esc(v) + origem : "—"}</dd>`;
+  }).join("");
+
+  app.innerHTML = `<div class="barra"><button class="btn ghost" id="volta">← Todos</button></div>
+    <p class="eyebrow">${l.enviado_em ? "Respondeu em " + new Date(l.enviado_em).toLocaleString("pt-BR") : "Ainda não respondeu"}</p>
+    <h1>${esc(titulo(l))}${(rs.negocio||pv.negocio) ? ` · ${esc(rs.negocio||pv.negocio)}` : ""}</h1>
+    ${linkCli ? `<div class="card"><h2>Link dela (${faltam} perguntas)</h2>
+      <div class="link"><span style="flex:1">${esc(linkCli)}</span><button class="btn esc" id="copLink">Copiar</button></div>
+      <p class="ok" id="okLink"></p></div>` : ""}
+    <div class="card"><h2>Respostas</h2><dl>${dl}</dl></div>
+    <div class="card" id="prop"></div>
+    <button class="btn perigo" id="apagar">Apagar este diagnóstico</button>`;
+  volta.onclick = () => { history.replaceState(null, "", location.pathname); telaLista(); };
+  if(linkCli) copLink.onclick = () => copiar(linkCli, "okLink");
+  apagar.onclick = async () => {
+    if(!confirm("Apagar este diagnóstico? Não dá pra desfazer.")) return;
+    const { error } = await sb.from(DIAG.tabela).delete().eq("id", id);
+    if(error) return alert(error.message);
+    linhas = linhas.filter(x => x.id !== id); telaLista();
+  };
+  montarProposta(l);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 7: PROPOSTA (só o Élton vê; ela só recebe o link quando ele mandar)
+// ═══════════════════════════════════════════════════════════════
+function calcular(cfg){
+  return cfg.opcoes.map((o, i) => {
+    const dias = o.semanas * 7;
+    const verba = o.canais.reduce((s, k) => s + CANAIS[k].dia * (1 + CANAIS[k].imposto) * dias, 0);
+    const extra = Math.max(o.canais.length - 1, 0) * (cfg.extraCanal || 0);
+    const servico = ((cfg.servico || 0) + extra) * o.semanas * (o.semanas >= 2 ? 1 - (cfg.desconto || 0)/100 : 1);
+    const clientes = Math.round(BASE_CLIENTES * verba / BASE_VERBA);
+    const vendas = Math.round(clientes * TAXA_COMPRA);
+    return { ...o, verba: Math.round(verba), servico: Math.round(servico), total: Math.round(verba + servico),
+      clientes, vendas, fat: vendas * (cfg.ticket || 0), rec: i === cfg.recomendada };
+  });
+}
+
+function montarProposta(l){
+  const cfg = JSON.parse(JSON.stringify(l.proposta || PADRAO));
+  const box = document.getElementById("prop");
+  const r = tudo(l);
+  const desenhar = () => {
+    const calc = calcular(cfg);
+    box.innerHTML = `<h2>Proposta</h2>
+      <div class="grade duas">
+        <div><label for="cServ">Nosso serviço por semana (R$)</label><input id="cServ" type="number" min="0" step="10" inputmode="numeric" value="${cfg.servico||""}" placeholder="Ex.: 300"></div>
+        <div><label for="cExtra">Adicional por canal extra, por semana (R$)</label><input id="cExtra" type="number" min="0" step="10" inputmode="numeric" value="${cfg.extraCanal||""}" placeholder="0"></div>
+        <div><label for="cDesc">Desconto a partir de 2 semanas (%)</label><input id="cDesc" type="number" min="0" max="50" inputmode="numeric" value="${cfg.desconto||0}"></div>
+        <div><label for="cTicket">Valor médio de cada venda dela (R$)</label><input id="cTicket" type="number" min="0" step="5" inputmode="numeric" value="${cfg.ticket||""}" placeholder="Ex.: 70"></div>
+      </div>
+      ${r.investimento ? `<p class="aviso">Sobra pra investir no negócio, por mês: <b>${esc(r.investimento)}</b></p>` : ""}
+      ${!cfg.servico ? `<p class="aviso">Defina o valor do serviço por semana pra liberar o link da proposta.</p>` : ""}
+      <div class="grade tres" style="margin-top:.8rem">${calc.map((o, i) => `
+        <div class="op ${o.rec?"rec":""}">
+          <input data-i="${i}" class="oNome" value="${esc(o.nome)}" style="font-weight:800;margin-bottom:.4rem">
+          ${Object.keys(CANAIS).map(k => `<label class="chk"><input type="checkbox" class="oCanal" data-i="${i}" data-k="${k}" ${o.canais.includes(k)?"checked":""}>${CANAIS[k].nome}</label>`).join("")}
+          <select class="oSem" data-i="${i}" style="margin:.4rem 0">${[1,2,3,4].map(s => `<option value="${s}" ${o.semanas===s?"selected":""}>${s} semana${s>1?"s":""}</option>`).join("")}</select>
+          <label class="chk"><input type="radio" name="rec" class="oRec" data-i="${i}" ${o.rec?"checked":""}>Recomendada</label>
+          <div class="num"><span>Serviço</span><b>${brl(o.servico)}</b></div>
+          <div class="num"><span>Anúncio (cartão dela)</span><b>${brl(o.verba)}</b></div>
+          <div class="num total"><span>Total</span><b>${brl(o.total)}</b></div>
+          <div class="num"><span>Clientes prontos (estim.)</span><b>~${o.clientes}</b></div>
+          ${cfg.ticket ? `<div class="num"><span>Vendas (3 em 10)</span><b>~${o.vendas} · ${brl(o.fat)}</b></div>` : ""}
+        </div>`).join("")}</div>
+      <div class="barra" style="margin-top:1rem">
+        <button class="btn esc" id="salvar">Salvar</button>
+        <button class="btn" id="copProp" ${cfg.servico?"":"disabled"}>Copiar Link Da Proposta</button>
+        <a class="btn ghost" id="verProp" target="_blank" rel="noopener">Ver como ela vai ver</a>
+      </div><p class="ok" id="okProp"></p>`;
+
+    const ler = () => {
+      cfg.servico = +cServ.value || 0; cfg.extraCanal = +cExtra.value || 0; cfg.desconto = +cDesc.value || 0; cfg.ticket = +cTicket.value || 0;
+    };
+    [cServ, cExtra, cDesc, cTicket].forEach(inp => inp.onchange = () => { ler(); desenhar(); });
+    box.querySelectorAll(".oNome").forEach(inp => inp.oninput = () => { cfg.opcoes[inp.dataset.i].nome = inp.value; });
+    box.querySelectorAll(".oCanal").forEach(c => c.onchange = () => {
+      const o = cfg.opcoes[c.dataset.i];
+      o.canais = Object.keys(CANAIS).filter(k => box.querySelector(`.oCanal[data-i="${c.dataset.i}"][data-k="${k}"]`).checked);
+      if(!o.canais.length){ o.canais = [c.dataset.k]; }
+      desenhar();
+    });
+    box.querySelectorAll(".oSem").forEach(s => s.onchange = () => { cfg.opcoes[s.dataset.i].semanas = +s.value; desenhar(); });
+    box.querySelectorAll(".oRec").forEach(rb => rb.onchange = () => { cfg.recomendada = +rb.dataset.i; desenhar(); });
+
+    const link = () => { ler(); return linkProposta(r, calcular(cfg), cfg); };
+    verProp.href = link();
+    verProp.onclick = () => { verProp.href = link(); };
+    salvar.onclick = async () => {
+      ler();
+      const { error } = await sb.from(DIAG.tabela).update({ proposta: cfg }).eq("id", l.id);
+      okProp.textContent = error ? "Erro ao salvar: " + error.message : "✓ Proposta salva.";
+      if(!error) l.proposta = JSON.parse(JSON.stringify(cfg));
+    };
+    copProp.onclick = () => copiar(link(), "okProp");
+  };
+  desenhar();
+}
+
+// O link leva só o que a proposta mostra (nome, opções e valores), nunca as respostas.
+function linkProposta(r, calc, cfg){
+  const d = { n: (r.nome||"").split(" ")[0], e: r.negocio || "", t: cfg.ticket || 0,
+    o: calc.map(o => ({ t:o.nome, c:o.canais, s:o.semanas, v:o.verba, sv:o.servico, cl:o.clientes, r:o.rec?1:0 })) };
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(d)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  return `${BASE_URL}proposta/?d=${b64}`;
+}
+
+async function copiar(txt, idOk){
+  try{ await navigator.clipboard.writeText(txt); }
+  catch(e){ const a=document.createElement("textarea"); a.value=txt; document.body.appendChild(a); a.select(); document.execCommand("copy"); a.remove(); }
+  document.getElementById(idOk).textContent = "✓ Copiado!";
+}
+
+carregar();
+</script>
+</body>
+</html>

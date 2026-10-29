@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preparação da Reunião · AltasVendas AI</title>
+<meta name="description" content="Responda antes da reunião pra gente chegar com uma estratégia pronta pro seu negócio.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AltasVendas AI">
+<meta property="og:title" content="Preparação da sua reunião · AltasVendas AI">
+<meta property="og:description" content="5 minutinhos pra gente chegar na reunião com uma estratégia feita pro seu negócio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* === BLOCO 1: CORES E BASE (mesmas da página do atendimento) === */
+:root{
+  --tinta:#0A1411;--tinta-2:#101F1A;--tinta-3:#16291F;--linha:#22382E;
+  --verde:#25D366;--gelo:#F5F7F6;--cinza:#A9B8B0;--cinza-2:#6F8379;--vermelho:#FF5A5A;
+  --raio:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--tinta);color:var(--gelo);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.12;margin:14px 0 12px;letter-spacing:-.02em;font-weight:900}
+.verde{color:var(--verde)}
+.sub{color:var(--cinza);font-size:18px;margin:0}
+
+/* === BLOCO 2: TOPO === */
+.topo{padding:28px 0 34px;background:radial-gradient(700px 400px at 90% 0%,rgba(37,211,102,.12),transparent 60%)}
+.logo{font-weight:900;font-size:20px;letter-spacing:-.02em}
+.logo span{color:var(--verde)}
+.selo{display:inline-flex;align-items:center;gap:8px;margin-top:28px;background:rgba(37,211,102,.1);color:var(--verde);border:1px solid rgba(37,211,102,.35);font-weight:700;font-size:14px;padding:7px 14px;border-radius:999px}
+
+/* === BLOCO 3: FORMULÁRIO === */
+.form{background:var(--tinta-2);border:1px solid var(--linha);border-radius:24px;padding:30px;margin:0 0 60px}
+.grupo{border-bottom:1px solid var(--linha);padding-bottom:10px;margin-bottom:24px}
+.grupo-topo{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.grupo-topo b{display:block;font-size:18px}
+.grupo-topo small{color:var(--cinza-2);font-size:14px}
+.g-num{width:36px;height:36px;flex:none;border-radius:10px;background:rgba(37,211,102,.12);color:var(--verde);display:grid;place-items:center;font-weight:900}
+.campo{margin-bottom:18px}
+.campo label{display:block;font-weight:600;font-size:15px;margin-bottom:8px}
+.campo input:not([type=radio]):not([type=checkbox]),.campo textarea{width:100%;background:var(--tinta);border:1.5px solid var(--linha);color:var(--gelo);border-radius:12px;padding:14px 15px;font:inherit;font-size:16px;transition:border-color .15s}
+.campo textarea{min-height:92px;resize:vertical}
+.campo input::placeholder,.campo textarea::placeholder{color:var(--cinza-2)}
+.campo input:focus,.campo textarea:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 4px rgba(37,211,102,.12)}
+.campos-2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.opcional{color:var(--cinza-2);font-weight:400;font-size:13px;margin-left:6px}
+.opcoes{display:grid;gap:10px;grid-template-columns:repeat(3,1fr)}
+.opcoes label{margin:0;font-weight:500}
+.opcoes input{position:absolute;opacity:0;pointer-events:none}
+.opcoes span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:52px;height:100%;background:var(--tinta);border:1.5px solid var(--linha);border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.25;cursor:pointer;transition:all .15s}
+.opcoes span:hover{border-color:var(--cinza-2)}
+.opcoes input:checked+span{background:rgba(37,211,102,.12);border-color:var(--verde);font-weight:700;box-shadow:inset 0 0 0 1px var(--verde)}
+.opcoes input:focus-visible+span{outline:2px solid var(--verde);outline-offset:2px}
+.btn{display:flex;width:100%;align-items:center;justify-content:center;background:var(--verde);color:#062012;font-weight:800;font-size:17px;padding:16px 26px;border-radius:999px;border:0;font-family:inherit;cursor:pointer;box-shadow:0 10px 30px rgba(37,211,102,.25);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.aviso{color:var(--cinza-2);font-size:13px;text-align:center;margin:12px 0 0}
+footer{border-top:1px solid var(--linha);padding:26px 0;color:var(--cinza-2);font-size:14px;text-align:center}
+
+/* === BLOCO 4: CELULAR === */
+@media (max-width:640px){
+  .form{padding:22px}
+  .campos-2{grid-template-columns:1fr}
+  .opcoes{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- === BLOCO A: TOPO === -->
+<header class="topo"><div class="wrap">
+  <div class="logo">AltasVendas <span>AI</span></div>
+  <span class="selo">📅 Sua reunião está marcada</span>
+  <h1>Prepare a sua reunião em <span class="verde">5 minutos.</span></h1>
+  <p class="sub">Com essas respostas, a gente chega na reunião com uma estratégia montada pro seu negócio, em vez de gastar o tempo fazendo perguntas.</p>
+</div></header>
+
+<!-- === BLOCO B: FORMULÁRIO === -->
+<main class="wrap">
+<form class="form" id="form-prep">
+
+  <div class="grupo">
+    <div class="grupo-topo"><span class="g-num">1</span><div><b>Você e sua empresa</b><small>Pra gente saber de quem é a reunião</small></div></div>
+    <div class="campos-2">
+      <div class="campo"><label for="f-nome">Seu nome</label><input id="f-nome" required placeholder="Ex.: Ana"></div>
+      <div class="campo"><label for="f-empresa">Nome da empresa</label><input id="f-empresa" required placeholder="Ex.: Studio Bella"></div>
+    </div>
+    <div class="campo"><label for="f-insta">Instagram ou site da empresa <span class="opcional">opcional</span></label><input id="f-insta" placeholder="Ex.: @studiobella"></div>
+  </div>
+
+  <div class="grupo">
+    <div class="grupo-topo"><span class="g-num">2</span><div><b>Seus números</b><small>Os mesmos da conversa, pra confirmar</small></div></div>
+    <div class="campos-2">
+      <div class="campo"><label for="f-produto">Produto principal da Black</label><input id="f-produto" placeholder="Ex.: limpeza de pele"></div>
+      <div class="campo"><label for="f-preco">Preço desse produto (R$)</label><input id="f-preco" inputmode="numeric" placeholder="Ex.: 180"></div>
+    </div>
+    <div class="campos-2">
+      <div class="campo"><label for="f-gasto">Gasto mensal hoje pra vender (R$)</label><input id="f-gasto" inputmode="numeric" placeholder="Atendimento, anúncio, ferramentas"></div>
+      <div class="campo"><label for="f-fat">Faturamento mensal (R$)</label><input id="f-fat" inputmode="numeric" placeholder="Ex.: 25000"></div>
+    </div>
+    <div class="campo"><label for="f-meta">Meta de faturamento na Black (R$)</label><input id="f-meta" inputmode="numeric" placeholder="Ex.: 40000"></div>
+  </div>
+
+  <div class="grupo">
+    <div class="grupo-topo"><span class="g-num">3</span><div><b>Seu atendimento hoje</b><small>Escolha uma opção em cada pergunta</small></div></div>
+    <div class="campo"><label>De onde vem a maioria dos seus clientes?</label><div class="opcoes">
+      <label><input type="radio" name="origem" value="Instagram"><span>Instagram</span></label>
+      <label><input type="radio" name="origem" value="Indicação"><span>Indicação</span></label>
+      <label><input type="radio" name="origem" value="Google"><span>Google</span></label>
+      <label><input type="radio" name="origem" value="Anúncio pago"><span>Anúncio pago</span></label>
+      <label><input type="radio" name="origem" value="Loja física / passagem"><span>Loja física</span></label>
+      <label><input type="radio" name="origem" value="Outro"><span>Outro</span></label>
+    </div></div>
+    <div class="campo"><label>Quantos contatos novos chegam no WhatsApp por dia?</label><div class="opcoes">
+      <label><input type="radio" name="volume" value="até 5"><span>até 5</span></label>
+      <label><input type="radio" name="volume" value="6 a 20"><span>6 a 20</span></label>
+      <label><input type="radio" name="volume" value="mais de 20"><span>mais de 20</span></label>
+    </div></div>
+    <div class="campo"><label>Em quanto tempo vocês costumam responder?</label><div class="opcoes">
+      <label><input type="radio" name="resposta" value="na hora"><span>Na hora</span></label>
+      <label><input type="radio" name="resposta" value="em até 1 hora"><span>Em até 1 hora</span></label>
+      <label><input type="radio" name="resposta" value="mais de 1 hora"><span>Mais de 1 hora</span></label>
+    </div></div>
+    <div class="campo"><label>Pra onde o cliente vai quando decide comprar?</label><div class="opcoes">
+      <label><input type="radio" name="fechamento" value="fecha no WhatsApp"><span>Fecha no WhatsApp</span></label>
+      <label><input type="radio" name="fechamento" value="página de vendas / link de pagamento"><span>Página ou link de pagamento</span></label>
+      <label><input type="radio" name="fechamento" value="agenda horário"><span>Agenda horário</span></label>
+    </div></div>
+  </div>
+
+  <div class="grupo" style="border-bottom:0">
+    <div class="grupo-topo"><span class="g-num">4</span><div><b>Pra montar a estratégia</b><small>Responda do seu jeito, pode ser curto</small></div></div>
+    <div class="campo"><label for="f-perguntas">Quais são as 3 perguntas que os clientes mais fazem?</label><textarea id="f-perguntas" placeholder="Ex.: quanto custa, tem horário amanhã, parcela no cartão"></textarea></div>
+    <div class="campo"><label for="f-desiste">Por que um cliente desiste de comprar?</label><textarea id="f-desiste" placeholder="Ex.: acha caro, some depois do preço, vai pensar"></textarea></div>
+    <div class="campo"><label for="f-tentou">Já usou robô, automação ou anúncio? Como foi? <span class="opcional">opcional</span></label><textarea id="f-tentou" placeholder="Ex.: testei um robô de menu e os clientes não gostavam"></textarea></div>
+    <div class="campo"><label for="f-sucesso">O que precisa sair da reunião pra valer a pena pra você?</label><textarea id="f-sucesso" placeholder="Ex.: entender quanto vou vender a mais na Black"></textarea></div>
+  </div>
+
+  <button class="btn" type="submit">Enviar respostas pelo WhatsApp</button>
+  <p class="aviso">Abre o WhatsApp com as respostas prontas. Nada é enviado sem você apertar enviar.</p>
+</form>
+</main>
+
+<footer><div class="wrap">AltasVendas AI · Porto Alegre/RS</div></footer>
+
+<script>
+// === BLOCO 1: CONFIGURAÇÃO ===
+const CONFIG = { whatsapp: "5551982276577" };
+
+// === BLOCO 2: UTILITÁRIOS ===
+const $ = id => document.getElementById(id);
+const txt = id => $(id).value.trim() || "não informado";
+const op = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || "não informado";
+
+// === BLOCO 3: PREENCHE PELO LINK (?nome=&empresa=) QUANDO VIER ===
+const qs = new URLSearchParams(location.search);
+["nome", "empresa"].forEach(k => { if (qs.get(k)) $("f-" + k).value = qs.get(k); });
+
+// === BLOCO 4: ENVIO → WHATSAPP (cai na mesma conversa da IA) ===
+$("form-prep").addEventListener("submit", e => {
+  e.preventDefault();
+  const linhas = [
+    "📋 PREPARAÇÃO DA REUNIÃO",
+    "",
+    `Nome: ${txt("f-nome")}`,
+    `Empresa: ${txt("f-empresa")}`,
+    `Instagram/site: ${txt("f-insta")}`,
+    "",
+    "*Números*",
+    `Produto da Black: ${txt("f-produto")}`,
+    `Preço: ${txt("f-preco")}`,
+    `Gasto mensal pra vender: ${txt("f-gasto")}`,
+    `Faturamento mensal: ${txt("f-fat")}`,
+    `Meta na Black: ${txt("f-meta")}`,
+    "",
+    "*Atendimento hoje*",
+    `Clientes vêm de: ${op("origem")}`,
+    `Contatos novos por dia: ${op("volume")}`,
+    `Tempo de resposta: ${op("resposta")}`,
+    `Quando decide comprar: ${op("fechamento")}`,
+    "",
+    "*Estratégia*",
+    `Perguntas mais comuns: ${txt("f-perguntas")}`,
+    `Por que desistem: ${txt("f-desiste")}`,
+    `Já tentou: ${txt("f-tentou")}`,
+    `Pra valer a pena: ${txt("f-sucesso")}`
+  ];
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(linhas.join("\n"))}`, "_blank");
+});
+</script>
+</body>
+</html>
