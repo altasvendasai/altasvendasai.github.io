@@ -114,8 +114,8 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
     </div>
 
     <div class="caixa">
-      <h2><span class="n">2</span>Outros canais <small style="color:var(--cinza);font-weight:600;font-size:.8rem">(opcional)</small></h2>
-      <p class="sub">Pra aparecer também pra quem está pesquisando ou vendo vídeo.</p>
+      <h2><span class="n">2</span>Google e YouTube</h2>
+      <p class="sub">Pra aparecer pra quem está pesquisando ou vendo vídeo. Dá pra usar junto com o Instagram ou sozinhos.</p>
       <div id="canais"></div>
     </div>
 
@@ -143,12 +143,15 @@ const CONFIG = {
   baseVerba: 545, baseClientes: 20,
   insta: [
     { id: "i1", nome: "1 criativo", desc: "Um anúncio rodando no Instagram.", servico: 600, anuncio: 200 },
-    { id: "i2", nome: "2 criativos em teste A/B", desc: "Dois anúncios diferentes rodando juntos. A gente descobre qual traz mais clientes e coloca a verba nele.", servico: 1000, anuncio: 400, rec: true }
+    { id: "i2", nome: "2 criativos em teste A/B", desc: "Dois anúncios diferentes rodando juntos. A gente descobre qual traz mais clientes e coloca a verba nele.", servico: 1000, anuncio: 400, rec: true },
+    { id: "i0", nome: "Sem Instagram", desc: "Só Google e/ou YouTube.", servico: 0, anuncio: 0 }
   ],
   canais: [
     { id: "google", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250, anuncio: 154 },
     { id: "youtube", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250, anuncio: 77 }
   ],
+  // Sem Instagram, o primeiro canal leva a base do serviço (estratégia, oferta e criativo)
+  baseSemInsta: 600,
   automacao: { mensal: 97 },
   paginaBonus: "Página de vendas de bônus (no pacote com todos os canais)",
   prontos: [
@@ -179,9 +182,11 @@ function desenhar() {
     return `<button class="pronto${on ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}</b><small>${brl(c.servico)}${p.rec ? " ⭐" : ""}</small></button>`;
   }).join("");
   $("insta").innerHTML = CONFIG.insta.map(i => opcao("radio", "insta", i.id, i.nome, i.desc,
-    `+ ${brl(i.servico)}<small>anúncio ${brl(i.anuncio)}</small>`, st.insta === i.id, i.rec)).join("");
+    i.servico ? `+ ${brl(i.servico)}<small>anúncio ${brl(i.anuncio)}</small>` : "—", st.insta === i.id, i.rec)).join("");
+  const semInsta = st.insta === "i0";
   $("canais").innerHTML = CONFIG.canais.map(c => opcao("checkbox", "canal", c.id, c.nome, c.desc,
-    `+ ${brl(c.servico)}<small>anúncio ${brl(c.anuncio)}</small>`, st.canais.includes(c.id))).join("");
+    `+ ${brl(c.servico)}<small>anúncio ${brl(c.anuncio)}</small>`, st.canais.includes(c.id))).join("") +
+    (semInsta ? `<p class="nota">Sem o Instagram, o primeiro canal leva ${brl(CONFIG.baseSemInsta)} de serviço (estratégia, oferta e criativo); o segundo, ${brl(CONFIG.canais[0].servico)}.</p>` : "");
   $("atend").innerHTML =
     opcao("radio", "auto", "sim", "Com automação", "Responde na hora, 24h, tira as dúvidas e manda o link pra cliente agendar sozinha.", `${brl(CONFIG.automacao.mensal)}<small>por mês</small>`, st.auto, true) +
     opcao("radio", "auto", "nao", "Sem automação", "Você mesma responde e agenda pelo WhatsApp.", "—", !st.auto);
@@ -192,25 +197,28 @@ function desenhar() {
 // === BLOCO 7: CONTA ===
 function calcular(insta, canais, auto) {
   const i = CONFIG.insta.find(x => x.id === insta);
-  const cs = CONFIG.canais.filter(x => canais.includes(x.id));
-  const servico = i.servico + cs.reduce((s, c) => s + c.servico, 0);
+  const cs = CONFIG.canais.filter(x => canais.includes(x.id)).map(x => ({ ...x }));
+  const servicoCanais = cs.map((c, k) => insta === "i0" && k === 0 ? CONFIG.baseSemInsta : c.servico);
+  cs.forEach((c, k) => c.cobrado = servicoCanais[k]);
+  const servico = i.servico + servicoCanais.reduce((s, v) => s + v, 0);
   const anuncio = i.anuncio + cs.reduce((s, c) => s + c.anuncio, 0);
   const bonus = canais.length === CONFIG.canais.length && insta === "i2";
   return { i, cs, servico, anuncio, auto, bonus, mensal: auto ? CONFIG.automacao.mensal : 0,
-    clientes: Math.max(1, Math.round(anuncio / CONFIG.baseVerba * CONFIG.baseClientes)) };
+    vazio: !anuncio, clientes: Math.max(1, Math.round(anuncio / CONFIG.baseVerba * CONFIG.baseClientes)) };
 }
 // Parcelado: a taxa da InfinitePay vai pra quem compra, e a gente recebe o valor cheio
 const noCartao = (valor, n) => valor / (1 - CONFIG.taxasCartao[n]);
 
 function resumo() {
   const c = calcular(st.insta, st.canais, st.auto);
+  if (c.vazio) { $("resumo").innerHTML = `<h2>Seu pacote</h2><p class="sub">Escolha pelo menos um canal: Instagram, Google ou YouTube.</p>`; return; }
   const total = noCartao(c.servico, st.parcelas);
   const opcoesParc = Object.keys(CONFIG.taxasCartao).map(n =>
     `<option value="${n}"${+n === st.parcelas ? " selected" : ""}>${n}x de ${brl2(noCartao(c.servico, +n) / n)}</option>`).join("");
   $("resumo").innerHTML = `
     <h2>Seu pacote</h2>
-    <div class="linha"><span>Instagram: ${c.i.nome}</span><b>${brl(c.i.servico)}</b></div>
-    ${c.cs.map(x => `<div class="linha"><span>${x.nome}</span><b>${brl(x.servico)}</b></div>`).join("")}
+    ${c.i.servico ? `<div class="linha"><span>Instagram: ${c.i.nome}</span><b>${brl(c.i.servico)}</b></div>` : ""}
+    ${c.cs.map(x => `<div class="linha"><span>${x.nome}</span><b>${brl(x.cobrado)}</b></div>`).join("")}
     ${c.bonus ? `<div class="linha"><span>${CONFIG.paginaBonus}</span><b>grátis</b></div>` : ""}
     <div class="sep"></div>
     <div class="linha"><span><b style="color:var(--texto)">Nosso serviço</b><small>pago pra AltasVendas IA</small></span><b>${brl(c.servico)}</b></div>
@@ -230,7 +238,7 @@ function resumo() {
     e.preventDefault();
     const msg = [
       `Oi! ${nome ? `Aqui é a ${nome}. ` : ""}Montei o meu pacote de Black:`,
-      `• Instagram: ${c.i.nome}`,
+      c.i.servico ? `• Instagram: ${c.i.nome}` : "• Sem Instagram",
       ...c.cs.map(x => `• ${x.nome}`),
       c.bonus ? `• ${CONFIG.paginaBonus}` : "",
       `• Automação no WhatsApp: ${c.auto ? brl(c.mensal) + "/mês" : "sem"}`,
