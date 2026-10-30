@@ -58,6 +58,10 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .item .t .p{display:block;white-space:nowrap;font-weight:800;color:var(--texto);font-size:.88rem;margin-top:.15rem}
 .add{border:1.5px solid var(--verde-vivo);background:var(--branco);color:var(--verde);font-family:inherit;font-weight:800;font-size:.85rem;border-radius:999px;padding:.45rem .9rem;cursor:pointer;white-space:nowrap}
 .add.on{background:var(--verde-vivo);color:#06231A}
+.check{width:34px;height:34px;flex:none;border:2px solid var(--cinza-claro);background:var(--branco);border-radius:9px;cursor:pointer;display:grid;place-items:center;padding:0}
+.check svg{width:20px;height:20px;opacity:0}
+.check.on{background:var(--verde-vivo);border-color:var(--verde-vivo)}
+.check.on svg{opacity:1}
 .seg{display:flex;gap:6px;margin-top:.5rem;flex-wrap:wrap}
 .seg button{border:1.5px solid var(--linha);background:var(--branco);border-radius:999px;padding:.4rem .75rem;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--texto);cursor:pointer}
 .seg button.on{border-color:var(--verde-vivo);background:#F0FBF4;color:var(--verde)}
@@ -121,6 +125,10 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .conta .neg{color:var(--alerta)}
 .paga{margin-top:.6rem;background:var(--tinta);color:#fff;border-radius:14px;padding:12px 14px;font-size:.92rem;line-height:1.45}
 .paga b{color:var(--verde-vivo)}
+.canal{border-top:1px solid var(--linha)}
+.canal:first-child{border-top:0}
+.canal .item{border-top:0}
+.canal .verba{margin:0 0 .8rem}
 .maoobra{border-top:1px solid var(--linha);margin-top:.4rem;padding-top:.6rem}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
 </style>
@@ -146,9 +154,8 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
     </div>
     <div class="caixa">
       <h2>Anúncios</h2>
-      <p class="sub">Onde a sua cliente vai te encontrar. A <b>verba</b> é quanto o Instagram, o Google ou o YouTube cobram pra mostrar o seu anúncio na semana. Você paga direto pra eles, no seu cartão. Quanto mais verba, mais gente vê.</p>
+      <p class="sub">Onde a sua cliente vai te encontrar. Cada canal é uma campanha separada, com a sua <b>verba</b>: quanto a plataforma cobra pra mostrar o seu anúncio na semana. Você paga direto pra ela, no seu cartão. Quanto mais verba, mais gente vê.</p>
       <div class="seg" id="semanas" style="margin:0 0 .7rem"></div>
-      <div class="verba" id="verba"></div>
       <div id="anuncios"></div>
     </div>
     <div class="caixa">
@@ -161,7 +168,7 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
       <h2 id="titulo-funil">O que esperar em 1 semana</h2>
       <p class="sub">Estimativa com médias do mercado, conforme o que você escolheu.</p>
       <div class="funil" id="funil"></div>
-      <p class="fonte">Como calculamos: Instagram com mil visualizações a R$ 10–25 e clique a R$ 0,80–3,00 (<a href="https://www.intentmarketing.com.br/blog/post-quanto-custa-meta-ads" target="_blank" rel="noopener">Intent Marketing, 2026</a>); Google com clique a R$ 1,50–6,00 para serviços locais (<a href="https://andrerochaconsultor.com.br/trafego-pago/quanto-custa-google-ads-brasil-2026/" target="_blank" rel="noopener">André Rocha, 2026</a>); YouTube só em visualizações. Conversas (4 a 6 de cada 10 cliques), clientes prontos e vendas (2 a 4 de cada 10 prontos) são estimativas nossas. Não é promessa: depende da oferta e do atendimento.</p>
+      <p class="fonte">Como calculamos: Instagram com mil visualizações a R$ 10–25, Facebook a R$ 6–15 e clique a R$ 0,80–3,00 (<a href="https://www.intentmarketing.com.br/blog/post-quanto-custa-meta-ads" target="_blank" rel="noopener">Intent Marketing, 2026</a>); Google com clique a R$ 1,50–6,00 para serviços locais (<a href="https://andrerochaconsultor.com.br/trafego-pago/quanto-custa-google-ads-brasil-2026/" target="_blank" rel="noopener">André Rocha, 2026</a>); YouTube só em visualizações. Conversas (4 a 6 de cada 10 cliques), clientes prontos e vendas (2 a 4 de cada 10 prontos) são estimativas nossas. Não é promessa: depende da oferta e do atendimento.</p>
     </div>
     <div class="caixa">
       <h2>O investimento se paga?</h2>
@@ -185,22 +192,25 @@ const CONFIG = {
   whatsapp: "5551982276577",
   // Taxas da InfinitePay no cartão (link de pagamento, 1 dia útil), conferidas no app em 30/10/2026
   taxasCartao: { 1: .042, 2: .0609, 3: .0701, 4: .0791, 5: .088, 6: .0967, 7: .1259, 8: .1342, 9: .1425, 10: .1506, 11: .1587, 12: .1666 },
-  verba: { min: 150, max: 300, passo: 10, recomendado: 200 }, // por anúncio, por semana
-  instagram: [
-    { n: 0, nome: "Sem Instagram", servico: 0 },
-    { n: 1, nome: "1 criativo", servico: 600 },
-    { n: 2, nome: "2 criativos (teste A/B)", servico: 1000, rec: true }
-  ],
+  verba: { min: 150, max: 300, passo: 10, recomendado: 200 }, // por campanha, por semana
+  // Cada canal é uma campanha separada, com a sua própria verba
   canais: [
+    { id: "instagram", ic: "📸", nome: "Instagram", desc: "Feed, Stories e Reels de quem é da sua região.", meta: true },
+    { id: "facebook", ic: "👍", nome: "Facebook", desc: "Feed e Stories do Facebook, que alcança outro público.", meta: true },
     { id: "google", ic: "🔎", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250 },
     { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250 }
   ],
-  criativoUnidade: 300, // parte do serviço do Instagram que é o criativo; o resto é subir e configurar
-  baseSemInsta: 600, // sem Instagram, o primeiro canal leva a base do serviço (estratégia, oferta e criativo)
+  // Instagram e Facebook usam os mesmos criativos: o serviço é um só, com 1 ou 2 criativos
+  criativos: [
+    { n: 1, nome: "1 criativo", servico: 600 },
+    { n: 2, nome: "2 criativos (teste A/B)", servico: 1000, rec: true }
+  ],
+  criativoUnidade: 300, // parte do serviço que é o criativo; o resto é subir e configurar as campanhas
+  baseSemMeta: 600, // sem Instagram e Facebook, o primeiro canal leva a base do serviço (estratégia, oferta e criativo)
   pagina: { nome: "Página de vendas", desc: "Página com a sua oferta de Black pra cliente ver tudo e chamar no WhatsApp.", servico: 300 },
   automacao: { nome: "Automação no WhatsApp", desc: "Responde na hora, 24h, tira dúvidas e manda o link pra cliente agendar sozinha.", mensal: 97 },
   // Médias de mercado (ver "Como calculamos" na página)
-  mercado: { cpmMeta: [25, 10], cpcMeta: [3.0, 0.8], cpcGoogle: [6.0, 1.5], cpmYoutube: [25, 10], conversa: [.4, .6] },
+  mercado: { cpm: { instagram: [25, 10], facebook: [15, 6], youtube: [25, 10] }, cpc: { instagram: [3.0, 0.8], facebook: [3.0, 0.8], google: [6.0, 1.5] }, conversa: [.4, .6] },
   // Quanto o mercado cobra hoje (só o piso de cada faixa, pra comparação justa)
   precoMercado: {
     anuncio: { nome: "Gestão de anúncios + criativos", de: 1500, ate: 3000, mes: true },
@@ -210,9 +220,9 @@ const CONFIG = {
   prontosPorReal: 20 / 545, // referência da página da Black: R$ 545 de anúncio ≈ 20 clientes prontos
   taxaVenda: [.2, .4],
   prontos: [
-    { id: "completa", nome: "Completa", insta: 2, canais: ["google", "youtube"], pagina: true, auto: true },
-    { id: "recomendada", nome: "Recomendada", insta: 2, canais: [], pagina: false, auto: true, rec: true },
-    { id: "essencial", nome: "Essencial", insta: 1, canais: [], pagina: false, auto: false }
+    { id: "completa", nome: "Completa", criativos: 2, canais: ["instagram", "facebook", "google", "youtube"], pagina: true, auto: true },
+    { id: "recomendada", nome: "Recomendada", criativos: 2, canais: ["instagram", "facebook"], pagina: false, auto: true, rec: true },
+    { id: "essencial", nome: "Essencial", criativos: 1, canais: ["instagram"], pagina: false, auto: false }
   ]
 };
 
@@ -234,33 +244,38 @@ let produto = prodURL > 0 ? prodURL : 50, produtoOn = true; // produto mais bara
 const horasURL = +(new URLSearchParams(location.search).get("h") || "");
 let horas = horasURL > 0 ? horasURL : 0; // horários livres na semana (0 = sem limite); a pessoa preenche na página
 const compraProduto = [.2, .4]; // estimativa nossa: de cada 10 clientes prontas, 2 a 4 levam um produto
-let st = { insta: 2, canais: [], pagina: false, auto: true, verba: CONFIG.verba.recomendado, semanas: 1, parcelas: 12 };
+const R = CONFIG.verba.recomendado;
+// verbas: quanto vai pra cada campanha por semana (0 = canal desligado)
+let st = { criativos: 2, verbas: { instagram: R, facebook: R, google: 0, youtube: 0 }, pagina: false, auto: true, semanas: 1, parcelas: 12 };
+const ligados = s => CONFIG.canais.filter(c => s.verbas[c.id] > 0);
+const comVerbas = (s, p) => ({ ...s, criativos: p.criativos, pagina: p.pagina, auto: p.auto,
+  verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, p.canais.includes(c.id) ? (s.verbas[c.id] || R) : 0])) });
 
 // === BLOCO 6: CONTA ===
 function calcular(s) {
-  const insta = CONFIG.instagram.find(i => i.n === s.insta);
+  const on = ligados(s), meta = on.filter(c => c.meta), outros = on.filter(c => !c.meta);
+  const cri = CONFIG.criativos.find(x => x.n === s.criativos);
   const itens = [];
-  // O serviço do Instagram se divide em criativos + subir e configurar as campanhas
-  if (insta.n) {
-    const cri = insta.n * CONFIG.criativoUnidade;
-    itens.push({ nome: `🎨 Criativos · ${insta.n} unidade${insta.n > 1 ? "s" : ""} (Instagram e Facebook)`, valor: cri });
-    itens.push({ nome: "⚙️ Subir e configurar as campanhas", valor: insta.servico - cri });
+  // Instagram e Facebook: criativos + subir e configurar as campanhas
+  if (meta.length) {
+    const v = cri.n * CONFIG.criativoUnidade;
+    itens.push({ nome: `🎨 Criativos · ${cri.n} unidade${cri.n > 1 ? "s" : ""} (${meta.map(c => c.nome).join(" e ")})`, valor: v });
+    itens.push({ nome: `⚙️ Subir e configurar ${meta.length > 1 ? "as campanhas" : "a campanha"} do ${meta.map(c => c.nome).join(" e do ")}`, valor: cri.servico - v });
   }
-  CONFIG.canais.filter(c => s.canais.includes(c.id)).forEach((c, k) =>
-    itens.push({ nome: `${c.ic} ${c.nome} · criativo + campanha`, valor: !insta.n && k === 0 ? CONFIG.baseSemInsta : c.servico }));
+  outros.forEach((c, k) => itens.push({ nome: `${c.ic} ${c.nome} · criativo + campanha`, valor: !meta.length && k === 0 ? CONFIG.baseSemMeta : c.servico }));
   if (s.pagina) itens.push({ nome: `🛒 ${CONFIG.pagina.nome}`, valor: CONFIG.pagina.servico });
   const servico = itens.reduce((t, i) => t + i.valor, 0);
-  const nAnuncios = insta.n + s.canais.length;
-  const anuncio = nAnuncios * s.verba * s.semanas;
+  const semanal = on.reduce((t, c) => t + s.verbas[c.id], 0);
+  const anuncio = semanal * s.semanas;
   const mensal = s.auto ? CONFIG.automacao.mensal * Math.ceil(s.semanas / 4) : 0;
-  return { insta, itens, servico, nAnuncios, anuncio, mensal, vazio: !nAnuncios };
+  return { on, meta, itens, servico, semanal, anuncio, mensal, vazio: !on.length };
 }
 function funil(s) {
-  const m = CONFIG.mercado, sem = s.verba * (s.semanas || 1), meta = s.insta * sem, g = s.canais.includes("google") ? sem : 0, yt = s.canais.includes("youtube") ? sem : 0;
-  const vis = i => (meta * 1000 / m.cpmMeta[i]) + (yt * 1000 / m.cpmYoutube[i]);
-  const cliques = i => meta / m.cpcMeta[i] + g / m.cpcGoogle[i];
+  const m = CONFIG.mercado, gasto = id => (s.verbas[id] || 0) * (s.semanas || 1);
+  const vis = i => Object.keys(m.cpm).reduce((t, id) => t + gasto(id) * 1000 / m.cpm[id][i], 0);
+  const cliques = i => Object.keys(m.cpc).reduce((t, id) => t + gasto(id) / m.cpc[id][i], 0);
   const conversas = i => cliques(i) * m.conversa[i];
-  const total = meta + g + yt, base = total * CONFIG.prontosPorReal;
+  const total = CONFIG.canais.reduce((t, c) => t + gasto(c.id), 0), base = total * CONFIG.prontosPorReal;
   const prontos = [Math.min(base * .8, conversas(0)), Math.min(base * 1.2, conversas(1))];
   return {
     vis: [redondo(vis(0)), redondo(vis(1))], cliques: [redondo(cliques(0)), redondo(cliques(1))],
@@ -270,7 +285,7 @@ function funil(s) {
 }
 // Parcelado: a taxa da InfinitePay vai pra quem compra, e a gente recebe o valor cheio
 const noCartao = (valor, n) => valor / (1 - CONFIG.taxasCartao[n]);
-const igual = (a, p) => a.insta === p.insta && a.auto === p.auto && a.pagina === p.pagina && a.canais.length === p.canais.length && p.canais.every(x => a.canais.includes(x));
+const igual = (a, p) => a.criativos === p.criativos && a.auto === p.auto && a.pagina === p.pagina && ligados(a).map(c => c.id).join() === CONFIG.canais.filter(c => p.canais.includes(c.id)).map(c => c.id).join();
 
 // Comparativo: o que a mesma escolha custaria lá fora (piso das faixas de mercado)
 function mercadoHTML(c) {
@@ -290,29 +305,27 @@ function mercadoHTML(c) {
 function item(ic, titulo, desc, preco, botao) {
   return `<div class="item"><span class="ic">${ic}</span><span class="t"><b>${titulo}</b><small>${desc}</small>${preco ? `<span class="p">${preco}</span>` : ""}</span>${botao}</div>`;
 }
-const botao = (on, acao) => `<button class="add${on ? " on" : ""}" data-acao="${acao}">${on ? "✓ Incluído" : "+ Adicionar"}</button>`;
+// Caixinha de marcar: marcada = incluído no pacote
+const botao = (on, acao) => `<button class="check${on ? " on" : ""}" data-acao="${acao}" role="checkbox" aria-checked="${on}" aria-label="${on ? "Tirar" : "Incluir"}"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>`;
 
 function desenhar() {
-  $("prontos").innerHTML = CONFIG.prontos.map(p => {
-    const c = calcular({ ...st, ...p });
-    return `<button class="pronto${igual(st, p) ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}${p.rec ? " ⭐" : ""}</b><small class="pv-pronto" data-n="${c.nAnuncios}"></small></button>`;
-  }).join("");
+  $("prontos").innerHTML = CONFIG.prontos.map(p =>
+    `<button class="pronto${igual(st, p) ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}${p.rec ? " ⭐" : ""}</b><small>${p.canais.length} campanha${p.canais.length > 1 ? "s" : ""}</small></button>`).join("");
 
-  const semInsta = st.insta === 0, primeiro = semInsta && st.canais[0];
-  $("anuncios").innerHTML =
-    `<div class="item"><span class="ic">📸</span><span class="t"><b>Instagram e Facebook</b><small>O criativo é o anúncio que chama a cliente pra conversar com você.</small>
-      <div class="seg">${CONFIG.instagram.map(i => `<button class="${st.insta === i.n ? "on" : ""}" data-insta="${i.n}">${i.nome}${i.n ? ` · <span class="pv" data-n="${i.n}"></span>` : ""}${i.rec ? " ⭐" : ""}</button>`).join("")}</div></span></div>` +
-    CONFIG.canais.map(c => {
-      const on = st.canais.includes(c.id);
-      return item(c.ic, c.nome, c.desc, `<span class="pv" data-n="1"></span>`, botao(on, "canal:" + c.id));
-    }).join("") +
+  const v = CONFIG.verba, temMeta = ligados(st).some(c => c.meta);
+  $("anuncios").innerHTML = CONFIG.canais.map(c => {
+    const on = st.verbas[c.id] > 0;
+    const barra = on ? `<div class="verba"><div class="valor"><b id="v-${c.id}">${brl(st.verbas[c.id])}</b><small>de verba por semana</small></div>
+      <input type="range" data-barra="${c.id}" min="${v.min}" max="${v.max}" step="${v.passo}" value="${st.verbas[c.id]}" aria-label="Verba do ${c.nome}">
+      <div class="marcas"><span>${brl(v.min)}</span><span class="rec">recomendado ${brl(v.recomendado)}</span><span>${brl(v.max)}</span></div></div>` : "";
+    return `<div class="canal">${item(c.ic, c.nome, c.desc, on ? "" : `verba de ${brl(v.min)} a ${brl(v.max)}/semana`, botao(on, "canal:" + c.id))}${barra}</div>`;
+  }).join("") +
+    (temMeta ? `<div class="item"><span class="ic">🎨</span><span class="t"><b>Criativos do Instagram e Facebook</b><small>O criativo é o anúncio que chama a cliente pra conversar com você. Os dois canais usam os mesmos.</small>
+      <div class="seg">${CONFIG.criativos.map(x => `<button class="${st.criativos === x.n ? "on" : ""}" data-criativos="${x.n}">${x.nome}${x.rec ? " ⭐" : ""}</button>`).join("")}</div></span></div>` : "") +
     `<div class="maoobra" id="maoobra"></div>`;
-
-  const v = CONFIG.verba;
-  $("verba").innerHTML = `<div class="valor"><b id="verba-v">${brl(st.verba)}</b><small>de verba por anúncio, por semana</small></div>
-    <input type="range" id="verba-r" min="${v.min}" max="${v.max}" step="${v.passo}" value="${st.verba}" aria-label="Verba por anúncio">
-    <div class="marcas"><span>${brl(v.min)}</span><span class="rec">recomendado ${brl(v.recomendado)}</span><span>${brl(v.max)}</span></div>`;
-  $("verba-r").addEventListener("input", e => { st.verba = +e.target.value; $("verba-v").textContent = brl(st.verba); atualizar(); });
+  document.querySelectorAll("[data-barra]").forEach(b => b.addEventListener("input", e => {
+    const id = e.target.dataset.barra; st.verbas[id] = +e.target.value; $("v-" + id).textContent = brl(st.verbas[id]); atualizar();
+  }));
 
   $("adicionais").innerHTML =
     item("🛒", CONFIG.pagina.nome, CONFIG.pagina.desc, `+ ${brl(CONFIG.pagina.servico)}`, botao(st.pagina, "pagina")) +
@@ -323,14 +336,12 @@ function desenhar() {
 
 function atualizar() {
   const c = calcular(st);
-  // Opções mostram só o valor do anúncio; a mão de obra aparece embaixo e muda junto
-  document.querySelectorAll(".pv").forEach(e => e.textContent = `verba ${brl(st.verba * +e.dataset.n)}/semana`);
-  document.querySelectorAll(".pv-pronto").forEach(e => e.textContent = `verba ${brl(st.verba * +e.dataset.n)}/sem`);
-  $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Verba dos anúncios · ${c.nAnuncios} × ${brl(st.verba)}<small>pago direto pro Instagram/Google/YouTube</small></span><b>${brl(c.anuncio / st.semanas)}/semana</b></div>
+  // A verba de cada campanha aparece na barra; aqui embaixo, o total e a mão de obra
+  $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Verba das campanhas · ${c.on.length} campanha${c.on.length > 1 ? "s" : ""}<small>pago direto pra cada plataforma</small></span><b>${brl(c.semanal)}/semana</b></div>
     <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>estratégia, criativos e configuração${st.pagina ? " + página de vendas" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
   document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", igual(st, CONFIG.prontos.find(p => p.id === b.dataset.pronto))));
   if (c.vazio) {
-    $("funil").innerHTML = `<p class="sub">Escolha pelo menos um anúncio: Instagram, Google ou YouTube.</p>`;
+    $("funil").innerHTML = `<p class="sub">Escolha pelo menos um canal: Instagram, Facebook, Google ou YouTube.</p>`;
     $("pedido").innerHTML = `<h2>Seu pedido</h2><p class="sub">Escolha pelo menos um anúncio pra montar o pacote.</p>`;
     $("barra").innerHTML = `<span class="v"><small>Seu pedido</small><b>Escolha um anúncio</b></span>`;
     $("lucro").innerHTML = "";
@@ -360,7 +371,7 @@ function atualizar() {
   // Menor verba cuja estimativa do meio já enche os horários livres
   let verbaAgenda = 0;
   if (horas) for (let v = CONFIG.verba.min; v <= CONFIG.verba.max; v += CONFIG.verba.passo) {
-    const fv = funil({ ...st, verba: v }).vendas;
+    const fv = funil({ ...st, verbas: Object.fromEntries(Object.entries(st.verbas).map(([k, x]) => [k, x > 0 ? v : 0])) }).vendas;
     if ((fv[0] + fv[1]) / 2 >= agenda) { verbaAgenda = v; break; }
   }
   const empata = Math.ceil(geral / ticket), sinal = v => v >= 0 ? "pos" : "neg";
@@ -372,7 +383,7 @@ function atualizar() {
     <div class="etapa"><span>📈 Sobra</span><b class="${sinal(lucro[1])}">${lucro[0] === lucro[1] ? lucroTxt(lucro[0]) : `<span class="${sinal(lucro[0])}">${lucroTxt(lucro[0])}</span> a ${lucroTxt(lucro[1])}`}</b></div>
     ${horas && empata > agenda ? "" : `<div class="paga">Com <b>${empata} atendimento${empata > 1 ? "s" : ""}</b> o investimento já se paga. Daí pra frente é lucro${atende[1] > empata ? `, e a estimativa é de até <b>${atende[1]}</b> em ${sTxt}` : ""}. E cliente que gosta volta e indica, então a conta segue rendendo depois da campanha.</div>`}
     ${horas && empata > agenda ? `<div class="aviso on">⚠ Seus ${agenda} horários livres não bastam pra pagar esse pacote só com atendimento (precisa de ${empata}). Escolha um pacote menor, menos verba ou conte com a venda de produtos.</div>` : ""}
-    ${espera ? `<div class="aviso on">📋 Pode chegar mais cliente do que cabe na agenda (até ${espera} a mais). Quem não couber entra na lista de espera pra depois.${verbaAgenda && verbaAgenda < st.verba ? ` Pra encher os seus ${agenda} horários, ${brl(verbaAgenda)} por anúncio já basta. <button class="add" data-verba="${verbaAgenda}" style="margin-top:.4rem">Usar ${brl(verbaAgenda)}</button>` : ""}</div>` : ""}
+    ${espera ? `<div class="aviso on">📋 Pode chegar mais cliente do que cabe na agenda (até ${espera} a mais). Quem não couber entra na lista de espera pra depois.${verbaAgenda && c.on.some(x => st.verbas[x.id] > verbaAgenda) ? ` Pra encher os seus ${agenda} horários, ${brl(verbaAgenda)} por campanha já basta. <button class="add" data-verba="${verbaAgenda}" style="margin-top:.4rem">Usar ${brl(verbaAgenda)}</button>` : ""}</div>` : ""}
     ${produtoOn ? `<p class="fonte">Na conversa, a automação pergunta se a cliente tem interesse nos seus produtos. Ela paga pela página de vendas ou no WhatsApp, e você entrega quando tiver em mãos. Quantas levam produto (2 a 4 de cada 10 clientes prontas) é estimativa nossa.</p>` : ""}`;
 
   $("pedido").innerHTML = `
@@ -381,8 +392,7 @@ function atualizar() {
     <div class="linha"><span><b style="color:var(--texto)">Mão de obra</b></span></div>
     ${c.itens.map(i => `<div class="linha"><span>${i.nome}</span><b>${brl(i.valor)}</b></div>`).join("")}
     <div class="linha"><span><b style="color:var(--texto)">Verba dos anúncios</b><small>pago direto pra cada plataforma, no seu cartão</small></span></div>
-    ${st.insta ? `<div class="linha"><span>📸 Anúncio Instagram e Facebook</span><b>${brl(st.insta * st.verba * st.semanas)}</b></div>` : ""}
-    ${CONFIG.canais.filter(x => st.canais.includes(x.id)).map(x => `<div class="linha"><span>${x.ic} Anúncio ${x.nome}</span><b>${brl(st.verba * st.semanas)}</b></div>`).join("")}
+    ${c.on.map(x => `<div class="linha"><span>${x.ic} Campanha ${x.nome}<small>${brl(st.verbas[x.id])} por semana${st.semanas > 1 ? ` × ${st.semanas}` : ""}</small></span><b>${brl(st.verbas[x.id] * st.semanas)}</b></div>`).join("")}
     <div class="linha"><span><b style="color:var(--texto)">${CONFIG.automacao.nome}</b></span><b>${c.mensal ? brl(c.mensal) + "/mês" : "sem"}</b></div>
     <div class="sep"></div>
     ${mercadoHTML(c)}
@@ -404,7 +414,7 @@ function atualizar() {
       `Oi! ${nome ? `Aqui é a ${nome}. ` : ""}Montei o meu pacote de Black:`,
       ...c.itens.map(i => `• ${i.nome}`),
       `• ${CONFIG.automacao.nome}: ${c.mensal ? brl(c.mensal) + "/mês" : "sem"}`,
-      `Campanha de ${sTxt}. Verba: ${brl(st.verba)} por anúncio por semana (${brl(c.anuncio)} no total, pago direto na plataforma)`,
+      `Campanha de ${sTxt}. Verba por semana: ${c.on.map(x => `${x.nome} ${brl(st.verbas[x.id])}`).join(", ")} (${brl(c.anuncio)} no total, pago direto nas plataformas)`,
       `Serviço: ${brl(c.servico)} (${st.parcelas}x de ${brl2(total / st.parcelas)} no cartão ou ${brl(c.servico)} no Pix)`,
       `Total da campanha: ${brl2(geral)} (ou ${brl(geralPix)} com o serviço no Pix)`
     ].join("\n");
@@ -417,16 +427,14 @@ document.addEventListener("click", e => {
   const sm = e.target.closest("[data-semanas]");
   if (sm) { st.semanas = +sm.dataset.semanas; atualizar(); return; }
   const vb = e.target.closest("[data-verba]");
-  if (vb) { st.verba = +vb.dataset.verba; desenhar(); return; }
-  const t = e.target.closest("[data-pronto],[data-insta],[data-acao]");
+  if (vb) { for (const k in st.verbas) if (st.verbas[k] > 0) st.verbas[k] = +vb.dataset.verba; desenhar(); return; }
+  const t = e.target.closest("[data-pronto],[data-criativos],[data-acao]");
   if (!t) return;
-  if (t.dataset.pronto) {
-    const p = CONFIG.prontos.find(x => x.id === t.dataset.pronto);
-    st = { ...st, insta: p.insta, canais: [...p.canais], pagina: p.pagina, auto: p.auto };
-  } else if (t.dataset.insta !== undefined) st.insta = +t.dataset.insta;
+  if (t.dataset.pronto) st = comVerbas(st, CONFIG.prontos.find(x => x.id === t.dataset.pronto));
+  else if (t.dataset.criativos) st.criativos = +t.dataset.criativos;
   else {
     const [acao, id] = t.dataset.acao.split(":");
-    if (acao === "canal") st.canais = st.canais.includes(id) ? st.canais.filter(x => x !== id) : [...st.canais, id];
+    if (acao === "canal") st.verbas[id] = st.verbas[id] > 0 ? 0 : R;
     if (acao === "pagina") st.pagina = !st.pagina;
     if (acao === "auto") st.auto = !st.auto;
   }
