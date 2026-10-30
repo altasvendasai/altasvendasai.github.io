@@ -95,6 +95,17 @@ h2.title{font-size:28px;font-weight:800;margin:8px 0 6px;letter-spacing:-.3px;te
 .sum{color:#eaf3ef;font-size:14.5px;background:rgba(0,0,0,.25);border-radius:9px;padding:11px 13px;margin-top:10px;line-height:1.5}
 .sum b{color:var(--vivo)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;border-radius:999px;padding:17px 44px;font-size:17.5px;font-weight:800;cursor:pointer;text-decoration:none;font-family:inherit;background:var(--vivo);color:#06231A;box-shadow:0 8px 22px rgba(37,211,102,.3);margin-top:24px}
+.form{max-width:680px;margin-top:18px;display:flex;flex-direction:column;gap:16px}
+.form label.q{display:block;font-weight:700;font-size:15.5px;margin-bottom:6px}
+.form label.q small{display:block;font-weight:500;color:var(--muted);font-size:13.5px}
+.form textarea,.form input[type=text]{width:100%;font:inherit;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink)}
+.form textarea{min-height:84px;resize:vertical}
+.form textarea:focus,.form input[type=text]:focus{outline:none;border-color:var(--vivo)}
+.ops{display:flex;flex-wrap:wrap;gap:8px}
+.ops label{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14.5px;cursor:pointer;background:var(--panel)}
+.ops label:has(input:checked){border-color:var(--vivo);background:var(--verde-sf)}
+.ops input{accent-color:var(--verde)}
+.btn.escuro{background:var(--tinta);color:#fff;box-shadow:0 8px 22px rgba(10,20,17,.2);margin-top:4px}
 footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px;font-size:13px;border-top:1px solid rgba(255,255,255,.08)}
 @media(max-width:760px){
   section{padding:42px 0}
@@ -211,6 +222,24 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <p style="margin:24px 0 0"><a href="#" onclick="duvida(event)" style="color:#8fa39b;font-size:13.5px">Ainda tenho dúvidas</a></p>
 </div></section>
 
+<section id="plano"><div class="wrap">
+  <div class="eyebrow">Plano de ação</div>
+  <h2 class="title">Me conta um pouco mais</h2>
+  <p class="lead">Com essas respostas eu fecho o seu plano: quanto você pode faturar e como vender os seus blends.</p>
+  <form class="form" id="form-plano" onsubmit="enviarPlano(event)">
+    <div><label class="q" for="q1">Quais procedimentos você faz e quanto cobra cada um?<small>Ex.: drenagem R$ 120, tratamento de celulite R$ 150</small></label><textarea id="q1"></textarea></div>
+    <div><label class="q" for="q2">Quais desses você mais quer vender?</label><input type="text" id="q2"></div>
+    <div><label class="q" for="q3">Em que cidade e bairro você atende?<small>Pra mostrar o anúncio do Google pra quem está perto</small></label><input type="text" id="q3"></div>
+    <div><label class="q" for="q4">Quanto tempo dura cada blend?<small>O de 10 ml e o de 30 ml, usando do jeito certo</small></label><input type="text" id="q4"></div>
+    <div><span class="q" style="display:block;font-weight:700;font-size:15.5px;margin-bottom:6px">Você tem blend pronto pra entregar na hora?</span>
+      <div class="ops"><label><input type="radio" name="q5" value="Sim, tenho em estoque"> Sim, tenho em estoque</label><label><input type="radio" name="q5" value="Faço sob encomenda"> Faço sob encomenda</label></div></div>
+    <div><span class="q" style="display:block;font-weight:700;font-size:15.5px;margin-bottom:6px">Pra quem compra só o blend, sem atendimento:</span>
+      <div class="ops"><label><input type="radio" name="q6" value="Retira no meu espaço"> Retira no meu espaço</label><label><input type="radio" name="q6" value="Eu entrego"> Eu entrego</label><label><input type="radio" name="q6" value="Os dois"> Os dois</label></div></div>
+    <div><label class="q" for="q7">Quer contar mais alguma coisa?</label><textarea id="q7" style="min-height:64px"></textarea></div>
+    <button class="btn escuro" type="submit">📩 Enviar Respostas</button>
+  </form>
+</div></section>
+
 <footer>AltasVendas IA · Proposta da campanha de Black Friday</footer>
 
 <script>
@@ -245,6 +274,20 @@ function aceitar(e) {
 function duvida(e) {
   e.preventDefault();
   window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent("Oi! Vi a proposta da campanha e ainda tenho dúvidas."), "_blank");
+}
+function enviarPlano(e) {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim() || "—";
+  const r = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || "—";
+  const msg = [`Respostas do plano de ação${nome ? ` (${nome})` : ""}:`,
+    `• Procedimentos e valores: ${v("q1")}`,
+    `• Quero vender mais: ${v("q2")}`,
+    `• Onde atendo: ${v("q3")}`,
+    `• Duração dos blends: ${v("q4")}`,
+    `• Blend pronto: ${r("q5")}`,
+    `• Blend sem atendimento: ${r("q6")}`,
+    `• Mais alguma coisa: ${v("q7")}`].join("\n");
+  window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
 }
 selPg();
 </script>
