@@ -69,6 +69,7 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .aviso{display:none;margin-top:4px;background:#FFF6E5;border:1px solid #F5D9A8;color:var(--alerta);border-radius:12px;padding:10px 12px;font-size:.84rem}
 .aviso.on{display:block}
 .verba{margin:.2rem 0 .6rem;background:#F4F7F5;border-radius:14px;padding:12px 14px}
+.verba .rotulo{display:inline-block;background:var(--tinta);color:var(--verde-vivo);font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:.25rem .7rem;margin-bottom:.5rem}
 .verba .valor{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.4rem}
 .verba .valor b{font-size:1.5rem;font-weight:800;font-variant-numeric:tabular-nums}
 .verba .valor small{color:var(--cinza);font-size:.8rem}
@@ -346,7 +347,7 @@ function desenhar() {
   $("anuncios").innerHTML = CONFIG.canais.map(c => {
     const v = faixaVerba(c.id);
     const on = st.verbas[c.id] > 0;
-    const barra = on ? `<div class="verba"><div class="valor"><b id="v-${c.id}">${brl(st.verbas[c.id])}</b><small>de verba por semana</small></div>
+    const barra = on ? `<div class="verba"><span class="rotulo">Valor do anúncio no ${c.nome}</span><div class="valor"><b id="v-${c.id}">${brl(st.verbas[c.id])}</b><small>por semana</small></div>
       <input type="range" data-barra="${c.id}" min="${v.min}" max="${v.max}" step="${v.passo}" value="${st.verbas[c.id]}" aria-label="Verba do ${c.nome}">
       <div class="marcas"><span>${brl(v.min)}</span><span class="rec">recomendado ${brl(v.recomendado)}</span><span>${brl(v.max)}</span></div></div>` : "";
     return `<div class="canal">${item(c.ic, c.nome, c.desc, on ? "" : `verba de ${brl(v.min)} a ${brl(v.max)}/semana`, botao(on, "canal:" + c.id))}${barra}</div>`;
