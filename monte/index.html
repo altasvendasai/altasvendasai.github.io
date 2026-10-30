@@ -233,6 +233,7 @@ const CONFIG = {
   maxPosts: 6,
   campanha: { nome: "Campanha de anúncio", desc: "criar, subir e acompanhar", valor: 150 }, // por canal
   pagina: { nome: "Página de vendas", desc: "Página com a sua oferta de Black pra cliente ver tudo e chamar no WhatsApp. E ainda vende os seus produtos: a cliente escolhe e paga por ali.", servico: 300 },
+  form: { nome: "Formulário da cliente", desc: "Mais simples que a página: a cliente clica no anúncio e responde umas perguntas, uma de cada vez. No fim, cai no seu WhatsApp com um resumo do que ela precisa, e você responde quando der. E ainda pergunta se ela tem interesse nos seus produtos, pra você vender junto.", servico: 100 },
   automacao: { nome: "Automação no WhatsApp", desc: "Responde na hora, 24h, tira dúvidas e manda o link pra cliente agendar sozinha. E ainda oferece os seus produtos na conversa, pra vender mais pra cada cliente.", mensal: 97 },
   // Médias de mercado (ver "Como calculamos" na página)
   mercado: { cpm: { instagram: [25, 10], facebook: [15, 6], youtube: [25, 10] }, cpc: { instagram: [3.0, 0.8], facebook: [3.0, 0.8], google: [6.0, 1.5] }, conversa: [.4, .6] },
@@ -248,9 +249,9 @@ const CONFIG = {
   prontosPorReal: 20 / 545, // referência da página da Black: R$ 545 de anúncio ≈ 20 clientes prontos
   taxaVenda: [.2, .4],
   prontos: [
-    { id: "completa", nome: "Completa", posts: { carrossel: 2, card: 0 }, canais: ["instagram", "facebook", "google", "youtube"], pagina: true, auto: true },
-    { id: "recomendada", nome: "Recomendada", posts: { carrossel: 2, card: 0 }, canais: ["instagram", "facebook"], pagina: false, auto: true, rec: true },
-    { id: "essencial", nome: "Essencial", posts: { carrossel: 1, card: 0 }, canais: ["instagram"], pagina: false, auto: false }
+    { id: "completa", nome: "Completa", posts: { carrossel: 2, card: 0 }, canais: ["instagram", "facebook", "google", "youtube"], pagina: true, form: false, auto: true },
+    { id: "recomendada", nome: "Recomendada", posts: { carrossel: 2, card: 0 }, canais: ["instagram", "facebook"], pagina: false, form: false, auto: true, rec: true },
+    { id: "essencial", nome: "Essencial", posts: { carrossel: 1, card: 0 }, canais: ["instagram"], pagina: false, form: false, auto: false }
   ]
 };
 
@@ -276,9 +277,9 @@ const R = CONFIG.verba.recomendado;
 const faixaVerba = id => CONFIG.canais.find(c => c.id === id).verba || CONFIG.verba; // cada canal pode ter a sua régua
 const limita = (id, v) => { const fx = faixaVerba(id); return Math.min(fx.max, Math.max(fx.min, v)); };
 // verbas: quanto vai pra cada campanha por semana (0 = canal desligado)
-let st = { posts: { carrossel: 2, card: 0 }, verbas: { instagram: R, facebook: R, google: 0, youtube: 0 }, pagina: false, auto: true, semanas: 1, parcelas: 12 };
+let st = { posts: { carrossel: 2, card: 0 }, verbas: { instagram: R, facebook: R, google: 0, youtube: 0 }, pagina: false, form: false, auto: true, semanas: 1, parcelas: 12 };
 const ligados = s => CONFIG.canais.filter(c => s.verbas[c.id] > 0);
-const comVerbas = (s, p) => ({ ...s, posts: { ...p.posts }, pagina: p.pagina, auto: p.auto,
+const comVerbas = (s, p) => ({ ...s, posts: { ...p.posts }, pagina: p.pagina, form: !!p.form, auto: p.auto,
   verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, p.canais.includes(c.id) ? (s.verbas[c.id] || faixaVerba(c.id).recomendado) : 0])) });
 
 // === BLOCO 6: CONTA ===
@@ -292,6 +293,7 @@ function calcular(s) {
   if (on.length) itens.push({ nome: `📣 Campanhas de anúncio · ${on.length}`, sub: `${on.map(c => c.nome).join(", ")}: ${CONFIG.campanha.desc} (${brl(CONFIG.campanha.valor)} cada)`,
     valor: on.length * CONFIG.campanha.valor });
   if (s.pagina) itens.push({ nome: `🛒 ${CONFIG.pagina.nome}`, sub: "página com a sua oferta, ligada ao WhatsApp", valor: CONFIG.pagina.servico });
+  if (s.form) itens.push({ nome: `📝 ${CONFIG.form.nome}`, sub: "perguntas uma de cada vez, resumo no seu WhatsApp", valor: CONFIG.form.servico });
   const servico = itens.reduce((t, i) => t + i.valor, 0);
   const semanal = on.reduce((t, c) => t + s.verbas[c.id], 0);
   const anuncio = semanal * s.semanas;
@@ -305,7 +307,7 @@ function funil(s) {
   const conversas = i => cliques(i) * m.conversa[i];
   const total = CONFIG.canais.reduce((t, c) => t + gasto(c.id), 0), base = total * CONFIG.prontosPorReal;
   const prontos = [Math.min(base * .8, conversas(0)), Math.min(base * 1.2, conversas(1))];
-  const mult = (s.auto ? 1 : CONFIG.semAutomacao) * (s.pagina ? 1 : CONFIG.semPagina);
+  const mult = (s.auto ? 1 : CONFIG.semAutomacao) * (s.pagina || s.form ? 1 : CONFIG.semPagina);
   return {
     vis: [redondo(vis(0)), redondo(vis(1))], cliques: [redondo(cliques(0)), redondo(cliques(1))],
     conversas: [redondo(conversas(0)), redondo(conversas(1))], prontos,
@@ -317,7 +319,7 @@ function funil(s) {
 }
 // Parcelado: a taxa da InfinitePay vai pra quem compra, e a gente recebe o valor cheio
 const noCartao = (valor, n) => valor / (1 - CONFIG.taxasCartao[n]);
-const igual = (a, p) => CONFIG.posts.every(x => (a.posts[x.id] || 0) === (p.posts[x.id] || 0)) && a.auto === p.auto && a.pagina === p.pagina && ligados(a).map(c => c.id).join() === CONFIG.canais.filter(c => p.canais.includes(c.id)).map(c => c.id).join();
+const igual = (a, p) => CONFIG.posts.every(x => (a.posts[x.id] || 0) === (p.posts[x.id] || 0)) && a.auto === p.auto && a.pagina === p.pagina && !!a.form === !!p.form && ligados(a).map(c => c.id).join() === CONFIG.canais.filter(c => p.canais.includes(c.id)).map(c => c.id).join();
 
 // Comparativo: o que a mesma escolha custaria lá fora (piso das faixas de mercado)
 function mercadoHTML(c) {
@@ -363,6 +365,7 @@ function desenhar() {
 
   $("adicionais").innerHTML =
     item("🛒", CONFIG.pagina.nome, CONFIG.pagina.desc, `+ ${brl(CONFIG.pagina.servico)}`, botao(st.pagina, "pagina")) +
+    item("📝", CONFIG.form.nome, CONFIG.form.desc, `+ ${brl(CONFIG.form.servico)}`, botao(st.form, "form")) +
     item("💬", `${CONFIG.automacao.nome}<span class="tag">Indicado</span>`, CONFIG.automacao.desc, `${brl(CONFIG.automacao.mensal)}/mês`, botao(st.auto, "auto"));
   $("aviso-sem").classList.toggle("on", !st.auto);
   atualizar();
@@ -372,7 +375,7 @@ function atualizar() {
   const c = calcular(st);
   // A verba de cada campanha aparece na barra; aqui embaixo, o total e a mão de obra
   $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Verba das campanhas · ${c.on.length} campanha${c.on.length > 1 ? "s" : ""}<small>pago direto pra cada plataforma</small></span><b>${brl(c.semanal)}/semana</b></div>
-    <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>estratégia de vendas, criação de conteúdo e campanhas de anúncio${st.pagina ? " + página de vendas" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
+    <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>estratégia de vendas, criação de conteúdo e campanhas de anúncio${st.pagina ? " + página de vendas" : ""}${st.form ? " + formulário da cliente" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
   document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", igual(st, CONFIG.prontos.find(p => p.id === b.dataset.pronto))));
   if (c.vazio) {
     $("funil").innerHTML = `<p class="sub">Escolha pelo menos um canal: Instagram, Facebook, Google ou YouTube.</p>`;
@@ -398,7 +401,7 @@ function atualizar() {
   const opcoesParc = Object.keys(CONFIG.taxasCartao).map(n =>
     `<option value="${n}"${+n === st.parcelas ? " selected" : ""}>${n}x de ${brl2(noCartao(c.servico, +n) / n)}</option>`).join("");
   // Se paga? Receita das vendas prováveis menos tudo o que ela investe (serviço no cartão + anúncio + automação)
-  const extra = produtoOn && (st.pagina || st.auto) ? f.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto) : [0, 0];
+  const extra = produtoOn && (st.pagina || st.form || st.auto) ? f.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto) : [0, 0];
   // A agenda é o teto: atendimento além dos horários livres vira lista de espera
   const atende = f.vendas.map(v => horas ? Math.min(v, agenda) : v), espera = horas ? Math.max(0, f.vendas[1] - agenda) : 0;
   const receita = atende.map((v, i) => v * ticket + extra[i]), lucro = receita.map(v => v - geral);
@@ -467,8 +470,9 @@ function abrirAviso() {
   CONFIG.canais.filter(c => !(st.verbas[c.id] > 0)).forEach(c =>
     faltas.push({ nome: `${c.ic} Campanha no ${c.nome}`, desc: c.desc, pct: reduz({ ...st, verbas: { ...st.verbas, [c.id]: faixaVerba(c.id).recomendado } }) }));
   const prodTxt = produtoOn ? (() => { const v = atual.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto); return ` (cerca de ${brl(v[0])} a ${brl(v[1])} em ${sTxt})`; })() : "";
-  const semVenda = !st.pagina && !st.auto ? " Sem a página e sem a automação, você não tem onde vender os seus produtos" + prodTxt + "." : "";
-  if (!st.pagina) faltas.push({ nome: `🛒 ${CONFIG.pagina.nome}`, desc: "Sem ela, você perde a oportunidade de vender os seus produtos pela página.", pct: reduz({ ...st, pagina: true }) });
+  const semVenda = !st.pagina && !st.form && !st.auto ? " Sem página, formulário ou automação, você não tem onde vender os seus produtos" + prodTxt + "." : "";
+  if (!st.pagina && !st.form) faltas.push({ nome: `🛒 ${CONFIG.pagina.nome}`, desc: "Sem ela, você perde a oportunidade de vender os seus produtos pela página.", pct: reduz({ ...st, pagina: true }) });
+  if (!st.pagina && !st.form) faltas.push({ nome: `📝 ${CONFIG.form.nome}`, desc: "Sem ele, a cliente chega no WhatsApp sem dizer o que precisa, e você perde a chance de saber quem quer os seus produtos.", pct: reduz({ ...st, form: true }) });
   if (!st.auto) faltas.push({ nome: `💬 ${CONFIG.automacao.nome}`, desc: "Sem ela, quem fica sem resposta compra de outra pessoa, e você perde a oportunidade de oferecer os seus produtos na conversa.", pct: reduz({ ...st, auto: true }) });
   if (!(st.posts.carrossel > 0)) faltas.push({ nome: "🎠 Post carrossel com funil de vendas", desc: "É o formato com mais chance de conversão.", pct: 0 });
   const tudo = funil({ ...st, pagina: true, auto: true, verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, st.verbas[c.id] > 0 ? st.verbas[c.id] : faixaVerba(c.id).recomendado])) });
@@ -479,7 +483,7 @@ function abrirAviso() {
     <div class="resumo-conv">Com o que você escolheu: <b>cerca de ${num(atual.chamando)} pessoas te chamando</b> e <b>${faixa(...atual.vendas)} vendas prováveis</b> em ${sTxt}.${semVenda}${totalPct > 0 ? ` Com tudo incluído, seriam cerca de ${num(tudo.chamando)} pessoas e ${faixa(...tudo.vendas)} vendas (${totalPct}% a mais).` : ""}</div>
     <button class="btn" id="avancar">Avançar</button>
     <button class="btn2" id="editar">Continuar Editando</button>
-    <p class="nota">Estimativa com médias do mercado. O efeito da página e da automação é estimativa nossa.</p>` : `
+    <p class="nota">Estimativa com médias do mercado. O efeito da página, do formulário e da automação é estimativa nossa.</p>` : `
     <h2 id="modal-t">Campanha completa!</h2>
     <div class="resumo-conv">Cerca de <b>${num(atual.chamando)} pessoas te chamando</b> e <b>${faixa(...atual.vendas)} vendas prováveis</b> em ${sTxt}.</div>
     <button class="btn" id="avancar">Avançar</button>
@@ -513,6 +517,7 @@ document.addEventListener("click", e => {
     const [acao, id] = t.dataset.acao.split(":");
     if (acao === "canal") st.verbas[id] = st.verbas[id] > 0 ? 0 : faixaVerba(id).recomendado;
     if (acao === "pagina") st.pagina = !st.pagina;
+    if (acao === "form") st.form = !st.form;
     if (acao === "auto") st.auto = !st.auto;
   }
   desenhar();
