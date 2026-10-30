@@ -77,6 +77,10 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .parcela small{display:block;color:var(--cinza-claro);font-size:.8rem}
 .parc-sel{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--cinza);margin-top:.2rem}
 .parc-sel select{flex:1;font:inherit;font-size:.92rem;padding:.55rem .6rem;border:1.5px solid var(--linha);border-radius:10px;background:var(--branco);color:var(--texto)}
+.total{border:1.5px solid var(--verde-vivo);border-radius:14px;padding:12px 14px;margin:.8rem 0}
+.total span{display:block;font-size:.82rem;font-weight:700;color:var(--cinza)}
+.total b{display:block;font-size:1.4rem;font-weight:800;font-variant-numeric:tabular-nums}
+.total small{display:block;font-size:.78rem;color:var(--cinza);line-height:1.4}
 .est{background:#F0F8F3;border-radius:12px;padding:.7rem .8rem;margin:.8rem 0;font-size:.9rem}
 .est b{color:var(--verde)}
 .btn{display:block;width:100%;text-align:center;border:none;cursor:pointer;background:var(--verde-vivo);color:#06231A;font-weight:800;font-size:1.02rem;padding:.95rem 1.2rem;border-radius:999px;text-decoration:none;font-family:inherit}
@@ -209,13 +213,15 @@ function resumo() {
     ${c.cs.map(x => `<div class="linha"><span>${x.nome}</span><b>${brl(x.servico)}</b></div>`).join("")}
     ${c.bonus ? `<div class="linha"><span>${CONFIG.paginaBonus}</span><b>grátis</b></div>` : ""}
     <div class="sep"></div>
-    <div class="linha"><span>Nosso serviço</span><b>${brl(c.servico)}</b></div>
-    <div class="parcela"><span>No cartão</span><b>${st.parcelas}x de ${brl2(total / st.parcelas)}</b>
+    <div class="linha"><span><b style="color:var(--texto)">Nosso serviço</b><small>pago pra AltasVendas IA</small></span><b>${brl(c.servico)}</b></div>
+    <div class="parcela"><span>Serviço no cartão</span><b>${st.parcelas}x de ${brl2(total / st.parcelas)}</b>
       <small>${st.parcelas > 1 ? `total ${brl2(total)} com a taxa da maquininha · ` : ""}ou ${brl(c.servico)} no Pix</small></div>
     <label class="parc-sel">Parcelas <select id="parc">${opcoesParc}</select></label>
     <div class="sep"></div>
     <div class="linha"><span>Anúncio<small>pago direto no Instagram/Google, no seu cartão</small></span><b>${brl(c.anuncio)}</b></div>
     <div class="linha"><span>Automação no WhatsApp</span><b>${c.auto ? brl(c.mensal) + "/mês" : "sem"}</b></div>
+    <div class="total"><span>Investimento total da campanha</span><b>${brl2(total + c.anuncio + c.mensal)}</b>
+      <small>serviço ${st.parcelas > 1 ? `no cartão em ${st.parcelas}x` : "no cartão"} + anúncio${c.auto ? " + 1º mês da automação" : ""}<br>ou ${brl(c.servico + c.anuncio + c.mensal)} com o serviço no Pix</small></div>
     <div class="est">Estimativa: <b>~${c.clientes} clientes prontos</b> pra comprar, com essa verba de anúncio.</div>
     <a class="btn" href="#" id="quero">Quero Esse Pacote</a>
     <p class="nota">Estimativa, não promessa: o resultado depende da sua oferta e do seu atendimento. Taxas de parcelamento da InfinitePay.</p>`;
@@ -229,7 +235,8 @@ function resumo() {
       c.bonus ? `• ${CONFIG.paginaBonus}` : "",
       `• Automação no WhatsApp: ${c.auto ? brl(c.mensal) + "/mês" : "sem"}`,
       `Serviço: ${brl(c.servico)} (${st.parcelas}x de ${brl2(total / st.parcelas)} no cartão ou ${brl(c.servico)} no Pix)`,
-      `Anúncio: ${brl(c.anuncio)}`
+      `Anúncio: ${brl(c.anuncio)} (pago direto na plataforma)`,
+      `Total da campanha: ${brl2(total + c.anuncio + c.mensal)} (ou ${brl(c.servico + c.anuncio + c.mensal)} com o serviço no Pix)`
     ].filter(Boolean).join("\n");
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
   });
