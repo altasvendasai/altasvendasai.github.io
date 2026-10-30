@@ -95,6 +95,17 @@ h2.title{font-size:28px;font-weight:800;margin:8px 0 6px;letter-spacing:-.3px;te
 .sum{color:#eaf3ef;font-size:14.5px;background:rgba(0,0,0,.25);border-radius:9px;padding:11px 13px;margin-top:10px;line-height:1.5}
 .sum b{color:var(--vivo)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;border-radius:999px;padding:17px 44px;font-size:17.5px;font-weight:800;cursor:pointer;text-decoration:none;font-family:inherit;background:var(--vivo);color:#06231A;box-shadow:0 8px 22px rgba(37,211,102,.3);margin-top:24px}
+.form{max-width:680px;margin-top:18px;display:flex;flex-direction:column;gap:16px}
+.form label.q{display:block;font-weight:700;font-size:15.5px;margin-bottom:6px}
+.form label.q small{display:block;font-weight:500;color:var(--muted);font-size:13.5px}
+.form textarea,.form input[type=text]{width:100%;font:inherit;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink)}
+.form textarea{min-height:84px;resize:vertical}
+.form textarea:focus,.form input[type=text]:focus{outline:none;border-color:var(--vivo)}
+.ops{display:flex;flex-wrap:wrap;gap:8px}
+.ops label{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14.5px;cursor:pointer;background:var(--panel)}
+.ops label:has(input:checked){border-color:var(--vivo);background:var(--verde-sf)}
+.ops input{accent-color:var(--verde)}
+.btn.escuro{background:var(--tinta);color:#fff;box-shadow:0 8px 22px rgba(10,20,17,.2);margin-top:4px}
 footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px;font-size:13px;border-top:1px solid rgba(255,255,255,.08)}
 @media(max-width:760px){
   section{padding:42px 0}
@@ -172,9 +183,9 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="eyebrow">Fazendo comigo</div>
   <h2 class="title">Investimento</h2>
   <div class="invest">
-    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine e mensagem automática</div></div><div class="v">R$ 250</div></div>
+    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine e mensagem automática</div></div><div class="v">R$ 297</div></div>
     <div class="row"><div><b>🔎 Anúncio no Google</b><div class="d">pago direto pro Google</div></div><div class="v">R$ 250</div></div>
-    <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez só</div></div><div class="v">R$ 500</div></div>
+    <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez só</div></div><div class="v">R$ 547</div></div>
     <div class="notes">
       <div>💡 O valor dos anúncios é gasto conforme a campanha roda, e o resultado depende também do atendimento.</div>
       <div>⭐ Acompanho a campanha enquanto ela roda e ajusto o que precisar.</div>
@@ -198,7 +209,7 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="eyebrow" style="color:var(--vivo);font-size:24px;letter-spacing:.3px;text-transform:none">Formas de pagamento</div>
   <p class="final-sub">Escolha uma das opções:</p>
   <div class="payopts">
-    <label class="payopt"><input type="radio" name="pg" value="pix" onchange="selPg()"><div><b>a) Pix à vista</b><span>R$ 500 de uma vez</span></div></label>
+    <label class="payopt"><input type="radio" name="pg" value="pix" onchange="selPg()"><div><b>a) Pix à vista</b><span>R$ 547 de uma vez</span></div></label>
     <label class="payopt"><input type="radio" name="pg" value="cartao" checked onchange="selPg()"><div><b>b) Cartão parcelado</b><span>em até 12x, com a taxa da maquininha</span></div></label>
     <div class="det" id="det">
       <label for="parc">Quantas parcelas?</label>
@@ -211,11 +222,29 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <p style="margin:24px 0 0"><a href="#" onclick="duvida(event)" style="color:#8fa39b;font-size:13.5px">Ainda tenho dúvidas</a></p>
 </div></section>
 
+<section id="plano"><div class="wrap">
+  <div class="eyebrow">Plano de ação</div>
+  <h2 class="title">Me conta um pouco mais</h2>
+  <p class="lead">Com essas respostas eu fecho o seu plano: quanto você pode faturar e como vender os seus blends.</p>
+  <form class="form" id="form-plano" onsubmit="enviarPlano(event)">
+    <div><label class="q" for="q1">Quais procedimentos você faz e quanto cobra cada um?<small>Ex.: drenagem R$ 120, tratamento de celulite R$ 150</small></label><textarea id="q1"></textarea></div>
+    <div><label class="q" for="q2">Quais desses você mais quer vender?</label><input type="text" id="q2"></div>
+    <div><label class="q" for="q3">Em que cidade e bairro você atende?<small>Pra mostrar o anúncio do Google pra quem está perto</small></label><input type="text" id="q3"></div>
+    <div><label class="q" for="q4">Quanto tempo dura cada blend?<small>O de 10 ml e o de 30 ml, usando do jeito certo</small></label><input type="text" id="q4"></div>
+    <div><span class="q" style="display:block;font-weight:700;font-size:15.5px;margin-bottom:6px">Você tem blend pronto pra entregar na hora?</span>
+      <div class="ops"><label><input type="radio" name="q5" value="Sim, tenho em estoque"> Sim, tenho em estoque</label><label><input type="radio" name="q5" value="Faço sob encomenda"> Faço sob encomenda</label></div></div>
+    <div><span class="q" style="display:block;font-weight:700;font-size:15.5px;margin-bottom:6px">Pra quem compra só o blend, sem atendimento:</span>
+      <div class="ops"><label><input type="radio" name="q6" value="Retira no meu espaço"> Retira no meu espaço</label><label><input type="radio" name="q6" value="Eu entrego"> Eu entrego</label><label><input type="radio" name="q6" value="Os dois"> Os dois</label></div></div>
+    <div><label class="q" for="q7">Quer contar mais alguma coisa?</label><textarea id="q7" style="min-height:64px"></textarea></div>
+    <button class="btn escuro" type="submit">📩 Enviar Respostas</button>
+  </form>
+</div></section>
+
 <footer>AltasVendas IA · Proposta da campanha de Black Friday</footer>
 
 <script>
 const ZAP = "5551982276577";
-const TOTAL = 500;
+const TOTAL = 547;
 // Taxas de parcelamento da InfinitePay (mesmas da proposta da Armeria)
 const FEES = {1:.042,2:.0609,3:.0701,4:.0791,5:.088,6:.0967,7:.1259,8:.1342,9:.1425,10:.1506,11:.1587,12:.1666};
 const brl = n => "R$ " + Number(n).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -239,12 +268,26 @@ function calc() {
 }
 function aceitar(e) {
   e.preventDefault();
-  const msg = `Quero começar a Fase 1 da campanha de Black Friday! Google, R$ 500. Pagamento: ${escolha}.`;
+  const msg = `Quero começar a Fase 1 da campanha de Black Friday! Google, R$ 547. Pagamento: ${escolha}.`;
   window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
 }
 function duvida(e) {
   e.preventDefault();
   window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent("Oi! Vi a proposta da campanha e ainda tenho dúvidas."), "_blank");
+}
+function enviarPlano(e) {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim() || "—";
+  const r = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || "—";
+  const msg = [`Respostas do plano de ação${nome ? ` (${nome})` : ""}:`,
+    `• Procedimentos e valores: ${v("q1")}`,
+    `• Quero vender mais: ${v("q2")}`,
+    `• Onde atendo: ${v("q3")}`,
+    `• Duração dos blends: ${v("q4")}`,
+    `• Blend pronto: ${r("q5")}`,
+    `• Blend sem atendimento: ${r("q6")}`,
+    `• Mais alguma coisa: ${v("q7")}`].join("\n");
+  window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
 }
 selPg();
 </script>
