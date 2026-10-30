@@ -114,6 +114,13 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .mercado small{display:block;font-size:.72rem;color:#9A7B4E;margin-top:.3rem;line-height:1.4}
 .mercado small a{color:#9A7B4E}
 .selo{display:inline-block;margin-top:.9rem;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.35);color:var(--verde-vivo);border-radius:999px;padding:.35rem .8rem;font-size:.82rem;font-weight:700}
+.ticket{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--cinza);margin:.2rem 0 .7rem}
+.ticket input{width:7.5rem;font:inherit;font-weight:800;font-size:1rem;padding:.45rem .6rem;border:1.5px solid var(--linha);border-radius:10px;color:var(--texto)}
+.conta{display:grid;gap:6px}
+.conta .etapa b.pos{color:var(--verde)}
+.conta .etapa b.neg{color:var(--alerta)}
+.paga{margin-top:.6rem;background:var(--tinta);color:#fff;border-radius:14px;padding:12px 14px;font-size:.92rem;line-height:1.45}
+.paga b{color:var(--verde-vivo)}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
 </style>
 </head>
@@ -157,6 +164,12 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
       <p class="sub">Estimativa com médias do mercado, conforme o que você escolheu.</p>
       <div class="funil" id="funil"></div>
       <p class="fonte">Como calculamos: Instagram com mil visualizações a R$ 10–25 e clique a R$ 0,80–3,00 (<a href="https://www.intentmarketing.com.br/blog/post-quanto-custa-meta-ads" target="_blank" rel="noopener">Intent Marketing, 2026</a>); Google com clique a R$ 1,50–6,00 para serviços locais (<a href="https://andrerochaconsultor.com.br/trafego-pago/quanto-custa-google-ads-brasil-2026/" target="_blank" rel="noopener">André Rocha, 2026</a>); YouTube só em visualizações. Conversas (4 a 6 de cada 10 cliques), clientes prontos e vendas (2 a 4 de cada 10 prontos) são estimativas nossas. Não é promessa: depende da oferta e do atendimento.</p>
+    </div>
+    <div class="caixa">
+      <h2>O investimento se paga?</h2>
+      <p class="sub">Quanto entra com as vendas da campanha, tirando tudo o que você investiu.</p>
+      <label class="ticket">Valor de cada atendimento: R$ <input type="number" id="ticket" min="1" step="10" inputmode="numeric"></label>
+      <div class="conta" id="lucro"></div>
     </div>
   </div>
 
@@ -213,6 +226,8 @@ const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(
 const indicacao = (new URLSearchParams(location.search).get("i") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
 if (nome) $("titulo").innerHTML = `${nome}, monte o <em>seu pacote</em>.`;
 if (indicacao) $("selo").textContent = `🏷 Preço de Black Friday + indicação da ${indicacao}`;
+const ticketURL = +(new URLSearchParams(location.search).get("t") || "");
+let ticket = ticketURL > 0 ? ticketURL : 350; // valor médio do atendimento (a Ale contou ~R$ 350)
 let st = { insta: 2, canais: [], pagina: false, auto: true, verba: CONFIG.verba.recomendado, parcelas: 12 };
 
 // === BLOCO 6: CONTA ===
@@ -302,6 +317,7 @@ function atualizar() {
     $("funil").innerHTML = `<p class="sub">Escolha pelo menos um anúncio: Instagram, Google ou YouTube.</p>`;
     $("pedido").innerHTML = `<h2>Seu pedido</h2><p class="sub">Escolha pelo menos um anúncio pra montar o pacote.</p>`;
     $("barra").innerHTML = `<span class="v"><small>Seu pedido</small><b>Escolha um anúncio</b></span>`;
+    $("lucro").innerHTML = "";
     return;
   }
   const f = funil(st);
@@ -317,6 +333,16 @@ function atualizar() {
   const geral = total + c.anuncio + c.mensal, geralPix = c.servico + c.anuncio + c.mensal;
   const opcoesParc = Object.keys(CONFIG.taxasCartao).map(n =>
     `<option value="${n}"${+n === st.parcelas ? " selected" : ""}>${n}x de ${brl2(noCartao(c.servico, +n) / n)}</option>`).join("");
+  // Se paga? Receita das vendas prováveis menos tudo o que ela investe (serviço no cartão + anúncio + automação)
+  const receita = f.vendas.map(v => v * ticket), lucro = receita.map(v => v - geral);
+  const empata = Math.ceil(geral / ticket), sinal = v => v >= 0 ? "pos" : "neg";
+  const lucroTxt = v => (v < 0 ? "− " : "+ ") + brl(Math.abs(v));
+  $("lucro").innerHTML = `
+    <div class="etapa"><span>💰 Entra com ${faixa(...f.vendas)} atendimentos</span><b>${brl(receita[0])} a ${brl(receita[1])}</b></div>
+    <div class="etapa"><span>📤 Total investido na campanha</span><b>− ${brl2(geral)}</b></div>
+    <div class="etapa"><span>📈 Sobra</span><b class="${sinal(lucro[1])}">${lucro[0] === lucro[1] ? lucroTxt(lucro[0]) : `<span class="${sinal(lucro[0])}">${lucroTxt(lucro[0])}</span> a ${lucroTxt(lucro[1])}`}</b></div>
+    <div class="paga">Com <b>${empata} atendimento${empata > 1 ? "s" : ""}</b> o investimento já se paga. Daí pra frente é lucro${f.vendas[1] > empata ? `, e a estimativa é de até <b>${f.vendas[1]}</b> na semana` : ""}. E cliente que gosta volta e indica, então a conta segue rendendo depois da campanha.</div>`;
+
   $("pedido").innerHTML = `
     <h2>Seu pedido</h2>
     ${c.itens.map(i => `<div class="linha"><span>${i.nome}</span><b>${brl(i.valor)}</b></div>`).join("")}
@@ -366,6 +392,8 @@ document.addEventListener("click", e => {
   }
   desenhar();
 });
+$("ticket").value = ticket;
+$("ticket").addEventListener("input", e => { const v = +e.target.value; if (v > 0) { ticket = v; atualizar(); } });
 desenhar();
 </script>
 </body>
