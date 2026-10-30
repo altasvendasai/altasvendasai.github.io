@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Black Friday no WhatsApp · AltasVendas AI</title>
+<title>Black Friday no WhatsApp · AltasVendas IA</title>
 <meta name="description" content="A gente monta e roda a sua Black Friday no WhatsApp: anúncio, atendimento inteligente e só cliente pronto pra comprar chegando até você.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -270,7 +270,7 @@ footer a:hover{text-decoration:underline}
 <header class="topo">
   <div class="wrap">
     <div class="barra">
-      <div class="logo">AltasVendas <span>AI</span></div>
+      <div class="logo">AltasVendas <span>IA</span></div>
       <a class="btn sec" href="#pacotes">Ver pacotes</a>
     </div>
     <div class="hero">
@@ -340,7 +340,7 @@ footer a:hover{text-decoration:underline}
       <div class="dep-item"><div class="ico">🧩</div><div><b>O resultado também depende de você.</b><p>A gente entrega o cliente pronto. Daí pra frente, quem fecha é a sua página de vendas e o seu vendedor: uma página lenta ou um atendimento demorado fazem cliente pronto desistir.</p></div></div>
       <div class="dep-item"><div class="ico">📋</div><div><b>Parecer depois da 1ª semana.</b><p>Com os números da primeira semana, a gente te mostra o que funcionou e o que ajustar nas próximas, na oferta, na página e no atendimento, pra dar cada vez mais certo.</p></div></div>
     </div>
-    <p class="legenda">Visitantes: em média, só 1 ou 2 de cada 100 pessoas que chegam pela internet compram (média de mercado). Clientes prontos: estimativa da AltasVendas AI; o número real depende da sua oferta e do seu atendimento.</p>
+    <p class="legenda">Visitantes: em média, só 1 ou 2 de cada 100 pessoas que chegam pela internet compram (média de mercado). Clientes prontos: estimativa da AltasVendas IA; o número real depende da sua oferta e do seu atendimento.</p>
   </div>
 </section>
 
@@ -554,7 +554,7 @@ footer a:hover{text-decoration:underline}
   </div>
 </section>
 <footer><div class="wrap">
-  <div class="rod-marca">AltasVendas <span>AI</span></div>
+  <div class="rod-marca">AltasVendas <span>IA</span></div>
   <p>Estratégia, tecnologia e suporte humano para ver suas vendas crescerem de forma escalável · Porto Alegre/RS</p>
   <p><a href="politica-de-vendas.html">Política de vendas</a></p>
   <p class="rod-assina">Página desenvolvida por <b>Elton Longaray</b></p>
@@ -565,7 +565,7 @@ footer a:hover{text-decoration:underline}
 const CONFIG = {
   whatsapp: "5551982276577",
   taxaQuentes: 0.3, // de cada 10 clientes prontos, 3 compram (estimativa)
-  parcelas: 12, // AltasVendas AI no cartão (o anúncio é pago direto na plataforma)
+  parcelas: 12, // AltasVendas IA no cartão (o anúncio é pago direto na plataforma)
   lucroAlvo: 1000, // lucro mínimo que a gente quer pro cliente, mesmo no plano mais barato
   kit: { qtd: 2, desconto: 0.10 }, // ticket baixo: kit de 2 com 10% off em cada (pra ela + alguém da família)
   vagas: 5,
@@ -638,7 +638,7 @@ function cartao(p, melhor) {
     <h3>${p.nome}</h3>
     <div class="dur">${p.duracao}</div>
     <div class="lucro-est"><span>Lucro estimado</span><b>${brl(p.lucro)}</b><small>Meta: ${p.meta} clientes prontos pra comprar</small></div>
-    <div class="parcela"><span>AltasVendas AI</span><b>${CONFIG.parcelas}x de ${brl2(p.valor / CONFIG.parcelas)}</b><small>ou ${brl(p.valor)} à vista</small></div>
+    <div class="parcela"><span>AltasVendas IA</span><b>${CONFIG.parcelas}x de ${brl2(p.valor / CONFIG.parcelas)}</b><small>ou ${brl(p.valor)} à vista</small></div>
     <div class="inv-total">+ Anúncio ${brl(p.anuncio)} (pago direto no Instagram/Google)<br>Investimento total: ${brl(p.inv)}</div>
     <ul>${p.itens.map(i => `<li>${i}</li>`).join("")}</ul>
     <div class="prazo">⏳ Novembro ou dezembro · começa em até 5 dias úteis</div>
@@ -700,7 +700,7 @@ function simular() {
   document.querySelectorAll("[data-orcamento]").forEach(b => b.addEventListener("click", e => {
     e.preventDefault();
     const msg = [
-      "Oi! Quero um orçamento personalizado pra Black da AltasVendas AI.",
+      "Oi! Quero um orçamento personalizado pra Black da AltasVendas IA.",
       "",
       `Preço do produto na Black: ${brl(ticket)}`,
       `Margem: ${$("sim-margem").value}%`
@@ -729,7 +729,7 @@ $("form-diag").addEventListener("submit", e => {
   const v = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || "não informado";
   const pac = CONFIG.pacotes.find(p => p.id === v("pacote"));
   const linhas = [
-    "Oi! Quero uma vaga na Black Friday da AltasVendas AI.",
+    "Oi! Quero uma vaga na Black Friday da AltasVendas IA.",
     "",
     `Empresa: ${$("f-empresa").value.trim()}`,
     `Vendemos: ${$("f-segmento").value.trim()}`,
