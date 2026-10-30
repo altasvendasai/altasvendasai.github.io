@@ -76,6 +76,13 @@ h2.title{font-size:28px;font-weight:800;margin:8px 0 6px;letter-spacing:-.3px;te
 .invest .row.tot{background:var(--tinta);color:#fff}
 .invest .row.tot .d{color:var(--steel)}
 .invest .row.tot .v{color:var(--vivo);font-size:26px}
+.invest .v s.de{color:var(--muted);font-weight:600;font-size:16px;margin-right:6px}
+.invest .v .bf{display:block;font-size:11.5px;font-weight:800;color:var(--verde);text-align:right;letter-spacing:.3px}
+.gch{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.gch label{display:flex;gap:6px;align-items:center;border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+.gch label:has(input:checked){border-color:var(--vivo);background:var(--verde-sf)}
+.gch input{accent-color:var(--verde)}
+.gch small{color:var(--verde);font-weight:700}
 .notes{padding:14px 22px;background:var(--gelo);font-size:14px;color:var(--muted)}
 .notes div{padding:3px 0}
 
@@ -146,6 +153,8 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
     <div class="card mod"><div class="ico">🔎</div><div><h3>Anúncio no Google</h3><p>Criar, subir e acompanhar a campanha nas buscas que a sua cliente faz, como tratamento de celulite e glúteos na sua região.</p></div></div>
     <div class="card mod"><div class="ico">📝</div><div><h3>Formulário com vitrine</h3><p>Perguntas rápidas, uma de cada vez, que qualificam a cliente. E mostra os seus blends com foto e o que fazem, sem preço, pra ela marcar o que chamou a atenção.</p></div></div>
     <div class="card mod"><div class="ico">💬</div><div><h3>Mensagem automática</h3><p>No seu WhatsApp, avisando a cliente que você recebeu e que logo dá retorno. Ninguém fica sem resposta.</p></div></div>
+    <div class="card mod"><div class="ico">🧴</div><div><h3>Venda dos seus blends</h3><p>Como oferecer depois do atendimento e como vender separado, pra quem só quer o produto.</p></div></div>
+    <div class="card mod"><div class="ico">📦</div><div><h3>Pacotes, sinal e retorno</h3><p>Pacotes de tratamento, sinal no Pix pra garantir o horário e o retorno das clientes.</p></div></div>
   </div>
 </div></section>
 
@@ -164,9 +173,9 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="eyebrow">Anúncios</div>
   <h2 class="title">Onde a sua cliente vai te encontrar</h2>
   <div class="grid" style="max-width:680px;margin-top:18px">
-    <div class="card anuncio"><h3>🔎 Google</h3><p class="lead" style="font-size:14.5px;margin:4px 0 0">Aparece pra quem já está pesquisando o que você faz na sua região. É gente que já quer resolver, não só quem está passando pelo feed.</p><div class="v">R$ 250 <small>de anúncio</small></div></div>
+    <div class="card anuncio"><h3>🔎 Google</h3><p class="lead" style="font-size:14.5px;margin:4px 0 0">Aparece pra quem já está pesquisando o que você faz na sua região. É gente que já quer resolver, não só quem está passando pelo feed.</p><div class="v">R$ 250 a R$ 300 <small>de anúncio</small></div></div>
   </div>
-  <div class="cartao">💳 <b>Você não precisa cadastrar cartão no Google.</b> Eu pago o anúncio e você me paga tudo junto, podendo parcelar. Os R$ 250 vão inteiros pro anúncio.</div>
+  <div class="cartao">💳 <b>Você não precisa cadastrar cartão no Google.</b> Eu pago o anúncio e você me paga tudo junto, podendo parcelar. Todo o valor do anúncio vai inteiro pro Google.</div>
 </div></section>
 
 <section class="tint"><div class="wrap">
@@ -183,9 +192,10 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="eyebrow">Fazendo comigo</div>
   <h2 class="title">Investimento</h2>
   <div class="invest">
-    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine e mensagem automática</div></div><div class="v">R$ 297</div></div>
-    <div class="row"><div><b>🔎 Anúncio no Google</b><div class="d">pago direto pro Google</div></div><div class="v">R$ 250</div></div>
-    <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez só</div></div><div class="v">R$ 547</div></div>
+    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine, mensagem automática, venda dos blends, pacotes, sinal e retorno</div></div><div class="v"><s class="de">R$ 1.000</s> R$ 350<span class="bf">Preço de Black Friday</span></div></div>
+    <div class="row"><div><b>🔎 Anúncio no Google</b><div class="d">eu pago direto pro Google</div>
+      <div class="gch"><label><input type="radio" name="gg" value="250" onchange="selPg()"> R$ 250</label><label><input type="radio" name="gg" value="300" checked onchange="selPg()"> R$ 300 <small>ideal pra começar</small></label></div></div><div class="v" id="v-gg">R$ 300</div></div>
+    <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez só</div></div><div class="v" id="v-tot">R$ 650</div></div>
     <div class="notes">
       <div>💡 O valor dos anúncios é gasto conforme a campanha roda, e o resultado depende também do atendimento.</div>
       <div>⭐ Acompanho a campanha enquanto ela roda e ajusto o que precisar.</div>
@@ -198,9 +208,8 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <h2 class="title">Depois que o Google der resultado</h2>
   <p class="lead">Cada fase é orçada à parte e só começa quando a anterior estiver funcionando.</p>
   <ul style="margin:14px 0 0;padding-left:1.2rem;max-width:680px">
-    <li style="padding:6px 0"><b>Fase 2 · Mais valor por cliente:</b> venda dos blends depois do atendimento e separado, pacotes de tratamento, sinal no Pix pra garantir o horário e retorno das clientes.</li>
-    <li style="padding:6px 0"><b>Fase 3 · YouTube:</b> vídeo curto antes dos vídeos que a sua cliente assiste.</li>
-    <li style="padding:6px 0"><b>Fase 4 · Instagram e Facebook:</b> post carrossel com funil de vendas e campanhas nos dois.</li>
+    <li style="padding:6px 0"><b>Fase 2 · YouTube:</b> vídeo curto antes dos vídeos que a sua cliente assiste.</li>
+    <li style="padding:6px 0"><b>Fase 3 · Instagram e Facebook:</b> post carrossel com funil de vendas e campanhas nos dois.</li>
     <li style="padding:6px 0"><b>Automação no WhatsApp:</b> quando chegar mais mensagem do que você dá conta de responder.</li>
   </ul>
 </div></section>
@@ -209,7 +218,7 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="eyebrow" style="color:var(--vivo);font-size:24px;letter-spacing:.3px;text-transform:none">Formas de pagamento</div>
   <p class="final-sub">Escolha uma das opções:</p>
   <div class="payopts">
-    <label class="payopt"><input type="radio" name="pg" value="pix" onchange="selPg()"><div><b>a) Pix à vista</b><span>R$ 547 de uma vez</span></div></label>
+    <label class="payopt"><input type="radio" name="pg" value="pix" onchange="selPg()"><div><b>a) Pix à vista</b><span id="pix-v">R$ 650 de uma vez</span></div></label>
     <label class="payopt"><input type="radio" name="pg" value="cartao" checked onchange="selPg()"><div><b>b) Cartão parcelado</b><span>em até 12x, com a taxa da maquininha</span></div></label>
     <div class="det" id="det">
       <label for="parc">Quantas parcelas?</label>
@@ -225,7 +234,7 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
 <section id="plano" hidden><div class="wrap">
   <div class="eyebrow">Plano de ação</div>
   <h2 class="title">Me conta um pouco mais</h2>
-  <p class="lead">Com essas respostas eu fecho o seu plano: quanto você pode faturar e como vender os seus blends.</p>
+  <p class="lead">Responde essas perguntas e toca em enviar. A sua resposta e o aceite da proposta chegam juntos no meu WhatsApp.</p>
   <form class="form" id="form-plano" onsubmit="enviarPlano(event)">
     <div><label class="q" for="q1">Quais procedimentos você faz e quanto cobra cada um?<small>Ex.: drenagem R$ 120, tratamento de celulite R$ 150</small></label><textarea id="q1"></textarea></div>
     <div><label class="q" for="q2">Quais desses você mais quer vender?</label><input type="text" id="q2"></div>
@@ -236,7 +245,7 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
     <div><span class="q" style="display:block;font-weight:700;font-size:15.5px;margin-bottom:6px">Pra quem compra só o blend, sem atendimento:</span>
       <div class="ops"><label><input type="radio" name="q6" value="Retira no meu espaço"> Retira no meu espaço</label><label><input type="radio" name="q6" value="Eu entrego"> Eu entrego</label><label><input type="radio" name="q6" value="Os dois"> Os dois</label></div></div>
     <div><label class="q" for="q7">Quer contar mais alguma coisa?</label><textarea id="q7" style="min-height:64px"></textarea></div>
-    <button class="btn escuro" type="submit">📩 Enviar Respostas</button>
+    <button class="btn escuro" type="submit">✅ Enviar e Aceitar a Proposta</button>
   </form>
 </div></section>
 
@@ -244,7 +253,8 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
 
 <script>
 const ZAP = "5551982276577";
-const TOTAL = 547;
+const SERVICO = 350; // preço de Black Friday (de R$ 1.000)
+let TOTAL = SERVICO + 300;
 // Taxas de parcelamento da InfinitePay (mesmas da proposta da Armeria)
 const FEES = {1:.042,2:.0609,3:.0701,4:.0791,5:.088,6:.0967,7:.1259,8:.1342,9:.1425,10:.1506,11:.1587,12:.1666};
 const brl = n => "R$ " + Number(n).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -252,9 +262,16 @@ const brl = n => "R$ " + Number(n).toLocaleString("pt-BR", { minimumFractionDigi
 const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
 if (nome) { document.getElementById("para").hidden = false; document.getElementById("para-nome").textContent = nome; }
 const parc = document.getElementById("parc");
-parc.innerHTML = Object.keys(FEES).map(n => `<option value="${n}"${n === "12" ? " selected" : ""}>${n}x de ${brl(TOTAL / (1 - FEES[n]) / n)}</option>`).join("");
+const brl0 = n => "R$ " + Number(n).toLocaleString("pt-BR");
 let escolha = "";
 function selPg() {
+  // Total = meu trabalho + o anúncio no Google que ela escolher
+  const gg = +document.querySelector('input[name="gg"]:checked').value, sel = parc.value || "12";
+  TOTAL = SERVICO + gg;
+  document.getElementById("v-gg").textContent = brl0(gg);
+  document.getElementById("v-tot").textContent = brl0(TOTAL);
+  document.getElementById("pix-v").textContent = brl0(TOTAL) + " de uma vez";
+  parc.innerHTML = Object.keys(FEES).map(n => `<option value="${n}"${n === sel ? " selected" : ""}>${n}x de ${brl(TOTAL / (1 - FEES[n]) / n)}</option>`).join("");
   const v = document.querySelector('input[name="pg"]:checked').value;
   document.getElementById("det").style.display = v === "cartao" ? "block" : "none";
   calc();
@@ -268,8 +285,6 @@ function calc() {
 }
 function aceitar(e) {
   e.preventDefault();
-  const msg = `Quero começar a Fase 1 da campanha de Black Friday! Google, R$ 547. Pagamento: ${escolha}.`;
-  window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
   // O plano de ação só aparece depois que ela escolhe começar
   const plano = document.getElementById("plano");
   plano.hidden = false;
@@ -283,7 +298,9 @@ function enviarPlano(e) {
   e.preventDefault();
   const v = id => document.getElementById(id).value.trim() || "—";
   const r = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || "—";
-  const msg = [`Respostas do plano de ação${nome ? ` (${nome})` : ""}:`,
+  const gg = document.querySelector('input[name="gg"]:checked').value;
+  const msg = [`Aceito a proposta da Fase 1 da campanha de Black Friday! Total ${brl0(TOTAL)} (meu trabalho R$ 350 + Google R$ ${gg}). Forma de pagamento: ${escolha}.`,
+    ``, `Respostas do plano de ação${nome ? ` (${nome})` : ""}:`,
     `• Procedimentos e valores: ${v("q1")}`,
     `• Quero vender mais: ${v("q2")}`,
     `• Onde atendo: ${v("q3")}`,
