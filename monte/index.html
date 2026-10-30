@@ -195,6 +195,7 @@ const CONFIG = {
     { id: "google", ic: "🔎", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250 },
     { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250 }
   ],
+  criativoUnidade: 300, // parte do serviço do Instagram que é o criativo; o resto é subir e configurar
   baseSemInsta: 600, // sem Instagram, o primeiro canal leva a base do serviço (estratégia, oferta e criativo)
   pagina: { nome: "Página de vendas", desc: "Página com a sua oferta de Black pra cliente ver tudo e chamar no WhatsApp.", servico: 300 },
   automacao: { nome: "Automação no WhatsApp", desc: "Responde na hora, 24h, tira dúvidas e manda o link pra cliente agendar sozinha.", mensal: 97 },
@@ -239,10 +240,15 @@ let st = { insta: 2, canais: [], pagina: false, auto: true, verba: CONFIG.verba.
 function calcular(s) {
   const insta = CONFIG.instagram.find(i => i.n === s.insta);
   const itens = [];
-  if (insta.n) itens.push({ nome: `Instagram · ${insta.nome}`, valor: insta.servico });
+  // O serviço do Instagram se divide em criativos + subir e configurar as campanhas
+  if (insta.n) {
+    const cri = insta.n * CONFIG.criativoUnidade;
+    itens.push({ nome: `🎨 Criativos · ${insta.n} unidade${insta.n > 1 ? "s" : ""} (Instagram e Facebook)`, valor: cri });
+    itens.push({ nome: "⚙️ Subir e configurar as campanhas", valor: insta.servico - cri });
+  }
   CONFIG.canais.filter(c => s.canais.includes(c.id)).forEach((c, k) =>
-    itens.push({ nome: c.nome, valor: !insta.n && k === 0 ? CONFIG.baseSemInsta : c.servico }));
-  if (s.pagina) itens.push({ nome: CONFIG.pagina.nome, valor: CONFIG.pagina.servico });
+    itens.push({ nome: `${c.ic} ${c.nome} · criativo + campanha`, valor: !insta.n && k === 0 ? CONFIG.baseSemInsta : c.servico }));
+  if (s.pagina) itens.push({ nome: `🛒 ${CONFIG.pagina.nome}`, valor: CONFIG.pagina.servico });
   const servico = itens.reduce((t, i) => t + i.valor, 0);
   const nAnuncios = insta.n + s.canais.length;
   const anuncio = nAnuncios * s.verba * s.semanas;
@@ -371,16 +377,20 @@ function atualizar() {
 
   $("pedido").innerHTML = `
     <h2>Seu pedido</h2>
+    <p class="sub">Campanha de ${sTxt}</p>
+    <div class="linha"><span><b style="color:var(--texto)">Mão de obra</b></span></div>
     ${c.itens.map(i => `<div class="linha"><span>${i.nome}</span><b>${brl(i.valor)}</b></div>`).join("")}
+    <div class="linha"><span><b style="color:var(--texto)">Verba dos anúncios</b><small>pago direto pra cada plataforma, no seu cartão</small></span></div>
+    ${st.insta ? `<div class="linha"><span>📸 Anúncio Instagram e Facebook</span><b>${brl(st.insta * st.verba * st.semanas)}</b></div>` : ""}
+    ${CONFIG.canais.filter(x => st.canais.includes(x.id)).map(x => `<div class="linha"><span>${x.ic} Anúncio ${x.nome}</span><b>${brl(st.verba * st.semanas)}</b></div>`).join("")}
+    <div class="linha"><span><b style="color:var(--texto)">${CONFIG.automacao.nome}</b></span><b>${c.mensal ? brl(c.mensal) + "/mês" : "sem"}</b></div>
     <div class="sep"></div>
     ${mercadoHTML(c)}
     <div class="linha"><span><b style="color:var(--texto)">Nosso serviço</b><small>pago pra AltasVendas IA</small></span><b>${brl(c.servico)}</b></div>
     <div class="parcela"><span>Serviço no cartão</span><b>${st.parcelas}x de ${brl2(total / st.parcelas)}</b>
       <small>${st.parcelas > 1 ? `total ${brl2(total)} com a taxa da maquininha · ` : ""}ou ${brl(c.servico)} no Pix</small></div>
     <label class="parc-sel">Parcelas <select id="parc">${opcoesParc}</select></label>
-    <div class="sep"></div>
-    <div class="linha"><span>Anúncio · ${c.nAnuncios} × ${brl(st.verba)}${st.semanas > 1 ? ` × ${st.semanas} semanas` : ""}<small>pago direto na plataforma, no seu cartão</small></span><b>${brl(c.anuncio)}</b></div>
-    <div class="linha"><span>${CONFIG.automacao.nome}</span><b>${c.mensal ? brl(c.mensal) + "/mês" : "sem"}</b></div>
+
     <div class="total"><span>Investimento total da campanha</span><b>${brl2(geral)}</b>
       <small>serviço no cartão${st.parcelas > 1 ? ` em ${st.parcelas}x` : ""} + anúncio${c.mensal ? " + 1º mês da automação" : ""}<br>ou ${brl(geralPix)} com o serviço no Pix</small></div>
     <a class="btn" href="#" id="quero">Quero Esse Pacote</a>
