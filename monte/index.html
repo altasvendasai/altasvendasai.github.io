@@ -249,8 +249,7 @@ const CONFIG = {
     { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.",
       verba: { min: 50, max: 300, passo: 10, recomendado: 80 } } // YouTube é bem mais barato por visualização
   ],
-  // Mão de obra = estratégia de vendas + criação de conteúdo (por post) + campanhas de anúncio (por canal)
-  estrategia: { nome: "Estratégia de vendas", desc: "oferta, público e o caminho da cliente até a venda", valor: 400 },
+  // Mão de obra = criação de conteúdo (por post) + campanhas de anúncio (por canal)
   posts: [
     { id: "carrossel", ic: "🎠", nome: "Post carrossel com funil de vendas integrado", desc: "Estilo carrossel, com mais chance de conversão.", preco: 150, rec: true },
     { id: "card", ic: "🖼", nome: "Post card único", desc: "Uma imagem só, direto ao ponto.", preco: 90 }
@@ -311,7 +310,6 @@ const comVerbas = (s, p) => ({ ...s, posts: { ...p.posts }, pagina: p.pagina, fo
 function calcular(s) {
   const on = ligados(s), meta = on.filter(c => c.meta);
   const itens = [];
-  itens.push({ nome: `🧭 ${CONFIG.estrategia.nome}`, sub: CONFIG.estrategia.desc, valor: CONFIG.estrategia.valor });
   const posts = CONFIG.posts.filter(p => s.posts[p.id] > 0);
   if (posts.length) itens.push({ nome: "🎨 Criação de conteúdo", sub: posts.map(p => `${s.posts[p.id]} × ${p.nome.toLowerCase()} (${brl(p.preco)})`).join(" + "),
     valor: posts.reduce((t, p) => t + s.posts[p.id] * p.preco, 0) });
@@ -400,7 +398,7 @@ function atualizar() {
   const c = calcular(st);
   // A verba de cada campanha aparece na barra; aqui embaixo, o total e a mão de obra
   $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Verba das campanhas · ${c.on.length} campanha${c.on.length > 1 ? "s" : ""}<small>pago direto pra cada plataforma</small></span><b>${brl(c.semanal)}/semana</b></div>
-    <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>estratégia de vendas, criação de conteúdo e campanhas de anúncio${st.pagina ? " + página de vendas" : ""}${st.form ? " + formulário da cliente" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
+    <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>criação de conteúdo e campanhas de anúncio${st.pagina ? " + página de vendas" : ""}${st.form ? " + formulário da cliente" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
   document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", igual(st, CONFIG.prontos.find(p => p.id === b.dataset.pronto))));
   if (c.vazio) {
     $("funil").innerHTML = `<p class="sub">Escolha pelo menos um canal: Instagram, Facebook, Google ou YouTube.</p>`;
