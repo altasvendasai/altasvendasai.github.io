@@ -121,6 +121,7 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .conta .neg{color:var(--alerta)}
 .paga{margin-top:.6rem;background:var(--tinta);color:#fff;border-radius:14px;padding:12px 14px;font-size:.92rem;line-height:1.45}
 .paga b{color:var(--verde-vivo)}
+.maoobra{border-top:1px solid var(--linha);margin-top:.4rem;padding-top:.6rem}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
 </style>
 </head>
@@ -291,18 +292,18 @@ const botao = (on, acao) => `<button class="add${on ? " on" : ""}" data-acao="${
 function desenhar() {
   $("prontos").innerHTML = CONFIG.prontos.map(p => {
     const c = calcular({ ...st, ...p });
-    return `<button class="pronto${igual(st, p) ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}${p.rec ? " ⭐" : ""}</b><small>${brl(c.servico)}</small></button>`;
+    return `<button class="pronto${igual(st, p) ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}${p.rec ? " ⭐" : ""}</b><small class="pv-pronto" data-n="${c.nAnuncios}"></small></button>`;
   }).join("");
 
   const semInsta = st.insta === 0, primeiro = semInsta && st.canais[0];
   $("anuncios").innerHTML =
     `<div class="item"><span class="ic">📸</span><span class="t"><b>Instagram e Facebook</b><small>O criativo é o anúncio que chama a cliente pra conversar com você.</small>
-      <div class="seg">${CONFIG.instagram.map(i => `<button class="${st.insta === i.n ? "on" : ""}" data-insta="${i.n}">${i.nome}${i.servico ? ` · ${brl(i.servico)}` : ""}${i.rec ? " ⭐" : ""}</button>`).join("")}</div></span></div>` +
+      <div class="seg">${CONFIG.instagram.map(i => `<button class="${st.insta === i.n ? "on" : ""}" data-insta="${i.n}">${i.nome}${i.n ? ` · <span class="pv" data-n="${i.n}"></span>` : ""}${i.rec ? " ⭐" : ""}</button>`).join("")}</div></span></div>` +
     CONFIG.canais.map(c => {
       const on = st.canais.includes(c.id);
-      const preco = semInsta && (primeiro === c.id || !st.canais.length) ? brl(CONFIG.baseSemInsta) : `+ ${brl(c.servico)}`;
-      return item(c.ic, c.nome, c.desc, preco, botao(on, "canal:" + c.id));
-    }).join("");
+      return item(c.ic, c.nome, c.desc, `<span class="pv" data-n="1"></span>`, botao(on, "canal:" + c.id));
+    }).join("") +
+    `<div class="maoobra" id="maoobra"></div>`;
 
   const v = CONFIG.verba;
   $("verba").innerHTML = `<div class="valor"><b id="verba-v">${brl(st.verba)}</b><small>por anúncio, por semana</small></div>
@@ -319,6 +320,11 @@ function desenhar() {
 
 function atualizar() {
   const c = calcular(st);
+  // Opções mostram só o valor do anúncio; a mão de obra aparece embaixo e muda junto
+  document.querySelectorAll(".pv").forEach(e => e.textContent = `${brl(st.verba * +e.dataset.n)}/semana`);
+  document.querySelectorAll(".pv-pronto").forEach(e => e.textContent = `anúncio ${brl(st.verba * +e.dataset.n)}/sem`);
+  $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Anúncio · ${c.nAnuncios} × ${brl(st.verba)}<small>pago direto na plataforma</small></span><b>${brl(c.anuncio)}/semana</b></div>
+    <div class="linha"><span>🛠 Mão de obra<small>estratégia, criativos e configuração${st.pagina ? " + página de vendas" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
   document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", igual(st, CONFIG.prontos.find(p => p.id === b.dataset.pronto))));
   if (c.vazio) {
     $("funil").innerHTML = `<p class="sub">Escolha pelo menos um anúncio: Instagram, Google ou YouTube.</p>`;
