@@ -183,9 +183,9 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="eyebrow">Fazendo comigo</div>
   <h2 class="title">Investimento</h2>
   <div class="invest">
-    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine e mensagem automática</div></div><div class="v">R$ 250</div></div>
+    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine e mensagem automática</div></div><div class="v">R$ 297</div></div>
     <div class="row"><div><b>🔎 Anúncio no Google</b><div class="d">pago direto pro Google</div></div><div class="v">R$ 250</div></div>
-    <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez só</div></div><div class="v">R$ 500</div></div>
+    <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez só</div></div><div class="v">R$ 547</div></div>
     <div class="notes">
       <div>💡 O valor dos anúncios é gasto conforme a campanha roda, e o resultado depende também do atendimento.</div>
       <div>⭐ Acompanho a campanha enquanto ela roda e ajusto o que precisar.</div>
@@ -209,7 +209,7 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="eyebrow" style="color:var(--vivo);font-size:24px;letter-spacing:.3px;text-transform:none">Formas de pagamento</div>
   <p class="final-sub">Escolha uma das opções:</p>
   <div class="payopts">
-    <label class="payopt"><input type="radio" name="pg" value="pix" onchange="selPg()"><div><b>a) Pix à vista</b><span>R$ 500 de uma vez</span></div></label>
+    <label class="payopt"><input type="radio" name="pg" value="pix" onchange="selPg()"><div><b>a) Pix à vista</b><span>R$ 547 de uma vez</span></div></label>
     <label class="payopt"><input type="radio" name="pg" value="cartao" checked onchange="selPg()"><div><b>b) Cartão parcelado</b><span>em até 12x, com a taxa da maquininha</span></div></label>
     <div class="det" id="det">
       <label for="parc">Quantas parcelas?</label>
@@ -244,7 +244,7 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
 
 <script>
 const ZAP = "5551982276577";
-const TOTAL = 500;
+const TOTAL = 547;
 // Taxas de parcelamento da InfinitePay (mesmas da proposta da Armeria)
 const FEES = {1:.042,2:.0609,3:.0701,4:.0791,5:.088,6:.0967,7:.1259,8:.1342,9:.1425,10:.1506,11:.1587,12:.1666};
 const brl = n => "R$ " + Number(n).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -268,7 +268,7 @@ function calc() {
 }
 function aceitar(e) {
   e.preventDefault();
-  const msg = `Quero começar a Fase 1 da campanha de Black Friday! Google, R$ 500. Pagamento: ${escolha}.`;
+  const msg = `Quero começar a Fase 1 da campanha de Black Friday! Google, R$ 547. Pagamento: ${escolha}.`;
   window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
 }
 function duvida(e) {
