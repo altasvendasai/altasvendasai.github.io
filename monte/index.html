@@ -231,8 +231,8 @@ const CONFIG = {
   ],
   maxPosts: 6,
   campanha: { nome: "Campanha de anúncio", desc: "criar, subir e acompanhar", valor: 150 }, // por canal
-  pagina: { nome: "Página de vendas", desc: "Página com a sua oferta de Black pra cliente ver tudo e chamar no WhatsApp.", servico: 300 },
-  automacao: { nome: "Automação no WhatsApp", desc: "Responde na hora, 24h, tira dúvidas e manda o link pra cliente agendar sozinha.", mensal: 97 },
+  pagina: { nome: "Página de vendas", desc: "Página com a sua oferta de Black pra cliente ver tudo e chamar no WhatsApp. E ainda vende os seus produtos: a cliente escolhe e paga por ali.", servico: 300 },
+  automacao: { nome: "Automação no WhatsApp", desc: "Responde na hora, 24h, tira dúvidas e manda o link pra cliente agendar sozinha. E ainda oferece os seus produtos na conversa, pra vender mais pra cada cliente.", mensal: 97 },
   // Médias de mercado (ver "Como calculamos" na página)
   mercado: { cpm: { instagram: [25, 10], facebook: [15, 6], youtube: [25, 10] }, cpc: { instagram: [3.0, 0.8], facebook: [3.0, 0.8], google: [6.0, 1.5] }, conversa: [.4, .6] },
   // Quanto o mercado cobra hoje (só o piso de cada faixa, pra comparação justa)
@@ -397,7 +397,7 @@ function atualizar() {
   const opcoesParc = Object.keys(CONFIG.taxasCartao).map(n =>
     `<option value="${n}"${+n === st.parcelas ? " selected" : ""}>${n}x de ${brl2(noCartao(c.servico, +n) / n)}</option>`).join("");
   // Se paga? Receita das vendas prováveis menos tudo o que ela investe (serviço no cartão + anúncio + automação)
-  const extra = produtoOn ? f.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto) : [0, 0];
+  const extra = produtoOn && (st.pagina || st.auto) ? f.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto) : [0, 0];
   // A agenda é o teto: atendimento além dos horários livres vira lista de espera
   const atende = f.vendas.map(v => horas ? Math.min(v, agenda) : v), espera = horas ? Math.max(0, f.vendas[1] - agenda) : 0;
   const receita = atende.map((v, i) => v * ticket + extra[i]), lucro = receita.map(v => v - geral);
@@ -465,15 +465,17 @@ function abrirAviso() {
   const faltas = [];
   CONFIG.canais.filter(c => !(st.verbas[c.id] > 0)).forEach(c =>
     faltas.push({ nome: `${c.ic} Campanha no ${c.nome}`, desc: c.desc, pct: reduz({ ...st, verbas: { ...st.verbas, [c.id]: faixaVerba(c.id).recomendado } }) }));
-  if (!st.pagina) faltas.push({ nome: `🛒 ${CONFIG.pagina.nome}`, desc: CONFIG.pagina.desc, pct: reduz({ ...st, pagina: true }) });
-  if (!st.auto) faltas.push({ nome: `💬 ${CONFIG.automacao.nome}`, desc: CONFIG.automacao.desc + " Sem ela, quem fica sem resposta compra de outra pessoa.", pct: reduz({ ...st, auto: true }) });
+  const prodTxt = produtoOn ? (() => { const v = atual.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto); return ` (cerca de ${brl(v[0])} a ${brl(v[1])} em ${sTxt})`; })() : "";
+  const semVenda = !st.pagina && !st.auto ? " Sem a página e sem a automação, você não tem onde vender os seus produtos" + prodTxt + "." : "";
+  if (!st.pagina) faltas.push({ nome: `🛒 ${CONFIG.pagina.nome}`, desc: "Sem ela, você perde a oportunidade de vender os seus produtos pela página.", pct: reduz({ ...st, pagina: true }) });
+  if (!st.auto) faltas.push({ nome: `💬 ${CONFIG.automacao.nome}`, desc: "Sem ela, quem fica sem resposta compra de outra pessoa, e você perde a oportunidade de oferecer os seus produtos na conversa.", pct: reduz({ ...st, auto: true }) });
   if (!(st.posts.carrossel > 0)) faltas.push({ nome: "🎠 Post carrossel com funil de vendas", desc: "É o formato com mais chance de conversão.", pct: 0 });
   const tudo = funil({ ...st, pagina: true, auto: true, verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, st.verbas[c.id] > 0 ? st.verbas[c.id] : faixaVerba(c.id).recomendado])) });
   const totalPct = atual.esperado > 0 ? Math.round((tudo.esperado / atual.esperado - 1) * 100) : 0; // quanto a mais com tudo incluído
   $("modal-in").innerHTML = faltas.length ? `
     <h2 id="modal-t">Você optou por não usar:</h2>
     ${faltas.map(x => `<div class="falta"><b>${x.nome}</b><small>${x.desc}</small>${x.pct > 0 ? `<span class="menos">↓ ${x.pct}% nas vendas prováveis</span>` : ""}</div>`).join("")}
-    <div class="resumo-conv">Com o que você escolheu: <b>cerca de ${num(atual.chamando)} pessoas te chamando</b> e <b>${faixa(...atual.vendas)} vendas prováveis</b> em ${sTxt}.${totalPct > 0 ? ` Com tudo incluído, seriam cerca de ${num(tudo.chamando)} pessoas e ${faixa(...tudo.vendas)} vendas (${totalPct}% a mais).` : ""}</div>
+    <div class="resumo-conv">Com o que você escolheu: <b>cerca de ${num(atual.chamando)} pessoas te chamando</b> e <b>${faixa(...atual.vendas)} vendas prováveis</b> em ${sTxt}.${semVenda}${totalPct > 0 ? ` Com tudo incluído, seriam cerca de ${num(tudo.chamando)} pessoas e ${faixa(...tudo.vendas)} vendas (${totalPct}% a mais).` : ""}</div>
     <button class="btn" id="avancar">Avançar</button>
     <button class="btn2" id="editar">Continuar Editando</button>
     <p class="nota">Estimativa com médias do mercado. O efeito da página e da automação é estimativa nossa.</p>` : `
