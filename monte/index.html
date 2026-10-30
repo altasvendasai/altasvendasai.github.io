@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monte Seu Pacote · AltasVendas IA</title>
+<meta name="description" content="Escolha os canais, os criativos e o atendimento da sua campanha de Black Friday.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A1411">
+<meta property="og:title" content="Monte o seu pacote de Black · AltasVendas IA">
+<meta property="og:description" content="Escolha os canais, os criativos e o atendimento da sua campanha.">
+<meta property="og:image" content="https://altasvendasai.github.io/img/previa.jpg?v=7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 1: IDENTIDADE (mesma da página da proposta)
+   ═══════════════════════════════════════════════════════════════ */
+:root{ --tinta:#0A1411; --tinta-2:#111E1A; --verde:#128C4A; --verde-vivo:#25D366; --gelo:#F5F7F6; --branco:#fff; --texto:#0F1A16;
+  --cinza:#5B6762; --cinza-claro:#A9B8B2; --linha:#E3E9E6; --linha-esc:rgba(255,255,255,.09); --amarelo:#FFC814; --alerta:#B54708; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--gelo);color:var(--texto);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.topo{background:var(--tinta);border-bottom:1px solid var(--linha-esc)}
+.topo .in{max-width:64rem;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.03em;color:#fff;font-size:1rem;white-space:nowrap}
+.logo i{width:32px;height:32px;border-radius:9px;background:var(--verde-vivo);display:grid;place-items:center}
+.logo i svg{width:18px;height:18px}
+.heroi{background:var(--tinta);color:#fff;padding:28px 20px 72px}
+.heroi .in,.wrap{max-width:64rem;margin:0 auto}
+.eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--verde-vivo)}
+h1{font-size:clamp(1.8rem,7vw,2.6rem);line-height:1.2;letter-spacing:-.025em;font-weight:800;margin:.5rem 0 .8rem;text-wrap:balance}
+h1 em{font-style:normal;color:var(--verde-vivo)}
+.heroi p{color:var(--cinza-claro);max-width:38rem}
+.wrap{padding:0 20px 48px}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 2: PACOTES PRONTOS E ESCOLHAS
+   ═══════════════════════════════════════════════════════════════ */
+.grade{display:grid;gap:18px;margin-top:-48px}
+@media (min-width:900px){.grade{grid-template-columns:1.25fr 1fr;align-items:start}}
+.caixa{background:var(--branco);border:1.5px solid var(--linha);border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(10,20,17,.06)}
+.caixa + .caixa{margin-top:16px}
+.caixa h2{font-size:1.1rem;font-weight:800;letter-spacing:-.01em;margin-bottom:.2rem;display:flex;gap:.6rem;align-items:center}
+.caixa h2 .n{width:26px;height:26px;border-radius:8px;background:#E7F6EE;color:var(--verde);display:grid;place-items:center;font-size:.85rem;flex:none}
+.caixa .sub{color:var(--cinza);font-size:.88rem;margin-bottom:.9rem}
+.prontos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pronto{border:1.5px solid var(--linha);background:var(--branco);border-radius:14px;padding:10px 8px;text-align:center;cursor:pointer;font-family:inherit;color:var(--texto)}
+.pronto b{display:block;font-size:.95rem}
+.pronto small{color:var(--cinza);font-size:.78rem}
+.pronto.on{border-color:var(--verde-vivo);background:#F0FBF4}
+.opc{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--linha);border-radius:14px;padding:12px 14px;cursor:pointer;margin-bottom:8px}
+.opc:last-child{margin-bottom:0}
+.opc input{margin-top:.3rem;accent-color:var(--verde);width:18px;height:18px;flex:none}
+.opc .t{flex:1}
+.opc .t b{display:block;font-size:.98rem}
+.opc .t small{display:block;color:var(--cinza);font-size:.84rem;line-height:1.4}
+.opc .v{font-weight:800;font-size:.92rem;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
+.opc .v small{display:block;font-weight:600;color:var(--cinza);font-size:.74rem}
+.opc:has(input:checked){border-color:var(--verde-vivo);background:#F6FCF8}
+.tag{display:inline-block;background:var(--verde-vivo);color:#06231A;font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .45rem;border-radius:999px;margin-left:.3rem;vertical-align:middle}
+.aviso{display:none;margin-top:10px;background:#FFF6E5;border:1px solid #F5D9A8;color:var(--alerta);border-radius:12px;padding:10px 12px;font-size:.86rem}
+.aviso.on{display:block}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 3: RESUMO
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width:900px){.resumo{position:sticky;top:16px}}
+.resumo h2{margin-bottom:.8rem}
+.linha{display:flex;justify-content:space-between;gap:.8rem;font-size:.92rem;padding:.3rem 0;color:var(--cinza)}
+.linha b{color:var(--texto);font-variant-numeric:tabular-nums;white-space:nowrap}
+.linha small{display:block;font-size:.76rem;color:var(--cinza-claro)}
+.sep{border-top:1px solid var(--linha);margin:.5rem 0}
+.parcela{background:var(--tinta);color:#fff;border-radius:16px;padding:16px;margin:.8rem 0}
+.parcela span{display:block;color:var(--cinza-claro);font-size:.82rem;font-weight:700}
+.parcela b{display:block;font-size:1.7rem;line-height:1.2;font-weight:800;font-variant-numeric:tabular-nums}
+.parcela small{display:block;color:var(--cinza-claro);font-size:.8rem}
+.parc-sel{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--cinza);margin-top:.2rem}
+.parc-sel select{flex:1;font:inherit;font-size:.92rem;padding:.55rem .6rem;border:1.5px solid var(--linha);border-radius:10px;background:var(--branco);color:var(--texto)}
+.est{background:#F0F8F3;border-radius:12px;padding:.7rem .8rem;margin:.8rem 0;font-size:.9rem}
+.est b{color:var(--verde)}
+.btn{display:block;width:100%;text-align:center;border:none;cursor:pointer;background:var(--verde-vivo);color:#06231A;font-weight:800;font-size:1.02rem;padding:.95rem 1.2rem;border-radius:999px;text-decoration:none;font-family:inherit}
+.nota{font-size:.78rem;color:var(--cinza);margin-top:.7rem}
+.rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
+</style>
+</head>
+<body>
+<header class="topo"><div class="in">
+  <span class="logo"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></svg></i>ALTASVENDAS IA</span>
+</div></header>
+
+<section class="heroi"><div class="in">
+  <span class="eyebrow">Black Friday</span>
+  <h1 id="titulo">Monte o <em>seu pacote</em>.</h1>
+  <p>Escolha os criativos, os canais e o atendimento. O valor aparece na hora, e você pode parcelar o nosso serviço no cartão.</p>
+</div></section>
+
+<main class="wrap"><div class="grade">
+  <div>
+    <div class="caixa">
+      <h2>Comece por um pacote pronto</h2>
+      <p class="sub">Ou monte do seu jeito logo abaixo.</p>
+      <div class="prontos" id="prontos"></div>
+    </div>
+
+    <div class="caixa">
+      <h2><span class="n">1</span>Instagram</h2>
+      <p class="sub">O criativo é o anúncio que chama a cliente pra conversar com você.</p>
+      <div id="insta"></div>
+    </div>
+
+    <div class="caixa">
+      <h2><span class="n">2</span>Outros canais <small style="color:var(--cinza);font-weight:600;font-size:.8rem">(opcional)</small></h2>
+      <p class="sub">Pra aparecer também pra quem está pesquisando ou vendo vídeo.</p>
+      <div id="canais"></div>
+    </div>
+
+    <div class="caixa">
+      <h2><span class="n">3</span>Atendimento no WhatsApp</h2>
+      <p class="sub">Quem chega pelo anúncio quer resposta na hora.</p>
+      <div id="atend"></div>
+      <div class="aviso" id="aviso-sem">⚠ Sem a automação, você responde e agenda tudo sozinha. Na Black chega muita mensagem junta, e quem fica sem resposta compra de outra pessoa.</div>
+    </div>
+  </div>
+
+  <aside class="caixa resumo" id="resumo"></aside>
+</div></main>
+
+<p class="rodape">AltasVendas IA · Estratégia, tecnologia e suporte humano para ver suas vendas crescerem de forma escalável</p>
+
+<script>
+// === BLOCO 4: CONFIGURAÇÃO (editar aqui) ===
+const CONFIG = {
+  whatsapp: "5551982276577",
+  // Taxas da InfinitePay no cartão (link de pagamento, recebimento em 1 dia útil).
+  // Fonte: calculadoradetaxas.com.br, out/2026. Confira no app da InfinitePay e ajuste se o seu plano for outro.
+  taxasCartao: { 1: .042, 2: .0609, 3: .0701, 4: .0791, 5: .088, 6: .0967, 7: .1259, 8: .1342, 9: .1425, 10: .1506, 11: .1587, 12: .1666 },
+  // Estimativa de clientes prontos: proporcional à verba (R$ 545 de anúncio ≈ 20 clientes prontos)
+  baseVerba: 545, baseClientes: 20,
+  insta: [
+    { id: "i1", nome: "1 criativo", desc: "Um anúncio rodando no Instagram.", servico: 600, anuncio: 200 },
+    { id: "i2", nome: "2 criativos em teste A/B", desc: "Dois anúncios diferentes rodando juntos. A gente descobre qual traz mais clientes e coloca a verba nele.", servico: 1000, anuncio: 400, rec: true }
+  ],
+  canais: [
+    { id: "google", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250, anuncio: 154 },
+    { id: "youtube", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250, anuncio: 77 }
+  ],
+  automacao: { mensal: 97 },
+  paginaBonus: "Página de vendas de bônus (no pacote com todos os canais)",
+  prontos: [
+    { id: "completa", nome: "Completa", insta: "i2", canais: ["google", "youtube"], auto: true },
+    { id: "recomendada", nome: "Recomendada", insta: "i2", canais: [], auto: true, rec: true },
+    { id: "essencial", nome: "Essencial", insta: "i1", canais: [], auto: false }
+  ]
+};
+
+// === BLOCO 5: ESTADO E AJUDANTES ===
+const $ = id => document.getElementById(id);
+const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+const brl2 = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(0, 30);
+if (nome) $("titulo").innerHTML = `${nome.replace(/[<>&"]/g, "")}, monte o <em>seu pacote</em>.`;
+let st = { insta: "i2", canais: [], auto: true, parcelas: 12 };
+
+// === BLOCO 6: OPÇÕES NA TELA ===
+function opcao(tipo, nomeCampo, valor, titulo, desc, direita, marcado, rec) {
+  return `<label class="opc"><input type="${tipo}" name="${nomeCampo}" value="${valor}"${marcado ? " checked" : ""}>
+    <span class="t"><b>${titulo}${rec ? '<span class="tag">Indicado</span>' : ""}</b><small>${desc}</small></span>
+    <span class="v">${direita}</span></label>`;
+}
+function desenhar() {
+  $("prontos").innerHTML = CONFIG.prontos.map(p => {
+    const c = calcular(p.insta, p.canais, p.auto);
+    const on = st.insta === p.insta && st.auto === p.auto && st.canais.length === p.canais.length && p.canais.every(x => st.canais.includes(x));
+    return `<button class="pronto${on ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}</b><small>${brl(c.servico)}${p.rec ? " ⭐" : ""}</small></button>`;
+  }).join("");
+  $("insta").innerHTML = CONFIG.insta.map(i => opcao("radio", "insta", i.id, i.nome, i.desc,
+    `+ ${brl(i.servico)}<small>anúncio ${brl(i.anuncio)}</small>`, st.insta === i.id, i.rec)).join("");
+  $("canais").innerHTML = CONFIG.canais.map(c => opcao("checkbox", "canal", c.id, c.nome, c.desc,
+    `+ ${brl(c.servico)}<small>anúncio ${brl(c.anuncio)}</small>`, st.canais.includes(c.id))).join("");
+  $("atend").innerHTML =
+    opcao("radio", "auto", "sim", "Com automação", "Responde na hora, 24h, tira as dúvidas e manda o link pra cliente agendar sozinha.", `${brl(CONFIG.automacao.mensal)}<small>por mês</small>`, st.auto, true) +
+    opcao("radio", "auto", "nao", "Sem automação", "Você mesma responde e agenda pelo WhatsApp.", "—", !st.auto);
+  $("aviso-sem").classList.toggle("on", !st.auto);
+  resumo();
+}
+
+// === BLOCO 7: CONTA ===
+function calcular(insta, canais, auto) {
+  const i = CONFIG.insta.find(x => x.id === insta);
+  const cs = CONFIG.canais.filter(x => canais.includes(x.id));
+  const servico = i.servico + cs.reduce((s, c) => s + c.servico, 0);
+  const anuncio = i.anuncio + cs.reduce((s, c) => s + c.anuncio, 0);
+  const bonus = canais.length === CONFIG.canais.length && insta === "i2";
+  return { i, cs, servico, anuncio, auto, bonus, mensal: auto ? CONFIG.automacao.mensal : 0,
+    clientes: Math.max(1, Math.round(anuncio / CONFIG.baseVerba * CONFIG.baseClientes)) };
+}
+// Parcelado: a taxa da InfinitePay vai pra quem compra, e a gente recebe o valor cheio
+const noCartao = (valor, n) => valor / (1 - CONFIG.taxasCartao[n]);
+
+function resumo() {
+  const c = calcular(st.insta, st.canais, st.auto);
+  const total = noCartao(c.servico, st.parcelas);
+  const opcoesParc = Object.keys(CONFIG.taxasCartao).map(n =>
+    `<option value="${n}"${+n === st.parcelas ? " selected" : ""}>${n}x de ${brl2(noCartao(c.servico, +n) / n)}</option>`).join("");
+  $("resumo").innerHTML = `
+    <h2>Seu pacote</h2>
+    <div class="linha"><span>Instagram: ${c.i.nome}</span><b>${brl(c.i.servico)}</b></div>
+    ${c.cs.map(x => `<div class="linha"><span>${x.nome}</span><b>${brl(x.servico)}</b></div>`).join("")}
+    ${c.bonus ? `<div class="linha"><span>${CONFIG.paginaBonus}</span><b>grátis</b></div>` : ""}
+    <div class="sep"></div>
+    <div class="linha"><span>Nosso serviço</span><b>${brl(c.servico)}</b></div>
+    <div class="parcela"><span>No cartão</span><b>${st.parcelas}x de ${brl2(total / st.parcelas)}</b>
+      <small>${st.parcelas > 1 ? `total ${brl2(total)} com a taxa da maquininha · ` : ""}ou ${brl(c.servico)} no Pix</small></div>
+    <label class="parc-sel">Parcelas <select id="parc">${opcoesParc}</select></label>
+    <div class="sep"></div>
+    <div class="linha"><span>Anúncio<small>pago direto no Instagram/Google, no seu cartão</small></span><b>${brl(c.anuncio)}</b></div>
+    <div class="linha"><span>Automação no WhatsApp</span><b>${c.auto ? brl(c.mensal) + "/mês" : "sem"}</b></div>
+    <div class="est">Estimativa: <b>~${c.clientes} clientes prontos</b> pra comprar, com essa verba de anúncio.</div>
+    <a class="btn" href="#" id="quero">Quero Esse Pacote</a>
+    <p class="nota">Estimativa, não promessa: o resultado depende da sua oferta e do seu atendimento. Taxas de parcelamento da InfinitePay.</p>`;
+  $("parc").addEventListener("change", e => { st.parcelas = +e.target.value; resumo(); });
+  $("quero").addEventListener("click", e => {
+    e.preventDefault();
+    const msg = [
+      `Oi! ${nome ? `Aqui é a ${nome}. ` : ""}Montei o meu pacote de Black:`,
+      `• Instagram: ${c.i.nome}`,
+      ...c.cs.map(x => `• ${x.nome}`),
+      c.bonus ? `• ${CONFIG.paginaBonus}` : "",
+      `• Automação no WhatsApp: ${c.auto ? brl(c.mensal) + "/mês" : "sem"}`,
+      `Serviço: ${brl(c.servico)} (${st.parcelas}x de ${brl2(total / st.parcelas)} no cartão ou ${brl(c.servico)} no Pix)`,
+      `Anúncio: ${brl(c.anuncio)}`
+    ].filter(Boolean).join("\n");
+    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
+  });
+  document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", b.dataset.pronto === prontoAtual()));
+}
+function prontoAtual() {
+  const p = CONFIG.prontos.find(p => st.insta === p.insta && st.auto === p.auto && st.canais.length === p.canais.length && p.canais.every(x => st.canais.includes(x)));
+  return p ? p.id : "";
+}
+
+// === BLOCO 8: CLIQUES ===
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.name === "insta") st.insta = t.value;
+  else if (t.name === "canal") st.canais = [...document.querySelectorAll('input[name="canal"]:checked')].map(x => x.value);
+  else if (t.name === "auto") st.auto = t.value === "sim";
+  else return;
+  desenhar();
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-pronto]");
+  if (!b) return;
+  const p = CONFIG.prontos.find(x => x.id === b.dataset.pronto);
+  st = { ...st, insta: p.insta, canais: [...p.canais], auto: p.auto };
+  desenhar();
+});
+desenhar();
+</script>
+</body>
+</html>
