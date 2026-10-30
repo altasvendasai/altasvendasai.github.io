@@ -222,7 +222,7 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <p style="margin:24px 0 0"><a href="#" onclick="duvida(event)" style="color:#8fa39b;font-size:13.5px">Ainda tenho dúvidas</a></p>
 </div></section>
 
-<section id="plano"><div class="wrap">
+<section id="plano" hidden><div class="wrap">
   <div class="eyebrow">Plano de ação</div>
   <h2 class="title">Me conta um pouco mais</h2>
   <p class="lead">Com essas respostas eu fecho o seu plano: quanto você pode faturar e como vender os seus blends.</p>
@@ -270,6 +270,10 @@ function aceitar(e) {
   e.preventDefault();
   const msg = `Quero começar a Fase 1 da campanha de Black Friday! Google, R$ 547. Pagamento: ${escolha}.`;
   window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
+  // O plano de ação só aparece depois que ela escolhe começar
+  const plano = document.getElementById("plano");
+  plano.hidden = false;
+  plano.scrollIntoView({ behavior: "smooth" });
 }
 function duvida(e) {
   e.preventDefault();
