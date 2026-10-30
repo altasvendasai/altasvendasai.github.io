@@ -146,7 +146,7 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
     </div>
     <div class="caixa">
       <h2>Anúncios</h2>
-      <p class="sub">Onde a sua cliente vai te encontrar.</p>
+      <p class="sub">Onde a sua cliente vai te encontrar. O valor de cada um é a <b>verba</b>: quanto o Instagram, o Google ou o YouTube cobram pra mostrar o seu anúncio na semana. Você paga direto pra eles, no seu cartão.</p>
       <div id="anuncios"></div>
     </div>
     <div class="caixa">
@@ -321,10 +321,10 @@ function desenhar() {
 function atualizar() {
   const c = calcular(st);
   // Opções mostram só o valor do anúncio; a mão de obra aparece embaixo e muda junto
-  document.querySelectorAll(".pv").forEach(e => e.textContent = `${brl(st.verba * +e.dataset.n)}/semana`);
-  document.querySelectorAll(".pv-pronto").forEach(e => e.textContent = `anúncio ${brl(st.verba * +e.dataset.n)}/sem`);
-  $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Anúncio · ${c.nAnuncios} × ${brl(st.verba)}<small>pago direto na plataforma</small></span><b>${brl(c.anuncio)}/semana</b></div>
-    <div class="linha"><span>🛠 Mão de obra<small>estratégia, criativos e configuração${st.pagina ? " + página de vendas" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
+  document.querySelectorAll(".pv").forEach(e => e.textContent = `verba ${brl(st.verba * +e.dataset.n)}/semana`);
+  document.querySelectorAll(".pv-pronto").forEach(e => e.textContent = `verba ${brl(st.verba * +e.dataset.n)}/sem`);
+  $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Verba dos anúncios · ${c.nAnuncios} × ${brl(st.verba)}<small>pago direto pro Instagram/Google/YouTube</small></span><b>${brl(c.anuncio)}/semana</b></div>
+    <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>estratégia, criativos e configuração${st.pagina ? " + página de vendas" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
   document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", igual(st, CONFIG.prontos.find(p => p.id === b.dataset.pronto))));
   if (c.vazio) {
     $("funil").innerHTML = `<p class="sub">Escolha pelo menos um anúncio: Instagram, Google ou YouTube.</p>`;
