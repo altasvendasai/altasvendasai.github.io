@@ -133,6 +133,19 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .qtd button{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--verde-vivo);background:var(--branco);color:var(--verde);font:inherit;font-weight:800;font-size:1.1rem;cursor:pointer;line-height:1}
 .qtd b{min-width:1.2rem;text-align:center;font-variant-numeric:tabular-nums}
 .maoobra{border-top:1px solid var(--linha);margin-top:.4rem;padding-top:.6rem}
+body.fechado .depois, body:not(.fechado) .so-fechado{display:none}
+body.fechado .grade{grid-template-columns:1fr}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(10,20,17,.6);display:none;align-items:flex-end;justify-content:center;padding:16px}
+.modal.on{display:flex}
+@media (min-width:600px){.modal{align-items:center}}
+.modal-in{background:var(--branco);border-radius:20px;padding:20px;max-width:30rem;width:100%;max-height:88vh;overflow:auto}
+.modal-in h2{font-size:1.15rem;font-weight:800;margin-bottom:.3rem}
+.falta{border-top:1px solid var(--linha);padding:10px 0;font-size:.9rem}
+.falta b{display:block}
+.falta small{display:block;color:var(--cinza);font-size:.8rem;line-height:1.4}
+.falta .menos{color:var(--alerta);font-weight:800;font-size:.84rem}
+.resumo-conv{background:#F0FBF4;border:1.5px solid var(--verde-vivo);border-radius:14px;padding:12px 14px;margin:.6rem 0 1rem;font-size:.92rem}
+.btn2{display:block;width:100%;text-align:center;border:1.5px solid var(--linha);cursor:pointer;background:var(--branco);color:var(--texto);font-weight:800;font-size:.98rem;padding:.85rem 1.2rem;border-radius:999px;font-family:inherit;margin-top:.6rem}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
 </style>
 </head>
@@ -142,9 +155,9 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 </div></header>
 
 <section class="heroi"><div class="in">
-  <span class="eyebrow">Black Friday</span>
-  <h1 id="titulo">Monte o <em>seu pacote</em>.</h1>
-  <p>Escolha os anúncios, coloque ou tire os adicionais e ajuste a verba. O valor e a estimativa de clientes mudam na hora.</p>
+  <span class="eyebrow" id="eyebrow">Monte a sua</span>
+  <h1 id="titulo">Campanha de Oferta para <em>Black Friday</em></h1>
+  <p>Escolha os canais, os posts e os adicionais. No fim, toque em <b>Ver Minha Oferta</b> pra ver o valor e quantas clientes podem te chamar.</p>
   <span class="selo" id="selo">🏷 Preço de Black Friday</span>
 </div></section>
 
@@ -167,13 +180,17 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
       <div id="adicionais"></div>
       <div class="aviso" id="aviso-sem">⚠ Sem a automação, você responde e agenda tudo sozinha. Na Black chega muita mensagem junta, e quem fica sem resposta compra de outra pessoa.</div>
     </div>
-    <div class="caixa">
+    <div class="caixa so-fechado" style="text-align:center">
+      <p class="sub" style="margin-bottom:.8rem">Escolheu tudo? Veja o valor e o que esperar da sua campanha.</p>
+      <button class="btn" id="ver-oferta">Ver Minha Oferta</button>
+    </div>
+    <div class="caixa depois" id="resultado">
       <h2 id="titulo-funil">O que esperar em 1 semana</h2>
       <p class="sub">Estimativa com médias do mercado, conforme o que você escolheu.</p>
       <div class="funil" id="funil"></div>
       <p class="fonte">Como calculamos: Instagram com mil visualizações a R$ 10–25, Facebook a R$ 6–15 e clique a R$ 0,80–3,00 (<a href="https://www.intentmarketing.com.br/blog/post-quanto-custa-meta-ads" target="_blank" rel="noopener">Intent Marketing, 2026</a>); Google com clique a R$ 1,50–6,00 para serviços locais (<a href="https://andrerochaconsultor.com.br/trafego-pago/quanto-custa-google-ads-brasil-2026/" target="_blank" rel="noopener">André Rocha, 2026</a>); YouTube só em visualizações. Conversas (4 a 6 de cada 10 cliques), clientes prontos e vendas (2 a 4 de cada 10 prontos) são estimativas nossas. Não é promessa: depende da oferta e do atendimento.</p>
     </div>
-    <div class="caixa">
+    <div class="caixa depois">
       <h2>O investimento se paga?</h2>
       <p class="sub">Quanto entra com as vendas da campanha, tirando tudo o que você investiu.</p>
       <label class="ticket">Valor de cada atendimento: R$ <input type="number" id="ticket" min="1" step="10" inputmode="numeric"></label>
@@ -183,10 +200,11 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
     </div>
   </div>
 
-  <aside class="caixa pedido" id="pedido"></aside>
+  <aside class="caixa pedido depois" id="pedido"></aside>
 </div></main>
 
 <div class="barra" id="barra"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-t"><div class="modal-in" id="modal-in"></div></div>
 <p class="rodape">AltasVendas IA · Estratégia, tecnologia e suporte humano para ver suas vendas crescerem de forma escalável</p>
 
 <script>
@@ -222,6 +240,9 @@ const CONFIG = {
     pagina: { nome: "Página de vendas (freelancer)", de: 900, ate: 2500 },
     automacao: { nome: "Plataforma de atendimento no WhatsApp", de: 99, mes: true, so: "só a plataforma, sem montar" }
   },
+  // Estimativa nossa: quanto das vendas se perde sem cada adicional (sem automação, conversa sem resposta esfria)
+  semAutomacao: .7,
+  semPagina: .85,
   prontosPorReal: 20 / 545, // referência da página da Black: R$ 545 de anúncio ≈ 20 clientes prontos
   taxaVenda: [.2, .4],
   prontos: [
@@ -240,7 +261,7 @@ const faixa = (a, b) => { a = Math.round(a); b = Math.round(b); return a === b ?
 const redondo = v => v >= 1000 ? Math.round(v / 100) * 100 : v >= 100 ? Math.round(v / 10) * 10 : Math.round(v);
 const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
 const indicacao = (new URLSearchParams(location.search).get("i") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
-if (nome) $("titulo").innerHTML = `${nome}, monte o <em>seu pacote</em>.`;
+if (nome) $("eyebrow").textContent = `${nome}, monte a sua`;
 if (indicacao) $("selo").textContent = `🏷 Preço de Black Friday + indicação da ${indicacao}`;
 const ticketURL = +(new URLSearchParams(location.search).get("t") || "");
 let ticket = ticketURL > 0 ? ticketURL : 350; // valor médio do atendimento (?t= no link)
@@ -282,10 +303,14 @@ function funil(s) {
   const conversas = i => cliques(i) * m.conversa[i];
   const total = CONFIG.canais.reduce((t, c) => t + gasto(c.id), 0), base = total * CONFIG.prontosPorReal;
   const prontos = [Math.min(base * .8, conversas(0)), Math.min(base * 1.2, conversas(1))];
+  const mult = (s.auto ? 1 : CONFIG.semAutomacao) * (s.pagina ? 1 : CONFIG.semPagina);
   return {
     vis: [redondo(vis(0)), redondo(vis(1))], cliques: [redondo(cliques(0)), redondo(cliques(1))],
     conversas: [redondo(conversas(0)), redondo(conversas(1))], prontos,
-    vendas: [Math.max(1, Math.floor(prontos[0] * CONFIG.taxaVenda[0])), Math.max(1, Math.round(prontos[1] * CONFIG.taxaVenda[1]))]
+    vendas: [Math.max(1, Math.floor(prontos[0] * CONFIG.taxaVenda[0] * mult)), Math.max(1, Math.round(prontos[1] * CONFIG.taxaVenda[1] * mult))],
+    // vendas esperadas (meio da faixa, sem arredondar), pra comparar escolhas no aviso
+    esperado: (prontos[0] + prontos[1]) / 2 * (CONFIG.taxaVenda[0] + CONFIG.taxaVenda[1]) / 2 * mult,
+    chamando: (conversas(0) + conversas(1)) / 2
   };
 }
 // Parcelado: a taxa da InfinitePay vai pra quem compra, e a gente recebe o valor cheio
@@ -329,7 +354,7 @@ function desenhar() {
     `<div class="sub" style="margin:.9rem 0 .2rem"><b style="color:var(--texto)">Posts do anúncio</b> · o conteúdo que chama a cliente pra conversar com você</div>` +
     CONFIG.posts.map(p => item(p.ic, `${p.nome}${p.rec ? " ⭐" : ""}`, p.desc, `${brl(p.preco)} cada`,
       `<span class="qtd"><button data-post="${p.id}:-1" aria-label="Menos">−</button><b>${st.posts[p.id] || 0}</b><button data-post="${p.id}:1" aria-label="Mais">+</button></span>`)).join("") +
-    `<div class="maoobra" id="maoobra"></div>`;
+    `<div class="maoobra depois" id="maoobra"></div>`;
   document.querySelectorAll("[data-barra]").forEach(b => b.addEventListener("input", e => {
     const id = e.target.dataset.barra; st.verbas[id] = +e.target.value; $("v-" + id).textContent = brl(st.verbas[id]); atualizar();
   }));
@@ -412,7 +437,9 @@ function atualizar() {
       <small>serviço no cartão${st.parcelas > 1 ? ` em ${st.parcelas}x` : ""} + anúncio${c.mensal ? " + 1º mês da automação" : ""}<br>ou ${brl(geralPix)} com o serviço no Pix</small></div>
     <a class="btn" href="#" id="quero">Quero Esse Pacote</a>
     <p class="nota">Taxas de parcelamento da InfinitePay. Estimativas, não promessa.</p>`;
-  $("barra").innerHTML = `<span class="v"><small>Total da campanha · ${faixa(...f.vendas)} vendas prováveis</small><b>${brl2(geral)}</b></span><a href="#pedido">Ver pedido</a>`;
+  $("barra").innerHTML = document.body.classList.contains("fechado")
+    ? `<span class="v"><small>${c.on.length} campanha${c.on.length > 1 ? "s" : ""} · ${sTxt}</small><b>Monte e veja a sua oferta</b></span><a href="#" id="barra-ver">Ver Minha Oferta</a>`
+    : `<span class="v"><small>Total da campanha · ${faixa(...f.vendas)} vendas prováveis</small><b>${brl2(geral)}</b></span><a href="#pedido">Ver pedido</a>`;
 
   $("parc").addEventListener("change", e => { st.parcelas = +e.target.value; atualizar(); });
   $("quero").addEventListener("click", e => {
@@ -428,6 +455,42 @@ function atualizar() {
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
   });
 }
+
+// === BLOCO 7B: AVISO "VER MINHA OFERTA" ===
+// Mostra o que ficou de fora e quanto isso reduz as vendas prováveis
+function abrirAviso() {
+  const atual = funil(st), sTxt = st.semanas > 1 ? `${st.semanas} semanas` : "1 semana";
+  const reduz = teste => { const e = funil(teste).esperado; return e > 0 ? Math.round((1 - atual.esperado / e) * 100) : 0; };
+  const faltas = [];
+  CONFIG.canais.filter(c => !(st.verbas[c.id] > 0)).forEach(c =>
+    faltas.push({ nome: `${c.ic} Campanha no ${c.nome}`, desc: c.desc, pct: reduz({ ...st, verbas: { ...st.verbas, [c.id]: faixaVerba(c.id).recomendado } }) }));
+  if (!st.pagina) faltas.push({ nome: `🛒 ${CONFIG.pagina.nome}`, desc: CONFIG.pagina.desc, pct: reduz({ ...st, pagina: true }) });
+  if (!st.auto) faltas.push({ nome: `💬 ${CONFIG.automacao.nome}`, desc: CONFIG.automacao.desc + " Sem ela, quem fica sem resposta compra de outra pessoa.", pct: reduz({ ...st, auto: true }) });
+  if (!(st.posts.carrossel > 0)) faltas.push({ nome: "🎠 Post carrossel com funil de vendas", desc: "É o formato com mais chance de conversão.", pct: 0 });
+  const tudo = funil({ ...st, pagina: true, auto: true, verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, st.verbas[c.id] > 0 ? st.verbas[c.id] : faixaVerba(c.id).recomendado])) });
+  const totalPct = atual.esperado > 0 ? Math.round((tudo.esperado / atual.esperado - 1) * 100) : 0; // quanto a mais com tudo incluído
+  $("modal-in").innerHTML = faltas.length ? `
+    <h2 id="modal-t">Você optou por não usar:</h2>
+    ${faltas.map(x => `<div class="falta"><b>${x.nome}</b><small>${x.desc}</small>${x.pct > 0 ? `<span class="menos">↓ ${x.pct}% nas vendas prováveis</span>` : ""}</div>`).join("")}
+    <div class="resumo-conv">Com o que você escolheu: <b>cerca de ${num(atual.chamando)} pessoas te chamando</b> e <b>${faixa(...atual.vendas)} vendas prováveis</b> em ${sTxt}.${totalPct > 0 ? ` Com tudo incluído, seriam cerca de ${num(tudo.chamando)} pessoas e ${faixa(...tudo.vendas)} vendas (${totalPct}% a mais).` : ""}</div>
+    <button class="btn" id="avancar">Avançar</button>
+    <button class="btn2" id="editar">Continuar Editando</button>
+    <p class="nota">Estimativa com médias do mercado. O efeito da página e da automação é estimativa nossa.</p>` : `
+    <h2 id="modal-t">Campanha completa!</h2>
+    <div class="resumo-conv">Cerca de <b>${num(atual.chamando)} pessoas te chamando</b> e <b>${faixa(...atual.vendas)} vendas prováveis</b> em ${sTxt}.</div>
+    <button class="btn" id="avancar">Avançar</button>
+    <button class="btn2" id="editar">Continuar Editando</button>`;
+  $("modal").classList.add("on");
+  $("editar").onclick = () => $("modal").classList.remove("on");
+  $("avancar").onclick = () => {
+    $("modal").classList.remove("on"); document.body.classList.remove("fechado"); atualizar();
+    $("resultado").scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+}
+$("ver-oferta").addEventListener("click", abrirAviso);
+$("barra").addEventListener("click", e => { if (e.target.id === "barra-ver") { e.preventDefault(); abrirAviso(); } });
+$("modal").addEventListener("click", e => { if (e.target.id === "modal") $("modal").classList.remove("on"); });
+document.body.classList.add("fechado");
 
 // === BLOCO 8: CLIQUES ===
 document.addEventListener("click", e => {
