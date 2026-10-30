@@ -148,6 +148,30 @@ body.fechado .grade{grid-template-columns:1fr}
 .resumo-conv{background:#F0FBF4;border:1.5px solid var(--verde-vivo);border-radius:14px;padding:12px 14px;margin:.6rem 0 1rem;font-size:.92rem}
 .btn2{display:block;width:100%;text-align:center;border:none;cursor:pointer;background:var(--tinta);color:#fff;box-shadow:0 4px 12px rgba(10,20,17,.2);font-weight:800;font-size:.98rem;padding:.85rem 1.2rem;border-radius:999px;font-family:inherit;margin-top:.6rem}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
+/* Proposta pra baixar (só aparece na impressão / Salvar como PDF) */
+#proposta{display:none}
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#fff;padding:0;font-size:12pt}
+  body > *:not(#proposta){display:none!important}
+  #proposta{display:block}
+  .pp{break-inside:avoid;border:1.5px solid var(--linha);border-radius:14px;padding:14px 16px;margin:0 0 12px}
+  .pp h2{font-size:14pt;margin-bottom:.3rem}
+  .pp .linha{font-size:10.5pt}
+  .pp-topo{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid var(--verde-vivo);padding-bottom:10px;margin-bottom:14px}
+  .pp-topo h1{font-size:19pt;line-height:1.2}
+  .pp-topo small{display:block;color:var(--cinza);font-size:10pt}
+  .pp-ideal{background:#F5F7F6}
+  .pp-passos{padding-left:1.2rem;font-size:10.5pt}
+  .pp-total{display:flex;gap:10px;margin-top:.5rem}
+  .pp-total div{flex:1;border-radius:12px;padding:10px 12px;background:var(--gelo)}
+  .pp-total div.forte{background:var(--tinta);color:#fff}
+  .pp-total span{display:block;font-size:9pt;font-weight:700;opacity:.75}
+  .pp-total b{display:block;font-size:15pt}
+  .pp-nota{font-size:8.5pt;color:var(--cinza)}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.btn-baixar{display:block;width:100%;margin-top:.6rem;text-align:center;cursor:pointer;background:var(--branco);color:var(--tinta);border:1.5px solid var(--tinta);font:inherit;font-weight:800;font-size:.95rem;padding:.8rem 1.2rem;border-radius:999px}
 </style>
 </head>
 <body>
@@ -207,6 +231,7 @@ body.fechado .grade{grid-template-columns:1fr}
 
 <div class="barra" id="barra"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-t"><div class="modal-in" id="modal-in"></div></div>
+<div id="proposta"></div>
 <p class="rodape">AltasVendas IA · Estratégia, tecnologia e suporte humano para ver suas vendas crescerem de forma escalável</p>
 
 <script>
@@ -441,11 +466,13 @@ function atualizar() {
     <div class="total"><span>Investimento total da campanha</span><b>${brl2(geral)}</b>
       <small>serviço no cartão${st.parcelas > 1 ? ` em ${st.parcelas}x` : ""} + anúncio${c.mensal ? " + 1º mês da automação" : ""}<br>ou ${brl(geralPix)} com o serviço no Pix</small></div>
     <a class="btn" href="#" id="quero">Quero Esse Pacote</a>
+    <button class="btn-baixar" id="baixar">📄 Baixar proposta (PDF)</button>
     <p class="nota">Taxas de parcelamento da InfinitePay. Estimativas, não promessa.</p>`;
   $("barra").innerHTML = document.body.classList.contains("fechado")
     ? `<span class="v"><small>${c.on.length} campanha${c.on.length > 1 ? "s" : ""} · ${sTxt}</small><b>Monte e veja a sua oferta</b></span><a href="#" id="barra-ver">Ver Minha Oferta</a>`
     : `<span class="v"><small>Total da campanha · ${faixa(...f.vendas)} vendas prováveis</small><b>${brl2(geral)}</b></span><a href="#pedido">Ver pedido</a>`;
 
+  $("baixar").addEventListener("click", baixarProposta);
   $("parc").addEventListener("change", e => { st.parcelas = +e.target.value; atualizar(); });
   $("quero").addEventListener("click", e => {
     e.preventDefault();
@@ -459,6 +486,74 @@ function atualizar() {
     ].join("\n");
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
   });
+}
+
+// === BLOCO 7A: PROPOSTA PRA BAIXAR ===
+// Monta uma proposta limpa (o ideal x o que foi montado) e abre o "Salvar como PDF" do navegador
+function contas(s) {
+  const c = calcular(s), f = funil(s), total = noCartao(c.servico, s.parcelas);
+  const geral = total + c.anuncio + c.mensal, geralPix = c.servico + c.anuncio + c.mensal, agenda = horas * s.semanas;
+  const extra = produtoOn && (s.pagina || s.form || s.auto) ? f.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto) : [0, 0];
+  const atende = f.vendas.map(v => horas ? Math.min(v, agenda) : v);
+  const lucro = atende.map((v, i) => v * ticket + extra[i] - geralPix);
+  return { c, f, total, geral, geralPix, atende, extra, lucro, sTxt: s.semanas > 1 ? `${s.semanas} semanas` : "1 semana" };
+}
+const lucroTxt = v => (v < 0 ? "− " : "+ ") + brl(Math.abs(Math.round(v)));
+function caminho(s) {
+  const canais = ligados(s).map(c => c.nome).join(", ").replace(/, ([^,]*)$/, " e $1");
+  const passos = [`A cliente vê o seu anúncio no ${canais}.`];
+  if (s.pagina) passos.push("Clica e cai na página de vendas com a sua oferta de Black, onde vê tudo e pode até comprar os seus produtos.");
+  if (s.form) passos.push(`${s.pagina ? "Ou vai pro" : "Clica e vai pro"} formulário: responde umas perguntas, uma de cada vez, sobre o que ela precisa e se tem interesse nos seus produtos.`);
+  passos.push(s.form ? "Ao enviar, cai no seu WhatsApp com um resumo das respostas." : "Te chama no WhatsApp.");
+  passos.push(s.auto ? "A automação responde na hora, tira dúvidas e manda o link pra ela agendar sozinha." : "Você responde quando der, agenda o horário e oferece os seus produtos.");
+  return passos;
+}
+function descricao(s) {
+  const posts = CONFIG.posts.filter(p => s.posts[p.id] > 0).map(p => `${s.posts[p.id]} ${p.id === "carrossel" ? "post" : "card"}${s.posts[p.id] > 1 ? "s" : ""} ${p.id === "carrossel" ? "carrossel" : "único"}`).join(" e ");
+  const extras = [s.pagina && "página de vendas", s.form && "formulário da cliente", s.auto && "automação no WhatsApp"].filter(Boolean).join(" e ");
+  const k = contas(s);
+  return `${posts}, campanha${k.c.on.length > 1 ? "s" : ""} no ${ligados(s).map(c => c.nome).join(", ").replace(/, ([^,]*)$/, " e $1")} por ${k.sTxt}${extras ? `, com ${extras}` : ""}`;
+}
+function baixarProposta() {
+  const k = contas(st), c = k.c;
+  const idealBase = { ...comVerbas(st, CONFIG.prontos.find(p => p.id === "completa")), semanas: 2 };
+  const ideal = igual(st, CONFIG.prontos.find(p => p.id === "completa")) && st.semanas >= 2 ? null : contas(idealBase);
+  const hoje = new Date().toLocaleDateString("pt-BR");
+  $("proposta").innerHTML = `
+    <div class="pp-topo"><div><small>AltasVendas IA · Proposta</small><h1>Campanha de Oferta para Black Friday</h1></div>
+      <small style="text-align:right">${nome ? `Para: <b>${nome}</b><br>` : ""}${indicacao ? `Indicação da ${indicacao}<br>` : ""}${hoje}</small></div>
+    ${ideal ? `<div class="pp pp-ideal"><h2>O ideal pra você</h2>
+      <p class="linha" style="color:var(--texto)">${descricao(idealBase)}.</p>
+      <div class="linha"><span>Vendas prováveis em ${ideal.sTxt}</span><b>${faixa(...ideal.atende)} atendimentos</b></div>
+      <div class="linha"><span>Investimento total (serviço no Pix)</span><b>${brl(ideal.geralPix)}</b></div>
+      <div class="linha"><span>Sobra depois de pagar tudo</span><b>${lucroTxt(ideal.lucro[0])} a ${lucroTxt(ideal.lucro[1])}</b></div>
+      <p class="linha" style="margin-top:.4rem;color:var(--texto)">Como o valor fica alto, montei uma opção que cabe melhor no seu bolso:</p></div>` : ""}
+    <div class="pp"><h2>${ideal ? "O que eu montei pra você" : "A sua campanha"}</h2>
+      <p class="linha" style="color:var(--texto)">${descricao(st)}.</p>
+      <ol class="pp-passos">${caminho(st).map(t => `<li>${t}</li>`).join("")}</ol></div>
+    <div class="pp"><h2>O que está incluído</h2>
+      <div class="linha"><span><b style="color:var(--texto)">Mão de obra</b></span></div>
+      ${c.itens.map(i => `<div class="linha"><span>${i.nome}${i.sub ? `<small>${i.sub}</small>` : ""}</span><b>${brl(i.valor)}</b></div>`).join("")}
+      <div class="linha"><span><b style="color:var(--texto)">Verba dos anúncios</b><small>pago direto pra cada plataforma, no seu cartão</small></span></div>
+      ${c.on.map(x => `<div class="linha"><span>${x.ic} Campanha ${x.nome}<small>${brl(st.verbas[x.id])} por semana${st.semanas > 1 ? ` × ${st.semanas}` : ""}</small></span><b>${brl(st.verbas[x.id] * st.semanas)}</b></div>`).join("")}
+      <div class="linha"><span><b style="color:var(--texto)">${CONFIG.automacao.nome}</b></span><b>${c.mensal ? brl(c.mensal) + "/mês" : "sem"}</b></div>
+      <div class="pp-total">
+        <div class="forte"><span>Total com o serviço no Pix</span><b>${brl(k.geralPix)}</b></div>
+        <div><span>Ou serviço no cartão</span><b>${st.parcelas}x de ${brl2(k.total / st.parcelas)}</b><span>+ ${brl(c.anuncio)} de anúncio${c.mensal ? ` + ${brl(c.mensal)} da automação` : ""}</span></div>
+      </div></div>
+    <div class="pp"><h2>O que esperar em ${k.sTxt}</h2>
+      <div class="linha"><span>👀 Visualizações do anúncio</span><b>${faixa(...k.f.vis)}</b></div>
+      ${k.f.conversas[1] ? `<div class="linha"><span>💬 Pessoas te chamando</span><b>${faixa(...k.f.conversas)}</b></div>` : ""}
+      <div class="linha"><span>🔥 Clientes prontas pra comprar</span><b>${faixa(...k.f.prontos)}</b></div>
+      <div class="linha"><span>💰 Atendimentos prováveis (a ${brl(ticket)})</span><b>${faixa(...k.atende)}</b></div>
+      ${produtoOn && k.extra[1] ? `<div class="linha"><span>🧴 Produtos vendidos</span><b>+ ${brl(k.extra[0])} a ${brl(k.extra[1])}</b></div>` : ""}
+      <div class="linha"><span><b style="color:var(--texto)">📈 Sobra depois de pagar tudo</b></span><b>${lucroTxt(k.lucro[0])} a ${lucroTxt(k.lucro[1])}</b></div>
+      <p class="linha">Com ${Math.ceil(k.geralPix / ticket)} atendimentos o investimento já se paga. E cliente que gosta volta e indica.</p></div>
+    <p class="pp-nota">Estimativas com médias do mercado e estimativas nossas, não promessa: dependem da oferta e do atendimento. Cartão com as taxas da InfinitePay.</p>`;
+  const t = document.title;
+  document.title = `Proposta Black Friday${nome ? " - " + nome : ""} - AltasVendas IA`;
+  window.print();
+  setTimeout(() => { document.title = t; }, 1500);
 }
 
 // === BLOCO 7B: AVISO "VER MINHA OFERTA" ===
