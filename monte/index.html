@@ -129,6 +129,9 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .canal:first-child{border-top:0}
 .canal .item{border-top:0}
 .canal .verba{margin:0 0 .8rem}
+.qtd{display:flex;align-items:center;gap:8px;flex:none}
+.qtd button{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--verde-vivo);background:var(--branco);color:var(--verde);font:inherit;font-weight:800;font-size:1.1rem;cursor:pointer;line-height:1}
+.qtd b{min-width:1.2rem;text-align:center;font-variant-numeric:tabular-nums}
 .maoobra{border-top:1px solid var(--linha);margin-top:.4rem;padding-top:.6rem}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
 </style>
@@ -197,17 +200,18 @@ const CONFIG = {
   canais: [
     { id: "instagram", ic: "📸", nome: "Instagram", desc: "Feed, Stories e Reels de quem é da sua região.", meta: true },
     { id: "facebook", ic: "👍", nome: "Facebook", desc: "Feed e Stories do Facebook, que alcança outro público.", meta: true },
-    { id: "google", ic: "🔎", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250 },
-    { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250,
+    { id: "google", ic: "🔎", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região." },
+    { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.",
       verba: { min: 50, max: 300, passo: 10, recomendado: 80 } } // YouTube é bem mais barato por visualização
   ],
-  // Instagram e Facebook usam os mesmos criativos: o serviço é um só, com 1 ou 2 criativos
-  criativos: [
-    { n: 1, nome: "1 criativo", servico: 600 },
-    { n: 2, nome: "2 criativos (teste A/B)", servico: 1000, rec: true }
+  // Mão de obra = estratégia de vendas + criação de conteúdo (por post) + campanhas de anúncio (por canal)
+  estrategia: { nome: "Estratégia de vendas", desc: "oferta, público e o caminho da cliente até a venda", valor: 400 },
+  posts: [
+    { id: "carrossel", ic: "🎠", nome: "Post carrossel com funil de vendas integrado", desc: "Estilo carrossel, com mais chance de conversão.", preco: 150, rec: true },
+    { id: "card", ic: "🖼", nome: "Post card único", desc: "Uma imagem só, direto ao ponto.", preco: 90 }
   ],
-  criativoUnidade: 300, // parte do serviço que é o criativo; o resto é subir e configurar as campanhas
-  baseSemMeta: 600, // sem Instagram e Facebook, o primeiro canal leva a base do serviço (estratégia, oferta e criativo)
+  maxPosts: 6,
+  campanha: { nome: "Campanha de anúncio", desc: "criar, subir e acompanhar", valor: 150 }, // por canal
   pagina: { nome: "Página de vendas", desc: "Página com a sua oferta de Black pra cliente ver tudo e chamar no WhatsApp.", servico: 300 },
   automacao: { nome: "Automação no WhatsApp", desc: "Responde na hora, 24h, tira dúvidas e manda o link pra cliente agendar sozinha.", mensal: 97 },
   // Médias de mercado (ver "Como calculamos" na página)
@@ -221,9 +225,9 @@ const CONFIG = {
   prontosPorReal: 20 / 545, // referência da página da Black: R$ 545 de anúncio ≈ 20 clientes prontos
   taxaVenda: [.2, .4],
   prontos: [
-    { id: "completa", nome: "Completa", criativos: 2, canais: ["instagram", "facebook", "google", "youtube"], pagina: true, auto: true },
-    { id: "recomendada", nome: "Recomendada", criativos: 2, canais: ["instagram", "facebook"], pagina: false, auto: true, rec: true },
-    { id: "essencial", nome: "Essencial", criativos: 1, canais: ["instagram"], pagina: false, auto: false }
+    { id: "completa", nome: "Completa", posts: { carrossel: 2, card: 0 }, canais: ["instagram", "facebook", "google", "youtube"], pagina: true, auto: true },
+    { id: "recomendada", nome: "Recomendada", posts: { carrossel: 2, card: 0 }, canais: ["instagram", "facebook"], pagina: false, auto: true, rec: true },
+    { id: "essencial", nome: "Essencial", posts: { carrossel: 1, card: 0 }, canais: ["instagram"], pagina: false, auto: false }
   ]
 };
 
@@ -249,24 +253,22 @@ const R = CONFIG.verba.recomendado;
 const faixaVerba = id => CONFIG.canais.find(c => c.id === id).verba || CONFIG.verba; // cada canal pode ter a sua régua
 const limita = (id, v) => { const fx = faixaVerba(id); return Math.min(fx.max, Math.max(fx.min, v)); };
 // verbas: quanto vai pra cada campanha por semana (0 = canal desligado)
-let st = { criativos: 2, verbas: { instagram: R, facebook: R, google: 0, youtube: 0 }, pagina: false, auto: true, semanas: 1, parcelas: 12 };
+let st = { posts: { carrossel: 2, card: 0 }, verbas: { instagram: R, facebook: R, google: 0, youtube: 0 }, pagina: false, auto: true, semanas: 1, parcelas: 12 };
 const ligados = s => CONFIG.canais.filter(c => s.verbas[c.id] > 0);
-const comVerbas = (s, p) => ({ ...s, criativos: p.criativos, pagina: p.pagina, auto: p.auto,
+const comVerbas = (s, p) => ({ ...s, posts: { ...p.posts }, pagina: p.pagina, auto: p.auto,
   verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, p.canais.includes(c.id) ? (s.verbas[c.id] || faixaVerba(c.id).recomendado) : 0])) });
 
 // === BLOCO 6: CONTA ===
 function calcular(s) {
-  const on = ligados(s), meta = on.filter(c => c.meta), outros = on.filter(c => !c.meta);
-  const cri = CONFIG.criativos.find(x => x.n === s.criativos);
+  const on = ligados(s), meta = on.filter(c => c.meta);
   const itens = [];
-  // Instagram e Facebook: criativos + subir e configurar as campanhas
-  if (meta.length) {
-    const v = cri.n * CONFIG.criativoUnidade;
-    itens.push({ nome: `🎨 Criativos · ${cri.n} unidade${cri.n > 1 ? "s" : ""} (${meta.map(c => c.nome).join(" e ")})`, valor: v });
-    itens.push({ nome: `⚙️ Subir e configurar ${meta.length > 1 ? "as campanhas" : "a campanha"} do ${meta.map(c => c.nome).join(" e do ")}`, valor: cri.servico - v });
-  }
-  outros.forEach((c, k) => itens.push({ nome: `${c.ic} ${c.nome} · criativo + campanha`, valor: !meta.length && k === 0 ? CONFIG.baseSemMeta : c.servico }));
-  if (s.pagina) itens.push({ nome: `🛒 ${CONFIG.pagina.nome}`, valor: CONFIG.pagina.servico });
+  itens.push({ nome: `🧭 ${CONFIG.estrategia.nome}`, sub: CONFIG.estrategia.desc, valor: CONFIG.estrategia.valor });
+  const posts = CONFIG.posts.filter(p => s.posts[p.id] > 0);
+  if (posts.length) itens.push({ nome: "🎨 Criação de conteúdo", sub: posts.map(p => `${s.posts[p.id]} × ${p.nome.toLowerCase()} (${brl(p.preco)})`).join(" + "),
+    valor: posts.reduce((t, p) => t + s.posts[p.id] * p.preco, 0) });
+  if (on.length) itens.push({ nome: `📣 Campanhas de anúncio · ${on.length}`, sub: `${on.map(c => c.nome).join(", ")}: ${CONFIG.campanha.desc} (${brl(CONFIG.campanha.valor)} cada)`,
+    valor: on.length * CONFIG.campanha.valor });
+  if (s.pagina) itens.push({ nome: `🛒 ${CONFIG.pagina.nome}`, sub: "página com a sua oferta, ligada ao WhatsApp", valor: CONFIG.pagina.servico });
   const servico = itens.reduce((t, i) => t + i.valor, 0);
   const semanal = on.reduce((t, c) => t + s.verbas[c.id], 0);
   const anuncio = semanal * s.semanas;
@@ -288,7 +290,7 @@ function funil(s) {
 }
 // Parcelado: a taxa da InfinitePay vai pra quem compra, e a gente recebe o valor cheio
 const noCartao = (valor, n) => valor / (1 - CONFIG.taxasCartao[n]);
-const igual = (a, p) => a.criativos === p.criativos && a.auto === p.auto && a.pagina === p.pagina && ligados(a).map(c => c.id).join() === CONFIG.canais.filter(c => p.canais.includes(c.id)).map(c => c.id).join();
+const igual = (a, p) => CONFIG.posts.every(x => (a.posts[x.id] || 0) === (p.posts[x.id] || 0)) && a.auto === p.auto && a.pagina === p.pagina && ligados(a).map(c => c.id).join() === CONFIG.canais.filter(c => p.canais.includes(c.id)).map(c => c.id).join();
 
 // Comparativo: o que a mesma escolha custaria lá fora (piso das faixas de mercado)
 function mercadoHTML(c) {
@@ -324,8 +326,9 @@ function desenhar() {
       <div class="marcas"><span>${brl(v.min)}</span><span class="rec">recomendado ${brl(v.recomendado)}</span><span>${brl(v.max)}</span></div></div>` : "";
     return `<div class="canal">${item(c.ic, c.nome, c.desc, on ? "" : `verba de ${brl(v.min)} a ${brl(v.max)}/semana`, botao(on, "canal:" + c.id))}${barra}</div>`;
   }).join("") +
-    (temMeta ? `<div class="item"><span class="ic">🎨</span><span class="t"><b>Criativos do Instagram e Facebook</b><small>O criativo é o anúncio que chama a cliente pra conversar com você. Os dois canais usam os mesmos.</small>
-      <div class="seg">${CONFIG.criativos.map(x => `<button class="${st.criativos === x.n ? "on" : ""}" data-criativos="${x.n}">${x.nome}${x.rec ? " ⭐" : ""}</button>`).join("")}</div></span></div>` : "") +
+    `<div class="sub" style="margin:.9rem 0 .2rem"><b style="color:var(--texto)">Posts do anúncio</b> · o conteúdo que chama a cliente pra conversar com você</div>` +
+    CONFIG.posts.map(p => item(p.ic, `${p.nome}${p.rec ? " ⭐" : ""}`, p.desc, `${brl(p.preco)} cada`,
+      `<span class="qtd"><button data-post="${p.id}:-1" aria-label="Menos">−</button><b>${st.posts[p.id] || 0}</b><button data-post="${p.id}:1" aria-label="Mais">+</button></span>`)).join("") +
     `<div class="maoobra" id="maoobra"></div>`;
   document.querySelectorAll("[data-barra]").forEach(b => b.addEventListener("input", e => {
     const id = e.target.dataset.barra; st.verbas[id] = +e.target.value; $("v-" + id).textContent = brl(st.verbas[id]); atualizar();
@@ -342,7 +345,7 @@ function atualizar() {
   const c = calcular(st);
   // A verba de cada campanha aparece na barra; aqui embaixo, o total e a mão de obra
   $("maoobra").innerHTML = c.vazio ? "" : `<div class="linha"><span>📣 Verba das campanhas · ${c.on.length} campanha${c.on.length > 1 ? "s" : ""}<small>pago direto pra cada plataforma</small></span><b>${brl(c.semanal)}/semana</b></div>
-    <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>estratégia, criativos e configuração${st.pagina ? " + página de vendas" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
+    <div class="linha"><span>🛠 Mão de obra (nosso trabalho)<small>estratégia de vendas, criação de conteúdo e campanhas de anúncio${st.pagina ? " + página de vendas" : ""}</small></span><b>${brl(c.servico)}</b></div>`;
   document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", igual(st, CONFIG.prontos.find(p => p.id === b.dataset.pronto))));
   if (c.vazio) {
     $("funil").innerHTML = `<p class="sub">Escolha pelo menos um canal: Instagram, Facebook, Google ou YouTube.</p>`;
@@ -394,7 +397,7 @@ function atualizar() {
     <h2>Seu pedido</h2>
     <p class="sub">Campanha de ${sTxt}</p>
     <div class="linha"><span><b style="color:var(--texto)">Mão de obra</b></span></div>
-    ${c.itens.map(i => `<div class="linha"><span>${i.nome}</span><b>${brl(i.valor)}</b></div>`).join("")}
+    ${c.itens.map(i => `<div class="linha"><span>${i.nome}${i.sub ? `<small>${i.sub}</small>` : ""}</span><b>${brl(i.valor)}</b></div>`).join("")}
     <div class="linha"><span><b style="color:var(--texto)">Verba dos anúncios</b><small>pago direto pra cada plataforma, no seu cartão</small></span></div>
     ${c.on.map(x => `<div class="linha"><span>${x.ic} Campanha ${x.nome}<small>${brl(st.verbas[x.id])} por semana${st.semanas > 1 ? ` × ${st.semanas}` : ""}</small></span><b>${brl(st.verbas[x.id] * st.semanas)}</b></div>`).join("")}
     <div class="linha"><span><b style="color:var(--texto)">${CONFIG.automacao.nome}</b></span><b>${c.mensal ? brl(c.mensal) + "/mês" : "sem"}</b></div>
@@ -432,10 +435,13 @@ document.addEventListener("click", e => {
   if (sm) { st.semanas = +sm.dataset.semanas; atualizar(); return; }
   const vb = e.target.closest("[data-verba]");
   if (vb) { for (const k in st.verbas) if (st.verbas[k] > 0) st.verbas[k] = limita(k, +vb.dataset.verba); desenhar(); return; }
-  const t = e.target.closest("[data-pronto],[data-criativos],[data-acao]");
+  const t = e.target.closest("[data-pronto],[data-post],[data-acao]");
   if (!t) return;
   if (t.dataset.pronto) st = comVerbas(st, CONFIG.prontos.find(x => x.id === t.dataset.pronto));
-  else if (t.dataset.criativos) st.criativos = +t.dataset.criativos;
+  else if (t.dataset.post) {
+    const [id, d] = t.dataset.post.split(":");
+    st.posts = { ...st.posts, [id]: Math.max(0, Math.min(CONFIG.maxPosts, (st.posts[id] || 0) + +d)) };
+  }
   else {
     const [acao, id] = t.dataset.acao.split(":");
     if (acao === "canal") st.verbas[id] = st.verbas[id] > 0 ? 0 : faixaVerba(id).recomendado;
