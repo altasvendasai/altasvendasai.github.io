@@ -198,7 +198,8 @@ const CONFIG = {
     { id: "instagram", ic: "📸", nome: "Instagram", desc: "Feed, Stories e Reels de quem é da sua região.", meta: true },
     { id: "facebook", ic: "👍", nome: "Facebook", desc: "Feed e Stories do Facebook, que alcança outro público.", meta: true },
     { id: "google", ic: "🔎", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250 },
-    { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250 }
+    { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250,
+      verba: { min: 50, max: 300, passo: 10, recomendado: 80 } } // YouTube é bem mais barato por visualização
   ],
   // Instagram e Facebook usam os mesmos criativos: o serviço é um só, com 1 ou 2 criativos
   criativos: [
@@ -245,11 +246,13 @@ const horasURL = +(new URLSearchParams(location.search).get("h") || "");
 let horas = horasURL > 0 ? horasURL : 0; // horários livres na semana (0 = sem limite); a pessoa preenche na página
 const compraProduto = [.2, .4]; // estimativa nossa: de cada 10 clientes prontas, 2 a 4 levam um produto
 const R = CONFIG.verba.recomendado;
+const faixaVerba = id => CONFIG.canais.find(c => c.id === id).verba || CONFIG.verba; // cada canal pode ter a sua régua
+const limita = (id, v) => { const fx = faixaVerba(id); return Math.min(fx.max, Math.max(fx.min, v)); };
 // verbas: quanto vai pra cada campanha por semana (0 = canal desligado)
 let st = { criativos: 2, verbas: { instagram: R, facebook: R, google: 0, youtube: 0 }, pagina: false, auto: true, semanas: 1, parcelas: 12 };
 const ligados = s => CONFIG.canais.filter(c => s.verbas[c.id] > 0);
 const comVerbas = (s, p) => ({ ...s, criativos: p.criativos, pagina: p.pagina, auto: p.auto,
-  verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, p.canais.includes(c.id) ? (s.verbas[c.id] || R) : 0])) });
+  verbas: Object.fromEntries(CONFIG.canais.map(c => [c.id, p.canais.includes(c.id) ? (s.verbas[c.id] || faixaVerba(c.id).recomendado) : 0])) });
 
 // === BLOCO 6: CONTA ===
 function calcular(s) {
@@ -312,8 +315,9 @@ function desenhar() {
   $("prontos").innerHTML = CONFIG.prontos.map(p =>
     `<button class="pronto${igual(st, p) ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}${p.rec ? " ⭐" : ""}</b><small>${p.canais.length} campanha${p.canais.length > 1 ? "s" : ""}</small></button>`).join("");
 
-  const v = CONFIG.verba, temMeta = ligados(st).some(c => c.meta);
+  const temMeta = ligados(st).some(c => c.meta);
   $("anuncios").innerHTML = CONFIG.canais.map(c => {
+    const v = faixaVerba(c.id);
     const on = st.verbas[c.id] > 0;
     const barra = on ? `<div class="verba"><div class="valor"><b id="v-${c.id}">${brl(st.verbas[c.id])}</b><small>de verba por semana</small></div>
       <input type="range" data-barra="${c.id}" min="${v.min}" max="${v.max}" step="${v.passo}" value="${st.verbas[c.id]}" aria-label="Verba do ${c.nome}">
@@ -371,7 +375,7 @@ function atualizar() {
   // Menor verba cuja estimativa do meio já enche os horários livres
   let verbaAgenda = 0;
   if (horas) for (let v = CONFIG.verba.min; v <= CONFIG.verba.max; v += CONFIG.verba.passo) {
-    const fv = funil({ ...st, verbas: Object.fromEntries(Object.entries(st.verbas).map(([k, x]) => [k, x > 0 ? v : 0])) }).vendas;
+    const fv = funil({ ...st, verbas: Object.fromEntries(Object.entries(st.verbas).map(([k, x]) => [k, x > 0 ? limita(k, v) : 0])) }).vendas;
     if ((fv[0] + fv[1]) / 2 >= agenda) { verbaAgenda = v; break; }
   }
   const empata = Math.ceil(geral / ticket), sinal = v => v >= 0 ? "pos" : "neg";
@@ -427,14 +431,14 @@ document.addEventListener("click", e => {
   const sm = e.target.closest("[data-semanas]");
   if (sm) { st.semanas = +sm.dataset.semanas; atualizar(); return; }
   const vb = e.target.closest("[data-verba]");
-  if (vb) { for (const k in st.verbas) if (st.verbas[k] > 0) st.verbas[k] = +vb.dataset.verba; desenhar(); return; }
+  if (vb) { for (const k in st.verbas) if (st.verbas[k] > 0) st.verbas[k] = limita(k, +vb.dataset.verba); desenhar(); return; }
   const t = e.target.closest("[data-pronto],[data-criativos],[data-acao]");
   if (!t) return;
   if (t.dataset.pronto) st = comVerbas(st, CONFIG.prontos.find(x => x.id === t.dataset.pronto));
   else if (t.dataset.criativos) st.criativos = +t.dataset.criativos;
   else {
     const [acao, id] = t.dataset.acao.split(":");
-    if (acao === "canal") st.verbas[id] = st.verbas[id] > 0 ? 0 : R;
+    if (acao === "canal") st.verbas[id] = st.verbas[id] > 0 ? 0 : faixaVerba(id).recomendado;
     if (acao === "pagina") st.pagina = !st.pagina;
     if (acao === "auto") st.auto = !st.auto;
   }
