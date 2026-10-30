@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Monte Seu Pacote · AltasVendas IA</title>
-<meta name="description" content="Escolha os canais, os criativos e o atendimento da sua campanha de Black Friday.">
+<meta name="description" content="Escolha os anúncios, os adicionais e a verba da sua campanha de Black Friday.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0A1411">
 <meta property="og:title" content="Monte o seu pacote de Black · AltasVendas IA">
-<meta property="og:description" content="Escolha os canais, os criativos e o atendimento da sua campanha.">
+<meta property="og:description" content="Escolha os anúncios, os adicionais e a verba da sua campanha.">
 <meta property="og:image" content="https://altasvendasai.github.io/img/previa.jpg?v=7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,9 +18,10 @@
    BLOCO 1: IDENTIDADE (mesma da página da proposta)
    ═══════════════════════════════════════════════════════════════ */
 :root{ --tinta:#0A1411; --tinta-2:#111E1A; --verde:#128C4A; --verde-vivo:#25D366; --gelo:#F5F7F6; --branco:#fff; --texto:#0F1A16;
-  --cinza:#5B6762; --cinza-claro:#A9B8B2; --linha:#E3E9E6; --linha-esc:rgba(255,255,255,.09); --amarelo:#FFC814; --alerta:#B54708; }
+  --cinza:#5B6762; --cinza-claro:#A9B8B2; --linha:#E3E9E6; --linha-esc:rgba(255,255,255,.09); --alerta:#B54708; }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--gelo);color:var(--texto);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{background:var(--gelo);color:var(--texto);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:84px}
+@media (min-width:900px){body{padding-bottom:0}}
 .topo{background:var(--tinta);border-bottom:1px solid var(--linha-esc)}
 .topo .in{max-width:64rem;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center}
 .logo{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.03em;color:#fff;font-size:1rem;white-space:nowrap}
@@ -32,59 +33,87 @@ body{background:var(--gelo);color:var(--texto);font-family:"Plus Jakarta Sans",s
 h1{font-size:clamp(1.8rem,7vw,2.6rem);line-height:1.2;letter-spacing:-.025em;font-weight:800;margin:.5rem 0 .8rem;text-wrap:balance}
 h1 em{font-style:normal;color:var(--verde-vivo)}
 .heroi p{color:var(--cinza-claro);max-width:38rem}
-.wrap{padding:0 20px 48px}
-
-/* ═══════════════════════════════════════════════════════════════
-   BLOCO 2: PACOTES PRONTOS E ESCOLHAS
-   ═══════════════════════════════════════════════════════════════ */
-.grade{display:grid;gap:18px;margin-top:-48px}
+.wrap{padding:0 20px 40px}
+.grade{display:grid;gap:16px;margin-top:-48px}
 @media (min-width:900px){.grade{grid-template-columns:1.25fr 1fr;align-items:start}}
-.caixa{background:var(--branco);border:1.5px solid var(--linha);border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(10,20,17,.06)}
-.caixa + .caixa{margin-top:16px}
-.caixa h2{font-size:1.1rem;font-weight:800;letter-spacing:-.01em;margin-bottom:.2rem;display:flex;gap:.6rem;align-items:center}
-.caixa h2 .n{width:26px;height:26px;border-radius:8px;background:#E7F6EE;color:var(--verde);display:grid;place-items:center;font-size:.85rem;flex:none}
-.caixa .sub{color:var(--cinza);font-size:.88rem;margin-bottom:.9rem}
-.prontos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pronto{border:1.5px solid var(--linha);background:var(--branco);border-radius:14px;padding:10px 8px;text-align:center;cursor:pointer;font-family:inherit;color:var(--texto)}
-.pronto b{display:block;font-size:.95rem}
-.pronto small{color:var(--cinza);font-size:.78rem}
-.pronto.on{border-color:var(--verde-vivo);background:#F0FBF4}
-.opc{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--linha);border-radius:14px;padding:12px 14px;cursor:pointer;margin-bottom:8px}
-.opc:last-child{margin-bottom:0}
-.opc input{margin-top:.3rem;accent-color:var(--verde);width:18px;height:18px;flex:none}
-.opc .t{flex:1}
-.opc .t b{display:block;font-size:.98rem}
-.opc .t small{display:block;color:var(--cinza);font-size:.84rem;line-height:1.4}
-.opc .v{font-weight:800;font-size:.92rem;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
-.opc .v small{display:block;font-weight:600;color:var(--cinza);font-size:.74rem}
-.opc:has(input:checked){border-color:var(--verde-vivo);background:#F6FCF8}
-.tag{display:inline-block;background:var(--verde-vivo);color:#06231A;font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .45rem;border-radius:999px;margin-left:.3rem;vertical-align:middle}
-.aviso{display:none;margin-top:10px;background:#FFF6E5;border:1px solid #F5D9A8;color:var(--alerta);border-radius:12px;padding:10px 12px;font-size:.86rem}
-.aviso.on{display:block}
+.caixa{background:var(--branco);border:1.5px solid var(--linha);border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(10,20,17,.06)}
+.col > .caixa + .caixa{margin-top:16px}
+.caixa h2{font-size:1.08rem;font-weight:800;letter-spacing:-.01em;margin-bottom:.15rem}
+.caixa .sub{color:var(--cinza);font-size:.86rem;margin-bottom:.8rem}
 
 /* ═══════════════════════════════════════════════════════════════
-   BLOCO 3: RESUMO
+   BLOCO 2: CARDÁPIO (estilo app de pedido)
    ═══════════════════════════════════════════════════════════════ */
-@media (min-width:900px){.resumo{position:sticky;top:16px}}
-.resumo h2{margin-bottom:.8rem}
-.linha{display:flex;justify-content:space-between;gap:.8rem;font-size:.92rem;padding:.3rem 0;color:var(--cinza)}
+.prontos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pronto{border:1.5px solid var(--linha);background:var(--branco);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;font-family:inherit;color:var(--texto)}
+.pronto b{display:block;font-size:.92rem}
+.pronto small{color:var(--cinza);font-size:.76rem}
+.pronto.on{border-color:var(--verde-vivo);background:#F0FBF4}
+.item{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--linha)}
+.item:first-of-type{border-top:0}
+.item .ic{width:42px;height:42px;border-radius:12px;background:#F0F4F2;display:grid;place-items:center;font-size:1.25rem;flex:none}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;font-size:.97rem;line-height:1.3}
+.item .t small{display:block;color:var(--cinza);font-size:.8rem;line-height:1.35}
+.item .t .p{font-weight:800;color:var(--texto);font-size:.88rem;margin-top:.15rem}
+.add{border:1.5px solid var(--verde-vivo);background:var(--branco);color:var(--verde);font-family:inherit;font-weight:800;font-size:.85rem;border-radius:999px;padding:.45rem .9rem;cursor:pointer;white-space:nowrap}
+.add.on{background:var(--verde-vivo);color:#06231A}
+.seg{display:flex;gap:6px;margin-top:.5rem;flex-wrap:wrap}
+.seg button{border:1.5px solid var(--linha);background:var(--branco);border-radius:999px;padding:.4rem .75rem;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--texto);cursor:pointer}
+.seg button.on{border-color:var(--verde-vivo);background:#F0FBF4;color:var(--verde)}
+.tag{display:inline-block;background:var(--verde-vivo);color:#06231A;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.08rem .4rem;border-radius:999px;margin-left:.3rem;vertical-align:middle}
+.aviso{display:none;margin-top:4px;background:#FFF6E5;border:1px solid #F5D9A8;color:var(--alerta);border-radius:12px;padding:10px 12px;font-size:.84rem}
+.aviso.on{display:block}
+.verba{margin-top:.2rem}
+.verba .valor{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.4rem}
+.verba .valor b{font-size:1.5rem;font-weight:800;font-variant-numeric:tabular-nums}
+.verba .valor small{color:var(--cinza);font-size:.8rem}
+.verba input{width:100%;accent-color:var(--verde-vivo);height:28px}
+.verba .marcas{display:flex;justify-content:space-between;color:var(--cinza);font-size:.76rem}
+.verba .rec{color:var(--verde);font-weight:800}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 3: FUNIL ESTIMADO E PEDIDO
+   ═══════════════════════════════════════════════════════════════ */
+.funil{display:grid;gap:6px}
+.etapa{display:flex;justify-content:space-between;align-items:center;gap:10px;border-radius:12px;padding:9px 12px;background:#F4F7F5;font-size:.88rem}
+.etapa b{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.95rem}
+.etapa:nth-child(4){background:#E7F6EE}
+.etapa:nth-child(5){background:var(--tinta);color:#fff}
+.etapa:nth-child(5) b{color:var(--verde-vivo)}
+.fonte{font-size:.74rem;color:var(--cinza);margin-top:.6rem;line-height:1.45}
+.fonte a{color:var(--cinza)}
+@media (min-width:900px){.pedido{position:sticky;top:16px}}
+.linha{display:flex;justify-content:space-between;gap:.8rem;font-size:.9rem;padding:.25rem 0;color:var(--cinza)}
 .linha b{color:var(--texto);font-variant-numeric:tabular-nums;white-space:nowrap}
-.linha small{display:block;font-size:.76rem;color:var(--cinza-claro)}
+.linha small{display:block;font-size:.74rem;color:var(--cinza-claro)}
 .sep{border-top:1px solid var(--linha);margin:.5rem 0}
-.parcela{background:var(--tinta);color:#fff;border-radius:16px;padding:16px;margin:.8rem 0}
-.parcela span{display:block;color:var(--cinza-claro);font-size:.82rem;font-weight:700}
-.parcela b{display:block;font-size:1.7rem;line-height:1.2;font-weight:800;font-variant-numeric:tabular-nums}
-.parcela small{display:block;color:var(--cinza-claro);font-size:.8rem}
-.parc-sel{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--cinza);margin-top:.2rem}
-.parc-sel select{flex:1;font:inherit;font-size:.92rem;padding:.55rem .6rem;border:1.5px solid var(--linha);border-radius:10px;background:var(--branco);color:var(--texto)}
+.parcela{background:var(--tinta);color:#fff;border-radius:16px;padding:14px 16px;margin:.7rem 0}
+.parcela span{display:block;color:var(--cinza-claro);font-size:.8rem;font-weight:700}
+.parcela b{display:block;font-size:1.6rem;line-height:1.2;font-weight:800;font-variant-numeric:tabular-nums}
+.parcela small{display:block;color:var(--cinza-claro);font-size:.78rem}
+.parc-sel{display:flex;gap:8px;align-items:center;font-size:.86rem;color:var(--cinza)}
+.parc-sel select{flex:1;font:inherit;font-size:.9rem;padding:.5rem .6rem;border:1.5px solid var(--linha);border-radius:10px;background:var(--branco);color:var(--texto)}
 .total{border:1.5px solid var(--verde-vivo);border-radius:14px;padding:12px 14px;margin:.8rem 0}
-.total span{display:block;font-size:.82rem;font-weight:700;color:var(--cinza)}
+.total span{display:block;font-size:.8rem;font-weight:700;color:var(--cinza)}
 .total b{display:block;font-size:1.4rem;font-weight:800;font-variant-numeric:tabular-nums}
-.total small{display:block;font-size:.78rem;color:var(--cinza);line-height:1.4}
-.est{background:#F0F8F3;border-radius:12px;padding:.7rem .8rem;margin:.8rem 0;font-size:.9rem}
-.est b{color:var(--verde)}
+.total small{display:block;font-size:.76rem;color:var(--cinza);line-height:1.4}
 .btn{display:block;width:100%;text-align:center;border:none;cursor:pointer;background:var(--verde-vivo);color:#06231A;font-weight:800;font-size:1.02rem;padding:.95rem 1.2rem;border-radius:999px;text-decoration:none;font-family:inherit}
-.nota{font-size:.78rem;color:var(--cinza);margin-top:.7rem}
+.nota{font-size:.76rem;color:var(--cinza);margin-top:.7rem}
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--tinta);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;box-shadow:0 -8px 24px rgba(0,0,0,.25)}
+.barra .v{flex:1;line-height:1.25}
+.barra .v small{display:block;color:var(--cinza-claro);font-size:.74rem}
+.barra .v b{font-size:1.05rem}
+.barra a{background:var(--verde-vivo);color:#06231A;font-weight:800;border-radius:999px;padding:.65rem 1rem;text-decoration:none;font-size:.9rem;white-space:nowrap}
+@media (min-width:900px){.barra{display:none}}
+.mercado{background:#FFF8EC;border:1.5px solid #F5D9A8;border-radius:14px;padding:12px 14px;margin:.2rem 0 .8rem}
+.mercado > span{display:block;font-size:.8rem;font-weight:800;color:var(--alerta)}
+.mercado .linha{color:#7A5B2E}
+.mercado .linha b{color:#7A5B2E;text-decoration:line-through;text-decoration-color:rgba(181,71,8,.5)}
+.mercado .eco{margin-top:.4rem;font-size:.88rem;font-weight:800;color:var(--verde)}
+.mercado small{display:block;font-size:.72rem;color:#9A7B4E;margin-top:.3rem;line-height:1.4}
+.mercado small a{color:#9A7B4E}
+.selo{display:inline-block;margin-top:.9rem;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.35);color:var(--verde-vivo);border-radius:999px;padding:.35rem .8rem;font-size:.82rem;font-weight:700}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
 </style>
 </head>
@@ -96,68 +125,80 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 <section class="heroi"><div class="in">
   <span class="eyebrow">Black Friday</span>
   <h1 id="titulo">Monte o <em>seu pacote</em>.</h1>
-  <p>Escolha os criativos, os canais e o atendimento. O valor aparece na hora, e você pode parcelar o nosso serviço no cartão.</p>
+  <p>Escolha os anúncios, coloque ou tire os adicionais e ajuste a verba. O valor e a estimativa de clientes mudam na hora.</p>
+  <span class="selo" id="selo">🏷 Preço de Black Friday</span>
 </div></section>
 
 <main class="wrap"><div class="grade">
-  <div>
+  <div class="col">
     <div class="caixa">
       <h2>Comece por um pacote pronto</h2>
-      <p class="sub">Ou monte do seu jeito logo abaixo.</p>
+      <p class="sub">Depois é só colocar ou tirar o que quiser.</p>
       <div class="prontos" id="prontos"></div>
     </div>
-
     <div class="caixa">
-      <h2><span class="n">1</span>Instagram</h2>
-      <p class="sub">O criativo é o anúncio que chama a cliente pra conversar com você.</p>
-      <div id="insta"></div>
+      <h2>Anúncios</h2>
+      <p class="sub">Onde a sua cliente vai te encontrar.</p>
+      <div id="anuncios"></div>
     </div>
-
     <div class="caixa">
-      <h2><span class="n">2</span>Google e YouTube</h2>
-      <p class="sub">Pra aparecer pra quem está pesquisando ou vendo vídeo. Dá pra usar junto com o Instagram ou sozinhos.</p>
-      <div id="canais"></div>
+      <h2>Verba de cada anúncio</h2>
+      <p class="sub">Quanto mais verba, mais gente vê. Esse valor é pago direto pra plataforma, no seu cartão.</p>
+      <div class="verba" id="verba"></div>
     </div>
-
     <div class="caixa">
-      <h2><span class="n">3</span>Atendimento no WhatsApp</h2>
-      <p class="sub">Quem chega pelo anúncio quer resposta na hora.</p>
-      <div id="atend"></div>
+      <h2>Adicionais</h2>
+      <p class="sub">Coloque ou tire.</p>
+      <div id="adicionais"></div>
       <div class="aviso" id="aviso-sem">⚠ Sem a automação, você responde e agenda tudo sozinha. Na Black chega muita mensagem junta, e quem fica sem resposta compra de outra pessoa.</div>
+    </div>
+    <div class="caixa">
+      <h2>O que esperar em 1 semana</h2>
+      <p class="sub">Estimativa com médias do mercado, conforme o que você escolheu.</p>
+      <div class="funil" id="funil"></div>
+      <p class="fonte">Como calculamos: Instagram com mil visualizações a R$ 10–25 e clique a R$ 0,80–3,00 (<a href="https://www.intentmarketing.com.br/blog/post-quanto-custa-meta-ads" target="_blank" rel="noopener">Intent Marketing, 2026</a>); Google com clique a R$ 1,50–6,00 para serviços locais (<a href="https://andrerochaconsultor.com.br/trafego-pago/quanto-custa-google-ads-brasil-2026/" target="_blank" rel="noopener">André Rocha, 2026</a>); YouTube só em visualizações. Conversas (4 a 6 de cada 10 cliques), clientes prontos e vendas (2 a 4 de cada 10 prontos) são estimativas nossas. Não é promessa: depende da oferta e do atendimento.</p>
     </div>
   </div>
 
-  <aside class="caixa resumo" id="resumo"></aside>
+  <aside class="caixa pedido" id="pedido"></aside>
 </div></main>
 
+<div class="barra" id="barra"></div>
 <p class="rodape">AltasVendas IA · Estratégia, tecnologia e suporte humano para ver suas vendas crescerem de forma escalável</p>
 
 <script>
 // === BLOCO 4: CONFIGURAÇÃO (editar aqui) ===
 const CONFIG = {
   whatsapp: "5551982276577",
-  // Taxas da InfinitePay no cartão (link de pagamento, recebimento em 1 dia útil).
-  // Fonte: calculadoradetaxas.com.br, out/2026. Confira no app da InfinitePay e ajuste se o seu plano for outro.
+  // Taxas da InfinitePay no cartão (link de pagamento, 1 dia útil), conferidas no app em 30/10/2026
   taxasCartao: { 1: .042, 2: .0609, 3: .0701, 4: .0791, 5: .088, 6: .0967, 7: .1259, 8: .1342, 9: .1425, 10: .1506, 11: .1587, 12: .1666 },
-  // Estimativa de clientes prontos: proporcional à verba (R$ 545 de anúncio ≈ 20 clientes prontos)
-  baseVerba: 545, baseClientes: 20,
-  insta: [
-    { id: "i1", nome: "1 criativo", desc: "Um anúncio rodando no Instagram.", servico: 600, anuncio: 200 },
-    { id: "i2", nome: "2 criativos em teste A/B", desc: "Dois anúncios diferentes rodando juntos. A gente descobre qual traz mais clientes e coloca a verba nele.", servico: 1000, anuncio: 400, rec: true },
-    { id: "i0", nome: "Sem Instagram", desc: "Só Google e/ou YouTube.", servico: 0, anuncio: 0 }
+  verba: { min: 150, max: 300, passo: 10, recomendado: 200 }, // por anúncio, por semana
+  instagram: [
+    { n: 0, nome: "Sem Instagram", servico: 0 },
+    { n: 1, nome: "1 criativo", servico: 600 },
+    { n: 2, nome: "2 criativos (teste A/B)", servico: 1000, rec: true }
   ],
   canais: [
-    { id: "google", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250, anuncio: 154 },
-    { id: "youtube", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250, anuncio: 77 }
+    { id: "google", ic: "🔎", nome: "Google", desc: "Aparece pra quem pesquisa o seu serviço na sua região.", servico: 250 },
+    { id: "youtube", ic: "▶️", nome: "YouTube", desc: "Vídeo curto antes dos vídeos que a sua cliente assiste.", servico: 250 }
   ],
-  // Sem Instagram, o primeiro canal leva a base do serviço (estratégia, oferta e criativo)
-  baseSemInsta: 600,
-  automacao: { mensal: 97 },
-  paginaBonus: "Página de vendas de bônus (no pacote com todos os canais)",
+  baseSemInsta: 600, // sem Instagram, o primeiro canal leva a base do serviço (estratégia, oferta e criativo)
+  pagina: { nome: "Página de vendas", desc: "Página com a sua oferta de Black pra cliente ver tudo e chamar no WhatsApp.", servico: 300 },
+  automacao: { nome: "Automação no WhatsApp", desc: "Responde na hora, 24h, tira dúvidas e manda o link pra cliente agendar sozinha.", mensal: 97 },
+  // Médias de mercado (ver "Como calculamos" na página)
+  mercado: { cpmMeta: [25, 10], cpcMeta: [3.0, 0.8], cpcGoogle: [6.0, 1.5], cpmYoutube: [25, 10], conversa: [.4, .6] },
+  // Quanto o mercado cobra hoje (só o piso de cada faixa, pra comparação justa)
+  precoMercado: {
+    anuncio: { nome: "Gestão de anúncios + criativos", de: 1500, ate: 3000, mes: true },
+    pagina: { nome: "Página de vendas (freelancer)", de: 900, ate: 2500 },
+    automacao: { nome: "Plataforma de atendimento no WhatsApp", de: 99, mes: true, so: "só a plataforma, sem montar" }
+  },
+  prontosPorReal: 20 / 545, // referência da página da Black: R$ 545 de anúncio ≈ 20 clientes prontos
+  taxaVenda: [.2, .4],
   prontos: [
-    { id: "completa", nome: "Completa", insta: "i2", canais: ["google", "youtube"], auto: true },
-    { id: "recomendada", nome: "Recomendada", insta: "i2", canais: [], auto: true, rec: true },
-    { id: "essencial", nome: "Essencial", insta: "i1", canais: [], auto: false }
+    { id: "completa", nome: "Completa", insta: 2, canais: ["google", "youtube"], pagina: true, auto: true },
+    { id: "recomendada", nome: "Recomendada", insta: 2, canais: [], pagina: false, auto: true, rec: true },
+    { id: "essencial", nome: "Essencial", insta: 1, canais: [], pagina: false, auto: false }
   ]
 };
 
@@ -165,110 +206,164 @@ const CONFIG = {
 const $ = id => document.getElementById(id);
 const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const brl2 = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(0, 30);
-if (nome) $("titulo").innerHTML = `${nome.replace(/[<>&"]/g, "")}, monte o <em>seu pacote</em>.`;
-let st = { insta: "i2", canais: [], auto: true, parcelas: 12 };
+const num = v => Math.round(v).toLocaleString("pt-BR");
+const faixa = (a, b) => { a = Math.round(a); b = Math.round(b); return a === b ? num(a) : `${num(a)} a ${num(b)}`; };
+const redondo = v => v >= 1000 ? Math.round(v / 100) * 100 : v >= 100 ? Math.round(v / 10) * 10 : Math.round(v);
+const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
+const indicacao = (new URLSearchParams(location.search).get("i") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
+if (nome) $("titulo").innerHTML = `${nome}, monte o <em>seu pacote</em>.`;
+if (indicacao) $("selo").textContent = `🏷 Preço de Black Friday + indicação da ${indicacao}`;
+let st = { insta: 2, canais: [], pagina: false, auto: true, verba: CONFIG.verba.recomendado, parcelas: 12 };
 
-// === BLOCO 6: OPÇÕES NA TELA ===
-function opcao(tipo, nomeCampo, valor, titulo, desc, direita, marcado, rec) {
-  return `<label class="opc"><input type="${tipo}" name="${nomeCampo}" value="${valor}"${marcado ? " checked" : ""}>
-    <span class="t"><b>${titulo}${rec ? '<span class="tag">Indicado</span>' : ""}</b><small>${desc}</small></span>
-    <span class="v">${direita}</span></label>`;
+// === BLOCO 6: CONTA ===
+function calcular(s) {
+  const insta = CONFIG.instagram.find(i => i.n === s.insta);
+  const itens = [];
+  if (insta.n) itens.push({ nome: `Instagram · ${insta.nome}`, valor: insta.servico });
+  CONFIG.canais.filter(c => s.canais.includes(c.id)).forEach((c, k) =>
+    itens.push({ nome: c.nome, valor: !insta.n && k === 0 ? CONFIG.baseSemInsta : c.servico }));
+  if (s.pagina) itens.push({ nome: CONFIG.pagina.nome, valor: CONFIG.pagina.servico });
+  const servico = itens.reduce((t, i) => t + i.valor, 0);
+  const nAnuncios = insta.n + s.canais.length;
+  const anuncio = nAnuncios * s.verba;
+  const mensal = s.auto ? CONFIG.automacao.mensal : 0;
+  return { insta, itens, servico, nAnuncios, anuncio, mensal, vazio: !nAnuncios };
 }
-function desenhar() {
-  $("prontos").innerHTML = CONFIG.prontos.map(p => {
-    const c = calcular(p.insta, p.canais, p.auto);
-    const on = st.insta === p.insta && st.auto === p.auto && st.canais.length === p.canais.length && p.canais.every(x => st.canais.includes(x));
-    return `<button class="pronto${on ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}</b><small>${brl(c.servico)}${p.rec ? " ⭐" : ""}</small></button>`;
-  }).join("");
-  $("insta").innerHTML = CONFIG.insta.map(i => opcao("radio", "insta", i.id, i.nome, i.desc,
-    i.servico ? `+ ${brl(i.servico)}<small>anúncio ${brl(i.anuncio)}</small>` : "—", st.insta === i.id, i.rec)).join("");
-  const semInsta = st.insta === "i0";
-  $("canais").innerHTML = CONFIG.canais.map(c => opcao("checkbox", "canal", c.id, c.nome, c.desc,
-    `+ ${brl(c.servico)}<small>anúncio ${brl(c.anuncio)}</small>`, st.canais.includes(c.id))).join("") +
-    (semInsta ? `<p class="nota">Sem o Instagram, o primeiro canal leva ${brl(CONFIG.baseSemInsta)} de serviço (estratégia, oferta e criativo); o segundo, ${brl(CONFIG.canais[0].servico)}.</p>` : "");
-  $("atend").innerHTML =
-    opcao("radio", "auto", "sim", "Com automação", "Responde na hora, 24h, tira as dúvidas e manda o link pra cliente agendar sozinha.", `${brl(CONFIG.automacao.mensal)}<small>por mês</small>`, st.auto, true) +
-    opcao("radio", "auto", "nao", "Sem automação", "Você mesma responde e agenda pelo WhatsApp.", "—", !st.auto);
-  $("aviso-sem").classList.toggle("on", !st.auto);
-  resumo();
-}
-
-// === BLOCO 7: CONTA ===
-function calcular(insta, canais, auto) {
-  const i = CONFIG.insta.find(x => x.id === insta);
-  const cs = CONFIG.canais.filter(x => canais.includes(x.id)).map(x => ({ ...x }));
-  const servicoCanais = cs.map((c, k) => insta === "i0" && k === 0 ? CONFIG.baseSemInsta : c.servico);
-  cs.forEach((c, k) => c.cobrado = servicoCanais[k]);
-  const servico = i.servico + servicoCanais.reduce((s, v) => s + v, 0);
-  const anuncio = i.anuncio + cs.reduce((s, c) => s + c.anuncio, 0);
-  const bonus = canais.length === CONFIG.canais.length && insta === "i2";
-  return { i, cs, servico, anuncio, auto, bonus, mensal: auto ? CONFIG.automacao.mensal : 0,
-    vazio: !anuncio, clientes: Math.max(1, Math.round(anuncio / CONFIG.baseVerba * CONFIG.baseClientes)) };
+function funil(s) {
+  const m = CONFIG.mercado, meta = s.insta * s.verba, g = s.canais.includes("google") ? s.verba : 0, yt = s.canais.includes("youtube") ? s.verba : 0;
+  const vis = i => (meta * 1000 / m.cpmMeta[i]) + (yt * 1000 / m.cpmYoutube[i]);
+  const cliques = i => meta / m.cpcMeta[i] + g / m.cpcGoogle[i];
+  const conversas = i => cliques(i) * m.conversa[i];
+  const total = meta + g + yt, base = total * CONFIG.prontosPorReal;
+  const prontos = [Math.min(base * .8, conversas(0)), Math.min(base * 1.2, conversas(1))];
+  return {
+    vis: [redondo(vis(0)), redondo(vis(1))], cliques: [redondo(cliques(0)), redondo(cliques(1))],
+    conversas: [redondo(conversas(0)), redondo(conversas(1))], prontos,
+    vendas: [Math.max(1, Math.floor(prontos[0] * CONFIG.taxaVenda[0])), Math.max(1, Math.round(prontos[1] * CONFIG.taxaVenda[1]))]
+  };
 }
 // Parcelado: a taxa da InfinitePay vai pra quem compra, e a gente recebe o valor cheio
 const noCartao = (valor, n) => valor / (1 - CONFIG.taxasCartao[n]);
+const igual = (a, p) => a.insta === p.insta && a.auto === p.auto && a.pagina === p.pagina && a.canais.length === p.canais.length && p.canais.every(x => a.canais.includes(x));
 
-function resumo() {
-  const c = calcular(st.insta, st.canais, st.auto);
-  if (c.vazio) { $("resumo").innerHTML = `<h2>Seu pacote</h2><p class="sub">Escolha pelo menos um canal: Instagram, Google ou YouTube.</p>`; return; }
+// Comparativo: o que a mesma escolha custaria lá fora (piso das faixas de mercado)
+function mercadoHTML(c) {
+  const pm = CONFIG.precoMercado, linhas = [];
+  const faixaP = x => `${x.ate ? `${brl(x.de)} a ${brl(x.ate)}` : `a partir de ${brl(x.de)}`}${x.mes ? "/mês" : ""}`;
+  linhas.push(pm.anuncio);
+  if (st.pagina) linhas.push(pm.pagina);
+  if (st.auto) linhas.push(pm.automacao);
+  const piso = linhas.reduce((t, x) => t + x.de, 0), aqui = c.servico + c.mensal;
+  return `<div class="mercado"><span>No mercado, hoje</span>
+    ${linhas.map(x => `<div class="linha"><span>${x.nome}${x.so ? `<small>${x.so}</small>` : ""}</span><b>${faixaP(x)}</b></div>`).join("")}
+    <div class="eco">Com a gente: ${brl(aqui)}${piso > aqui ? `, pelo menos ${brl(piso - aqui)} a menos que o mais barato lá fora` : ""}</div>
+    <small>Fontes: <a href="https://www.freelasemcrise.com.br/quanto-cobrar/gestao-anuncios-meta-ads" target="_blank" rel="noopener">Freelas em Crise</a>, <a href="https://bigdatauniversity.com.br/quanto-cobrar-por-uma-landing-page/" target="_blank" rel="noopener">Big Data University</a> e <a href="https://digisac.com.br/blog/quanto-custa-um-chatbot-para-whatsapp-e-como-calcular-o-retorno" target="_blank" rel="noopener">Digisac</a> (2026). Agência costuma cobrar mais.</small></div>`;
+}
+
+// === BLOCO 7: TELA ===
+function item(ic, titulo, desc, preco, botao) {
+  return `<div class="item"><span class="ic">${ic}</span><span class="t"><b>${titulo}</b><small>${desc}</small>${preco ? `<span class="p">${preco}</span>` : ""}</span>${botao}</div>`;
+}
+const botao = (on, acao) => `<button class="add${on ? " on" : ""}" data-acao="${acao}">${on ? "✓ Incluído" : "+ Adicionar"}</button>`;
+
+function desenhar() {
+  $("prontos").innerHTML = CONFIG.prontos.map(p => {
+    const c = calcular({ ...st, ...p });
+    return `<button class="pronto${igual(st, p) ? " on" : ""}" data-pronto="${p.id}"><b>${p.nome}${p.rec ? " ⭐" : ""}</b><small>${brl(c.servico)}</small></button>`;
+  }).join("");
+
+  const semInsta = st.insta === 0, primeiro = semInsta && st.canais[0];
+  $("anuncios").innerHTML =
+    `<div class="item"><span class="ic">📸</span><span class="t"><b>Instagram e Facebook</b><small>O criativo é o anúncio que chama a cliente pra conversar com você.</small>
+      <div class="seg">${CONFIG.instagram.map(i => `<button class="${st.insta === i.n ? "on" : ""}" data-insta="${i.n}">${i.nome}${i.servico ? ` · ${brl(i.servico)}` : ""}${i.rec ? " ⭐" : ""}</button>`).join("")}</div></span></div>` +
+    CONFIG.canais.map(c => {
+      const on = st.canais.includes(c.id);
+      const preco = semInsta && (primeiro === c.id || !st.canais.length) ? brl(CONFIG.baseSemInsta) : `+ ${brl(c.servico)}`;
+      return item(c.ic, c.nome, c.desc, preco, botao(on, "canal:" + c.id));
+    }).join("");
+
+  const v = CONFIG.verba;
+  $("verba").innerHTML = `<div class="valor"><b id="verba-v">${brl(st.verba)}</b><small>por anúncio, por semana</small></div>
+    <input type="range" id="verba-r" min="${v.min}" max="${v.max}" step="${v.passo}" value="${st.verba}" aria-label="Verba por anúncio">
+    <div class="marcas"><span>${brl(v.min)}</span><span class="rec">recomendado ${brl(v.recomendado)}</span><span>${brl(v.max)}</span></div>`;
+  $("verba-r").addEventListener("input", e => { st.verba = +e.target.value; $("verba-v").textContent = brl(st.verba); atualizar(); });
+
+  $("adicionais").innerHTML =
+    item("🛒", CONFIG.pagina.nome, CONFIG.pagina.desc, `+ ${brl(CONFIG.pagina.servico)}`, botao(st.pagina, "pagina")) +
+    item("💬", `${CONFIG.automacao.nome}<span class="tag">Indicado</span>`, CONFIG.automacao.desc, `${brl(CONFIG.automacao.mensal)}/mês`, botao(st.auto, "auto"));
+  $("aviso-sem").classList.toggle("on", !st.auto);
+  atualizar();
+}
+
+function atualizar() {
+  const c = calcular(st);
+  document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", igual(st, CONFIG.prontos.find(p => p.id === b.dataset.pronto))));
+  if (c.vazio) {
+    $("funil").innerHTML = `<p class="sub">Escolha pelo menos um anúncio: Instagram, Google ou YouTube.</p>`;
+    $("pedido").innerHTML = `<h2>Seu pedido</h2><p class="sub">Escolha pelo menos um anúncio pra montar o pacote.</p>`;
+    $("barra").innerHTML = `<span class="v"><small>Seu pedido</small><b>Escolha um anúncio</b></span>`;
+    return;
+  }
+  const f = funil(st);
+  $("funil").innerHTML = [
+    ["👀 Visualizações do anúncio", faixa(...f.vis)],
+    ["👆 Cliques", f.cliques[1] ? faixa(...f.cliques) : "—"],
+    ["💬 Conversas iniciadas no WhatsApp", f.conversas[1] ? faixa(...f.conversas) : "—"],
+    ["🔥 Clientes prontas (quentes e qualificadas)", faixa(...f.prontos)],
+    ["💰 Vendas prováveis", faixa(...f.vendas)]
+  ].map(([t, v]) => `<div class="etapa"><span>${t}</span><b>${v}</b></div>`).join("");
+
   const total = noCartao(c.servico, st.parcelas);
+  const geral = total + c.anuncio + c.mensal, geralPix = c.servico + c.anuncio + c.mensal;
   const opcoesParc = Object.keys(CONFIG.taxasCartao).map(n =>
     `<option value="${n}"${+n === st.parcelas ? " selected" : ""}>${n}x de ${brl2(noCartao(c.servico, +n) / n)}</option>`).join("");
-  $("resumo").innerHTML = `
-    <h2>Seu pacote</h2>
-    ${c.i.servico ? `<div class="linha"><span>Instagram: ${c.i.nome}</span><b>${brl(c.i.servico)}</b></div>` : ""}
-    ${c.cs.map(x => `<div class="linha"><span>${x.nome}</span><b>${brl(x.cobrado)}</b></div>`).join("")}
-    ${c.bonus ? `<div class="linha"><span>${CONFIG.paginaBonus}</span><b>grátis</b></div>` : ""}
+  $("pedido").innerHTML = `
+    <h2>Seu pedido</h2>
+    ${c.itens.map(i => `<div class="linha"><span>${i.nome}</span><b>${brl(i.valor)}</b></div>`).join("")}
     <div class="sep"></div>
+    ${mercadoHTML(c)}
     <div class="linha"><span><b style="color:var(--texto)">Nosso serviço</b><small>pago pra AltasVendas IA</small></span><b>${brl(c.servico)}</b></div>
     <div class="parcela"><span>Serviço no cartão</span><b>${st.parcelas}x de ${brl2(total / st.parcelas)}</b>
       <small>${st.parcelas > 1 ? `total ${brl2(total)} com a taxa da maquininha · ` : ""}ou ${brl(c.servico)} no Pix</small></div>
     <label class="parc-sel">Parcelas <select id="parc">${opcoesParc}</select></label>
     <div class="sep"></div>
-    <div class="linha"><span>Anúncio<small>pago direto no Instagram/Google, no seu cartão</small></span><b>${brl(c.anuncio)}</b></div>
-    <div class="linha"><span>Automação no WhatsApp</span><b>${c.auto ? brl(c.mensal) + "/mês" : "sem"}</b></div>
-    <div class="total"><span>Investimento total da campanha</span><b>${brl2(total + c.anuncio + c.mensal)}</b>
-      <small>serviço ${st.parcelas > 1 ? `no cartão em ${st.parcelas}x` : "no cartão"} + anúncio${c.auto ? " + 1º mês da automação" : ""}<br>ou ${brl(c.servico + c.anuncio + c.mensal)} com o serviço no Pix</small></div>
-    <div class="est">Estimativa: <b>~${c.clientes} clientes prontos</b> pra comprar, com essa verba de anúncio.</div>
+    <div class="linha"><span>Anúncio · ${c.nAnuncios} × ${brl(st.verba)}<small>pago direto na plataforma, no seu cartão</small></span><b>${brl(c.anuncio)}</b></div>
+    <div class="linha"><span>${CONFIG.automacao.nome}</span><b>${c.mensal ? brl(c.mensal) + "/mês" : "sem"}</b></div>
+    <div class="total"><span>Investimento total da campanha</span><b>${brl2(geral)}</b>
+      <small>serviço no cartão${st.parcelas > 1 ? ` em ${st.parcelas}x` : ""} + anúncio${c.mensal ? " + 1º mês da automação" : ""}<br>ou ${brl(geralPix)} com o serviço no Pix</small></div>
     <a class="btn" href="#" id="quero">Quero Esse Pacote</a>
-    <p class="nota">Estimativa, não promessa: o resultado depende da sua oferta e do seu atendimento. Taxas de parcelamento da InfinitePay.</p>`;
-  $("parc").addEventListener("change", e => { st.parcelas = +e.target.value; resumo(); });
+    <p class="nota">Taxas de parcelamento da InfinitePay. Estimativas, não promessa.</p>`;
+  $("barra").innerHTML = `<span class="v"><small>Total da campanha · ${faixa(...f.vendas)} vendas prováveis</small><b>${brl2(geral)}</b></span><a href="#pedido">Ver pedido</a>`;
+
+  $("parc").addEventListener("change", e => { st.parcelas = +e.target.value; atualizar(); });
   $("quero").addEventListener("click", e => {
     e.preventDefault();
     const msg = [
       `Oi! ${nome ? `Aqui é a ${nome}. ` : ""}Montei o meu pacote de Black:`,
-      c.i.servico ? `• Instagram: ${c.i.nome}` : "• Sem Instagram",
-      ...c.cs.map(x => `• ${x.nome}`),
-      c.bonus ? `• ${CONFIG.paginaBonus}` : "",
-      `• Automação no WhatsApp: ${c.auto ? brl(c.mensal) + "/mês" : "sem"}`,
+      ...c.itens.map(i => `• ${i.nome}`),
+      `• ${CONFIG.automacao.nome}: ${c.mensal ? brl(c.mensal) + "/mês" : "sem"}`,
+      `Verba: ${brl(st.verba)} por anúncio na semana (${brl(c.anuncio)}, pago direto na plataforma)`,
       `Serviço: ${brl(c.servico)} (${st.parcelas}x de ${brl2(total / st.parcelas)} no cartão ou ${brl(c.servico)} no Pix)`,
-      `Anúncio: ${brl(c.anuncio)} (pago direto na plataforma)`,
-      `Total da campanha: ${brl2(total + c.anuncio + c.mensal)} (ou ${brl(c.servico + c.anuncio + c.mensal)} com o serviço no Pix)`
-    ].filter(Boolean).join("\n");
+      `Total da campanha: ${brl2(geral)} (ou ${brl(geralPix)} com o serviço no Pix)`
+    ].join("\n");
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
   });
-  document.querySelectorAll("[data-pronto]").forEach(b => b.classList.toggle("on", b.dataset.pronto === prontoAtual()));
-}
-function prontoAtual() {
-  const p = CONFIG.prontos.find(p => st.insta === p.insta && st.auto === p.auto && st.canais.length === p.canais.length && p.canais.every(x => st.canais.includes(x)));
-  return p ? p.id : "";
 }
 
 // === BLOCO 8: CLIQUES ===
-document.addEventListener("change", e => {
-  const t = e.target;
-  if (t.name === "insta") st.insta = t.value;
-  else if (t.name === "canal") st.canais = [...document.querySelectorAll('input[name="canal"]:checked')].map(x => x.value);
-  else if (t.name === "auto") st.auto = t.value === "sim";
-  else return;
-  desenhar();
-});
 document.addEventListener("click", e => {
-  const b = e.target.closest("[data-pronto]");
-  if (!b) return;
-  const p = CONFIG.prontos.find(x => x.id === b.dataset.pronto);
-  st = { ...st, insta: p.insta, canais: [...p.canais], auto: p.auto };
+  const t = e.target.closest("[data-pronto],[data-insta],[data-acao]");
+  if (!t) return;
+  if (t.dataset.pronto) {
+    const p = CONFIG.prontos.find(x => x.id === t.dataset.pronto);
+    st = { ...st, insta: p.insta, canais: [...p.canais], pagina: p.pagina, auto: p.auto };
+  } else if (t.dataset.insta !== undefined) st.insta = +t.dataset.insta;
+  else {
+    const [acao, id] = t.dataset.acao.split(":");
+    if (acao === "canal") st.canais = st.canais.includes(id) ? st.canais.filter(x => x !== id) : [...st.canais, id];
+    if (acao === "pagina") st.pagina = !st.pagina;
+    if (acao === "auto") st.auto = !st.auto;
+  }
   desenhar();
 });
 desenhar();
