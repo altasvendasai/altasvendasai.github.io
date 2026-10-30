@@ -58,6 +58,10 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .item .t .p{display:block;white-space:nowrap;font-weight:800;color:var(--texto);font-size:.88rem;margin-top:.15rem}
 .add{border:1.5px solid var(--verde-vivo);background:var(--branco);color:var(--verde);font-family:inherit;font-weight:800;font-size:.85rem;border-radius:999px;padding:.45rem .9rem;cursor:pointer;white-space:nowrap}
 .add.on{background:var(--verde-vivo);color:#06231A}
+.check{width:34px;height:34px;flex:none;border:2px solid var(--cinza-claro);background:var(--branco);border-radius:9px;cursor:pointer;display:grid;place-items:center;padding:0}
+.check svg{width:20px;height:20px;opacity:0}
+.check.on{background:var(--verde-vivo);border-color:var(--verde-vivo)}
+.check.on svg{opacity:1}
 .seg{display:flex;gap:6px;margin-top:.5rem;flex-wrap:wrap}
 .seg button{border:1.5px solid var(--linha);background:var(--branco);border-radius:999px;padding:.4rem .75rem;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--texto);cursor:pointer}
 .seg button.on{border-color:var(--verde-vivo);background:#F0FBF4;color:var(--verde)}
@@ -301,7 +305,8 @@ function mercadoHTML(c) {
 function item(ic, titulo, desc, preco, botao) {
   return `<div class="item"><span class="ic">${ic}</span><span class="t"><b>${titulo}</b><small>${desc}</small>${preco ? `<span class="p">${preco}</span>` : ""}</span>${botao}</div>`;
 }
-const botao = (on, acao) => `<button class="add${on ? " on" : ""}" data-acao="${acao}">${on ? "✓ Incluído" : "+ Adicionar"}</button>`;
+// Caixinha de marcar: marcada = incluído no pacote
+const botao = (on, acao) => `<button class="check${on ? " on" : ""}" data-acao="${acao}" role="checkbox" aria-checked="${on}" aria-label="${on ? "Tirar" : "Incluir"}"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>`;
 
 function desenhar() {
   $("prontos").innerHTML = CONFIG.prontos.map(p =>
