@@ -48,6 +48,10 @@ h2.title{font-size:28px;font-weight:800;margin:8px 0 6px;letter-spacing:-.3px;te
 .mod{display:flex;gap:13px;align-items:flex-start}
 .mod .ico{width:42px;height:42px;border-radius:11px;background:var(--verde-sf);display:grid;place-items:center;font-size:20px;flex:0 0 auto}
 .mod h3{font-size:16px;font-weight:800;margin-bottom:3px}
+.ben{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:9px}
+.ben li{font-size:14px;line-height:1.5;color:var(--muted);padding-left:24px;position:relative}
+.ben li::before{content:"✓";position:absolute;left:0;color:var(--verde);font-weight:800}
+.ben b{color:var(--ink,inherit)}
 .mod p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
 
 .passos{counter-reset:p;list-style:none;margin:18px 0 0;padding:0;max-width:680px}
@@ -152,9 +156,10 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
     <div class="card mod"><div class="ico">🧭</div><div><h3>Estratégia de vendas</h3><p>A oferta de Black, o público certo e o caminho da cliente do anúncio até o seu WhatsApp.</p></div></div>
     <div class="card mod"><div class="ico">🔎</div><div><h3>Anúncio no Google</h3><p>Criar, subir e acompanhar a campanha nas buscas que a sua cliente faz, como tratamento de celulite e glúteos na sua região.</p></div></div>
     <div class="card mod"><div class="ico">📝</div><div><h3>Formulário com vitrine</h3><p>Perguntas rápidas, uma de cada vez, que qualificam a cliente. E mostra os seus blends com foto e o que fazem, sem preço, pra ela marcar o que chamou a atenção.</p></div></div>
-    <div class="card mod"><div class="ico">💬</div><div><h3>Mensagem automática</h3><p>No seu WhatsApp, avisando a cliente que você recebeu e que logo dá retorno. Ninguém fica sem resposta.</p></div></div>
     <div class="card mod"><div class="ico">🧴</div><div><h3>Venda dos seus blends</h3><p>Como oferecer depois do atendimento e como vender separado, pra quem só quer o produto.</p></div></div>
-    <div class="card mod"><div class="ico">📦</div><div><h3>Pacotes, sinal e retorno</h3><p>Pacotes de tratamento, sinal no Pix pra garantir o horário e o retorno das clientes.</p></div></div>
+    <div class="card mod"><div class="ico">📅</div><div><h3>Agenda online</h3><p>Uma agenda sua na internet, com os seus horários livres, logo depois do formulário.</p></div></div>
+    <div class="card mod"><div class="ico">📋</div><div><h3>Ficha de atendimento digital</h3><p>Uma ficha rápida que a cliente preenche pelo celular depois de agendar.</p></div></div>
+    <div class="card mod"><div class="ico">📦</div><div><h3>Pacotes e retorno</h3><p>Pacotes de tratamento e o retorno das clientes, pra elas voltarem toda semana.</p></div></div>
   </div>
 </div></section>
 
@@ -164,21 +169,44 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <ol class="passos">
     <li>A cliente pesquisa o seu serviço no Google e vê o seu anúncio.</li>
     <li>Toca no anúncio e vai pro formulário: responde o que ela precisa e conhece os seus blends.</li>
-    <li>Ao enviar, cai no seu WhatsApp com um resumo de tudo, e a mensagem automática avisa que logo você responde. Ela não compra nada no formulário, mas já chega explicadinho.</li>
-    <li>Você responde quando der, agenda o horário e vende os blends pra quem mostrou interesse.</li>
+    <li>Ali mesmo ela escolhe um horário livre na sua agenda online e agenda sozinha. A agenda já avisa: "Ao agendar o horário, você será direcionada para o WhatsApp e já pode aproveitar para tirar suas dúvidas."</li>
+    <li>Depois de agendar, ela preenche a ficha de atendimento e cai no seu WhatsApp com o horário marcado e o resumo das respostas.</li>
+    <li>Você só confirma, atende e oferece os blends pra quem mostrou interesse.</li>
   </ol>
 </div></section>
 
 <section><div class="wrap">
+  <div class="eyebrow">O que você ganha</div>
+  <h2 class="title">Agenda online e ficha digital</h2>
+  <div class="grid g2">
+    <div class="card"><h3>📅 Agenda online</h3><ul class="ben">
+      <li><b>Agenda sozinha, 24 horas.</b> A cliente marca de madrugada, no domingo, na hora que ela lembrar, e você para de perder cliente por demorar pra responder.</li>
+      <li><b>Nada de horário duplicado.</b> Horário marcado sai da agenda na hora, ninguém marca em cima de ninguém.</li>
+      <li><b>Só aparece o que você quer.</b> Você define os dias, os horários e os seus serviços.</li>
+      <li><b>Você é avisada no WhatsApp</b> a cada horário novo marcado.</li>
+      <li><b>Passa mais confiança.</b> Um link seu, organizado, com cara de clínica.</li>
+    </ul></div>
+    <div class="card"><h3>📋 Ficha de atendimento digital</h3><ul class="ben">
+      <li><b>Sem papel e sem prancheta.</b> Tudo chega organizado antes da sessão.</li>
+      <li><b>Mapa do corpo:</b> ela marca onde sente dor ou inchaço e quanto, e você já chega sabendo onde trabalhar.</li>
+      <li><b>Histórico de cada cliente.</b> Cada nova ficha fica guardada, dá pra ver a evolução sessão a sessão.</li>
+      <li><b>Mais tempo de atendimento,</b> menos tempo de pergunta na maca.</li>
+      <li><b>Dados de saúde protegidos.</b> Só você vê as fichas, e a cliente dá o consentimento antes de enviar.</li>
+      <li><b>Atendimento mais profissional,</b> e a cliente sente que a sessão foi pensada pra ela.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section class="tint"><div class="wrap">
   <div class="eyebrow">Anúncios</div>
   <h2 class="title">Onde a sua cliente vai te encontrar</h2>
   <div class="grid" style="max-width:680px;margin-top:18px">
-    <div class="card anuncio"><h3>🔎 Google</h3><p class="lead" style="font-size:14.5px;margin:4px 0 0">Aparece pra quem já está pesquisando o que você faz na sua região. É gente que já quer resolver, não só quem está passando pelo feed.</p><div class="v">R$ 250 a R$ 300 <small>de anúncio</small></div></div>
+    <div class="card anuncio"><h3>🔎 Google</h3><p class="lead" style="font-size:14.5px;margin:4px 0 0">Quem pesquisa já quer resolver, não está só passando pelo feed.</p><div class="v">R$ 250 a R$ 300 <small>de anúncio</small></div></div>
   </div>
   <div class="cartao">💳 <b>Você não precisa cadastrar cartão no Google.</b> Eu pago o anúncio e você me paga tudo junto, podendo parcelar. Todo o valor do anúncio vai inteiro pro Google.</div>
 </div></section>
 
-<section class="tint"><div class="wrap">
+<section><div class="wrap">
   <div class="eyebrow">Comparativo</div>
   <h2 class="title">Quanto custa lá fora</h2>
   <div class="pricebox">
@@ -188,11 +216,11 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <p class="fonte">Fontes: <a href="https://www.freelasemcrise.com.br/quanto-cobrar/gestao-anuncios-meta-ads" target="_blank" rel="noopener">Freelas em Crise</a> e <a href="https://bigdatauniversity.com.br/quanto-cobrar-por-uma-landing-page/" target="_blank" rel="noopener">Big Data University</a> (2026). Agência costuma cobrar mais. Fora o valor dos anúncios.</p>
 </div></section>
 
-<section><div class="wrap">
+<section class="tint"><div class="wrap">
   <div class="eyebrow">Fazendo comigo</div>
   <h2 class="title">Investimento</h2>
   <div class="invest">
-    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine, mensagem automática, venda dos blends, pacotes, sinal e retorno</div></div><div class="v"><s class="de">R$ 1.000</s> R$ 350<span class="bf">Preço de Black Friday</span></div></div>
+    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Estratégia de vendas, anúncio no Google, formulário com vitrine, agenda online, ficha de atendimento digital, venda dos blends, pacotes e retorno</div></div><div class="v"><s class="de">R$ 1.000</s> R$ 350<span class="bf">Preço de Black Friday</span></div></div>
     <div class="row"><div><b>🔎 Anúncio no Google</b><div class="d">eu pago direto pro Google</div>
       <div class="gch"><label><input type="radio" name="gg" value="250" onchange="selPg()"> R$ 250</label><label><input type="radio" name="gg" value="300" checked onchange="selPg()"> R$ 300 <small>ideal pra começar</small></label></div></div><div class="v" id="v-gg">R$ 300</div></div>
     <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez só</div></div><div class="v" id="v-tot">R$ 650</div></div>
@@ -203,14 +231,13 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   </div>
 </div></section>
 
-<section class="tint"><div class="wrap">
+<section><div class="wrap">
   <div class="eyebrow">Próximas fases</div>
   <h2 class="title">Depois que o Google der resultado</h2>
-  <p class="lead">Cada fase é orçada à parte e só começa quando a anterior estiver funcionando.</p>
+  <p class="lead">Cada fase tem o seu orçamento próprio.</p>
   <ul style="margin:14px 0 0;padding-left:1.2rem;max-width:680px">
-    <li style="padding:6px 0"><b>Fase 2 · YouTube:</b> vídeo curto antes dos vídeos que a sua cliente assiste.</li>
-    <li style="padding:6px 0"><b>Fase 3 · Instagram e Facebook:</b> post carrossel com funil de vendas e campanhas nos dois.</li>
-    <li style="padding:6px 0"><b>Automação no WhatsApp:</b> quando chegar mais mensagem do que você dá conta de responder.</li>
+    <li style="padding:6px 0"><b>Fase 2 · YouTube, Instagram e Facebook:</b> vídeo curto antes dos vídeos que a sua cliente assiste no YouTube, post carrossel com funil de vendas e campanhas no Instagram e no Facebook.</li>
+    <li style="padding:6px 0"><b>Fase 3 · Página de vendas e automação:</b> uma página de vendas sua e automação no WhatsApp, pra quando chegar mais mensagem do que você dá conta de responder.</li>
   </ul>
 </div></section>
 
