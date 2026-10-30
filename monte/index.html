@@ -114,6 +114,13 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
 .mercado small{display:block;font-size:.72rem;color:#9A7B4E;margin-top:.3rem;line-height:1.4}
 .mercado small a{color:#9A7B4E}
 .selo{display:inline-block;margin-top:.9rem;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.35);color:var(--verde-vivo);border-radius:999px;padding:.35rem .8rem;font-size:.82rem;font-weight:700}
+.ticket{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--cinza);margin:.2rem 0 .7rem}
+.ticket input{width:7.5rem;font:inherit;font-weight:800;font-size:1rem;padding:.45rem .6rem;border:1.5px solid var(--linha);border-radius:10px;color:var(--texto)}
+.conta{display:grid;gap:6px}
+.conta .pos{color:var(--verde)}
+.conta .neg{color:var(--alerta)}
+.paga{margin-top:.6rem;background:var(--tinta);color:#fff;border-radius:14px;padding:12px 14px;font-size:.92rem;line-height:1.45}
+.paga b{color:var(--verde-vivo)}
 .rodape{text-align:center;color:var(--cinza-claro);font-size:.78rem;padding:20px}
 </style>
 </head>
@@ -157,6 +164,14 @@ h1 em{font-style:normal;color:var(--verde-vivo)}
       <p class="sub">Estimativa com médias do mercado, conforme o que você escolheu.</p>
       <div class="funil" id="funil"></div>
       <p class="fonte">Como calculamos: Instagram com mil visualizações a R$ 10–25 e clique a R$ 0,80–3,00 (<a href="https://www.intentmarketing.com.br/blog/post-quanto-custa-meta-ads" target="_blank" rel="noopener">Intent Marketing, 2026</a>); Google com clique a R$ 1,50–6,00 para serviços locais (<a href="https://andrerochaconsultor.com.br/trafego-pago/quanto-custa-google-ads-brasil-2026/" target="_blank" rel="noopener">André Rocha, 2026</a>); YouTube só em visualizações. Conversas (4 a 6 de cada 10 cliques), clientes prontos e vendas (2 a 4 de cada 10 prontos) são estimativas nossas. Não é promessa: depende da oferta e do atendimento.</p>
+    </div>
+    <div class="caixa">
+      <h2>O investimento se paga?</h2>
+      <p class="sub">Quanto entra com as vendas da campanha, tirando tudo o que você investiu.</p>
+      <label class="ticket">Valor de cada atendimento: R$ <input type="number" id="ticket" min="1" step="10" inputmode="numeric"></label>
+      <label class="ticket">Horários livres na sua semana: <input type="number" id="horas" min="1" step="1" inputmode="numeric" placeholder="ex.: 6"></label>
+      <label class="ticket"><input type="checkbox" id="prod-on" checked style="width:auto;accent-color:var(--verde-vivo)"> Vender produtos também, a partir de R$ <input type="number" id="prod" min="1" step="5" inputmode="numeric"></label>
+      <div class="conta" id="lucro"></div>
     </div>
   </div>
 
@@ -213,6 +228,13 @@ const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(
 const indicacao = (new URLSearchParams(location.search).get("i") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
 if (nome) $("titulo").innerHTML = `${nome}, monte o <em>seu pacote</em>.`;
 if (indicacao) $("selo").textContent = `🏷 Preço de Black Friday + indicação da ${indicacao}`;
+const ticketURL = +(new URLSearchParams(location.search).get("t") || "");
+let ticket = ticketURL > 0 ? ticketURL : 350; // valor médio do atendimento (?t= no link)
+const prodURL = +(new URLSearchParams(location.search).get("b") || "");
+let produto = prodURL > 0 ? prodURL : 50, produtoOn = true; // produto mais barato (?b= no link)
+const horasURL = +(new URLSearchParams(location.search).get("h") || "");
+let horas = horasURL > 0 ? horasURL : 0; // horários livres na semana (0 = sem limite); a pessoa preenche na página
+const compraProduto = [.2, .4]; // estimativa nossa: de cada 10 clientes prontas, 2 a 4 levam um produto
 let st = { insta: 2, canais: [], pagina: false, auto: true, verba: CONFIG.verba.recomendado, parcelas: 12 };
 
 // === BLOCO 6: CONTA ===
@@ -302,6 +324,7 @@ function atualizar() {
     $("funil").innerHTML = `<p class="sub">Escolha pelo menos um anúncio: Instagram, Google ou YouTube.</p>`;
     $("pedido").innerHTML = `<h2>Seu pedido</h2><p class="sub">Escolha pelo menos um anúncio pra montar o pacote.</p>`;
     $("barra").innerHTML = `<span class="v"><small>Seu pedido</small><b>Escolha um anúncio</b></span>`;
+    $("lucro").innerHTML = "";
     return;
   }
   const f = funil(st);
@@ -317,6 +340,29 @@ function atualizar() {
   const geral = total + c.anuncio + c.mensal, geralPix = c.servico + c.anuncio + c.mensal;
   const opcoesParc = Object.keys(CONFIG.taxasCartao).map(n =>
     `<option value="${n}"${+n === st.parcelas ? " selected" : ""}>${n}x de ${brl2(noCartao(c.servico, +n) / n)}</option>`).join("");
+  // Se paga? Receita das vendas prováveis menos tudo o que ela investe (serviço no cartão + anúncio + automação)
+  const extra = produtoOn ? f.prontos.map((p, i) => Math.round(p * compraProduto[i]) * produto) : [0, 0];
+  // A agenda é o teto: atendimento além dos horários livres vira lista de espera
+  const atende = f.vendas.map(v => horas ? Math.min(v, horas) : v), espera = horas ? Math.max(0, f.vendas[1] - horas) : 0;
+  const receita = atende.map((v, i) => v * ticket + extra[i]), lucro = receita.map(v => v - geral);
+  // Menor verba cuja estimativa do meio já enche os horários livres
+  let verbaAgenda = 0;
+  if (horas) for (let v = CONFIG.verba.min; v <= CONFIG.verba.max; v += CONFIG.verba.passo) {
+    const fv = funil({ ...st, verba: v }).vendas;
+    if ((fv[0] + fv[1]) / 2 >= horas) { verbaAgenda = v; break; }
+  }
+  const empata = Math.ceil(geral / ticket), sinal = v => v >= 0 ? "pos" : "neg";
+  const lucroTxt = v => (v < 0 ? "− " : "+ ") + brl(Math.abs(v));
+  $("lucro").innerHTML = `
+    <div class="etapa"><span>💰 ${faixa(...atende)} atendimentos${horas ? `<small style="display:block;color:var(--cinza);font-size:.74rem">limite da sua agenda: ${horas} na semana</small>` : ""}</span><b>${atende[0] === atende[1] ? brl(atende[0] * ticket) : `${brl(atende[0] * ticket)} a ${brl(atende[1] * ticket)}`}</b></div>
+    ${produtoOn ? `<div class="etapa"><span>🧴 Produtos vendidos pelo anúncio<small style="display:block;color:var(--cinza);font-size:.74rem">${faixa(...extra.map(v => v / produto))} clientes levando um produto</small></span><b>+ ${brl(extra[0])} a ${brl(extra[1])}</b></div>` : ""}
+    <div class="etapa"><span>📤 Total investido na campanha</span><b>− ${brl2(geral)}</b></div>
+    <div class="etapa"><span>📈 Sobra</span><b class="${sinal(lucro[1])}">${lucro[0] === lucro[1] ? lucroTxt(lucro[0]) : `<span class="${sinal(lucro[0])}">${lucroTxt(lucro[0])}</span> a ${lucroTxt(lucro[1])}`}</b></div>
+    ${horas && empata > horas ? "" : `<div class="paga">Com <b>${empata} atendimento${empata > 1 ? "s" : ""}</b> o investimento já se paga. Daí pra frente é lucro${atende[1] > empata ? `, e a estimativa é de até <b>${atende[1]}</b> na semana` : ""}. E cliente que gosta volta e indica, então a conta segue rendendo depois da campanha.</div>`}
+    ${horas && empata > horas ? `<div class="aviso on">⚠ Seus ${horas} horários livres não bastam pra pagar esse pacote só com atendimento (precisa de ${empata}). Escolha um pacote menor, menos verba ou conte com a venda de produtos.</div>` : ""}
+    ${espera ? `<div class="aviso on">📋 Pode chegar mais cliente do que cabe na agenda (até ${espera} a mais). Quem não couber entra na lista de espera da semana seguinte.${verbaAgenda && verbaAgenda < st.verba ? ` Pra encher os seus ${horas} horários, ${brl(verbaAgenda)} por anúncio já basta. <button class="add" data-verba="${verbaAgenda}" style="margin-top:.4rem">Usar ${brl(verbaAgenda)}</button>` : ""}</div>` : ""}
+    ${produtoOn ? `<p class="fonte">Na conversa, a automação pergunta se a cliente tem interesse nos seus produtos. Ela paga pela página de vendas ou no WhatsApp, e você entrega quando tiver em mãos. Quantas levam produto (2 a 4 de cada 10 clientes prontas) é estimativa nossa.</p>` : ""}`;
+
   $("pedido").innerHTML = `
     <h2>Seu pedido</h2>
     ${c.itens.map(i => `<div class="linha"><span>${i.nome}</span><b>${brl(i.valor)}</b></div>`).join("")}
@@ -352,6 +398,8 @@ function atualizar() {
 
 // === BLOCO 8: CLIQUES ===
 document.addEventListener("click", e => {
+  const vb = e.target.closest("[data-verba]");
+  if (vb) { st.verba = +vb.dataset.verba; desenhar(); return; }
   const t = e.target.closest("[data-pronto],[data-insta],[data-acao]");
   if (!t) return;
   if (t.dataset.pronto) {
@@ -366,6 +414,13 @@ document.addEventListener("click", e => {
   }
   desenhar();
 });
+$("ticket").value = ticket;
+$("prod").value = produto;
+if (horas) $("horas").value = horas;
+$("horas").addEventListener("input", e => { const v = Math.floor(+e.target.value); horas = v > 0 ? v : 0; atualizar(); });
+$("prod").addEventListener("input", e => { const v = +e.target.value; if (v > 0) { produto = v; atualizar(); } });
+$("prod-on").addEventListener("change", e => { produtoOn = e.target.checked; atualizar(); });
+$("ticket").addEventListener("input", e => { const v = +e.target.value; if (v > 0) { ticket = v; atualizar(); } });
 desenhar();
 </script>
 </body>
