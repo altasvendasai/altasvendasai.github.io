@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fase 1 · O que você recebe · AltasVendas IA</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A1411">
+<meta property="og:title" content="Fase 1 · O que você recebe">
+<meta property="og:description" content="2 semanas de preparação e 2 semanas de anúncio no Google, pegando a Black Friday.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://altasvendasai.github.io/campanha/fase-1/">
+<meta property="og:image" content="https://altasvendasai.github.io/campanha/img/previa.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Mesmo modelo da proposta da Armeria Esparta, nas cores da AltasVendas IA */
+:root{ --tinta:#0A1411; --tinta-2:#111E1A; --verde:#128C4A; --vivo:#25D366; --gelo:#F5F7F6; --panel:#fff; --ink:#0F1A16;
+  --muted:#5B6762; --steel:#A9B8B2; --line:#E3E9E6; --verde-sf:#E7F6EE; --verm:#c0473b; --shadow:0 10px 30px rgba(10,20,17,.07); --radius:16px }
+*{box-sizing:border-box}
+body{margin:0;background:var(--gelo);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+section{padding:56px 0}
+h1,h2,h3{line-height:1.15;margin:0}
+.eyebrow{color:var(--verde);font-size:12.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h2.title{font-size:28px;font-weight:800;margin:8px 0 6px;letter-spacing:-.3px;text-wrap:balance}
+.lead{color:var(--muted);font-size:16.5px;max-width:680px}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.03em;color:#fff;font-size:1rem;white-space:nowrap}
+.logo i{width:34px;height:34px;border-radius:9px;background:var(--vivo);display:grid;place-items:center}
+.logo i svg{width:19px;height:19px}
+
+.hero{background:radial-gradient(1100px 480px at 85% -10%,rgba(37,211,102,.22),transparent 60%),linear-gradient(180deg,var(--tinta-2),var(--tinta));color:#eaf3ef;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,transparent,var(--vivo),transparent)}
+.hero .wrap{padding-top:22px;padding-bottom:64px}
+.hero .top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.tag{border:1px solid rgba(169,184,178,.4);color:var(--steel);border-radius:30px;padding:6px 14px;font-size:12px;font-weight:700;letter-spacing:.6px}
+.hero h1{font-size:42px;font-weight:800;letter-spacing:-1px;margin:32px 0 14px;max-width:18ch;text-wrap:balance;color:#fff}
+.hero h1 .hl{color:var(--vivo)}
+.obj{list-style:none;margin:12px 0 0;padding:0;max-width:62ch}
+.obj li{color:#c9d6d0;font-size:17px;padding:5px 0 5px 30px;position:relative}
+.obj li::before{content:"⭐";position:absolute;left:0;top:4px;font-size:14px}
+.hero .meta{display:flex;gap:24px;flex-wrap:wrap;margin-top:28px;font-size:14px;color:#a9b8b2}
+.hero .meta b{color:#fff}
+
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.mod{display:flex;gap:13px;align-items:flex-start}
+.mod .ico{width:42px;height:42px;border-radius:11px;background:var(--verde-sf);display:grid;place-items:center;font-size:20px;flex:0 0 auto}
+.mod h3{font-size:16px;font-weight:800;margin-bottom:3px}
+.ben{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:9px}
+.ben li{font-size:14px;line-height:1.5;color:var(--muted);padding-left:24px;position:relative}
+.ben li::before{content:"✓";position:absolute;left:0;color:var(--verde);font-weight:800}
+.ben b{color:var(--ink,inherit)}
+.mod p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+
+.passos{counter-reset:p;list-style:none;margin:18px 0 0;padding:0;max-width:680px}
+.passos li{counter-increment:p;position:relative;padding:12px 0 12px 48px;border-bottom:1px dashed var(--line);font-size:16px}
+.passos li:last-child{border:none}
+.passos li::before{content:counter(p);position:absolute;left:0;top:10px;width:32px;height:32px;border-radius:50%;background:var(--tinta);color:var(--vivo);font-weight:800;display:grid;place-items:center;font-size:15px}
+.tint{background:linear-gradient(180deg,var(--panel),var(--gelo))}
+
+.anuncio .v{font-size:24px;font-weight:800;margin-top:6px}
+.anuncio .v small{font-size:14px;color:var(--muted);font-weight:600}
+.cartao{margin-top:16px;max-width:680px;background:var(--verde-sf);border:1.5px solid rgba(18,140,74,.28);border-radius:var(--radius);padding:16px 18px;font-size:15px}
+.cartao b{color:var(--verde)}
+
+.pricebox{border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);overflow:hidden;margin-top:16px;max-width:640px}
+.pricebox .r{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.pricebox .r:last-child{border-bottom:none}
+.pricebox .r span{color:var(--muted);font-size:14.5px}
+.pricebox .r b{font-size:17px;white-space:nowrap;color:var(--verm)}
+.fonte{font-size:12.5px;color:var(--muted);margin-top:10px;max-width:640px}
+.fonte a{color:var(--muted)}
+
+.invest{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-top:16px;max-width:680px}
+.invest .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.invest .row .d{color:var(--muted);font-size:14px}
+.invest .row .v{font-size:21px;font-weight:800;white-space:nowrap}
+.invest .row.tot{background:var(--tinta);color:#fff}
+.invest .row.tot .d{color:var(--steel)}
+.invest .row.tot .v{color:var(--vivo);font-size:26px}
+.invest .v s.de{color:var(--muted);font-weight:600;font-size:16px;margin-right:6px}
+.invest .v .bf{display:block;font-size:11.5px;font-weight:800;color:var(--verde);text-align:right;letter-spacing:.3px}
+.gch{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.gch label{display:flex;gap:6px;align-items:center;border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+.gch label:has(input:checked){border-color:var(--vivo);background:var(--verde-sf)}
+.gch input{accent-color:var(--verde)}
+.gch small{color:var(--verde);font-weight:700}
+.notes{padding:14px 22px;background:var(--gelo);font-size:14px;color:var(--muted)}
+.notes div{padding:3px 0}
+
+.final{background:linear-gradient(180deg,var(--tinta-2),var(--tinta));color:#eaf3ef;text-align:center}
+.final h2{color:#fff;font-size:30px;font-weight:800}
+.final-sub{color:#c9d6d0;font-size:15px;margin:6px auto 0}
+.payopts{max-width:540px;margin:22px auto 0;display:flex;flex-direction:column;gap:10px;text-align:left}
+.payopt{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.06);border:1px solid rgba(169,184,178,.3);border-radius:12px;padding:14px 16px;cursor:pointer}
+.payopt input{margin-top:3px;accent-color:var(--vivo);width:18px;height:18px;flex:0 0 auto}
+.payopt b{color:#fff;display:block;font-size:16px}
+.payopt span{color:#b9c8c2;font-size:14px}
+.payopt:has(input:checked){border-color:var(--vivo);background:rgba(37,211,102,.12)}
+.det{max-width:540px;margin:-2px auto 4px;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.28);border-radius:12px;padding:15px 16px;text-align:left}
+.det label{display:block;color:#c9d6d0;font-size:13.5px;margin-bottom:7px}
+.det select{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(169,184,178,.35);border-radius:8px;padding:9px 12px;font-size:15px;width:100%;font-family:inherit}
+.det select option{color:#000}
+.sum{color:#eaf3ef;font-size:14.5px;background:rgba(0,0,0,.25);border-radius:9px;padding:11px 13px;margin-top:10px;line-height:1.5}
+.sum b{color:var(--vivo)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;border-radius:999px;padding:17px 44px;font-size:17.5px;font-weight:800;cursor:pointer;text-decoration:none;font-family:inherit;background:var(--vivo);color:#06231A;box-shadow:0 8px 22px rgba(37,211,102,.3);margin-top:24px}
+.form{max-width:680px;margin-top:18px;display:flex;flex-direction:column;gap:16px}
+.form label.q{display:block;font-weight:700;font-size:15.5px;margin-bottom:6px}
+.form label.q small{display:block;font-weight:500;color:var(--muted);font-size:13.5px}
+.form textarea,.form input[type=text]{width:100%;font:inherit;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink)}
+.form textarea{min-height:84px;resize:vertical}
+.form textarea:focus,.form input[type=text]:focus{outline:none;border-color:var(--vivo)}
+.ops{display:flex;flex-wrap:wrap;gap:8px}
+.ops label{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14.5px;cursor:pointer;background:var(--panel)}
+.ops label:has(input:checked){border-color:var(--vivo);background:var(--verde-sf)}
+.ops input{accent-color:var(--verde)}
+.btn.escuro{background:var(--tinta);color:#fff;box-shadow:0 8px 22px rgba(10,20,17,.2);margin-top:4px}
+footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px;font-size:13px;border-top:1px solid rgba(255,255,255,.08)}
+@media(max-width:760px){
+  section{padding:42px 0}
+  .hero .wrap{padding-top:14px;padding-bottom:44px}
+  .hero h1{font-size:31px;margin:20px 0 10px}
+  .obj li{font-size:16px}
+  h2.title{font-size:24px}
+  .g3,.g2{grid-template-columns:1fr}
+  .btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<style>
+/* Extras do follow-up da Fase 1 */
+.sem{display:inline-block;background:var(--tinta);color:var(--vivo);font-size:12px;font-weight:800;letter-spacing:.8px;border-radius:999px;padding:5px 12px;margin-bottom:10px}
+.etapa h3{font-size:19px;font-weight:800;margin-bottom:2px}
+.etapa .sub{color:var(--muted);font-size:14px;margin:0}
+.aviso{margin-top:16px;max-width:680px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--vivo);border-radius:12px;padding:16px 18px;font-size:15px}
+.aviso b{color:var(--ink)}
+.ext{max-width:680px;margin-top:18px}
+.ext .v{font-size:22px;font-weight:800;color:var(--verde);white-space:nowrap}
+</style>
+
+<header class="hero"><div class="wrap">
+  <div class="top">
+    <span class="logo"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></svg></i>ALTASVENDAS IA</span>
+    <span class="tag">FASE 1 · O QUE VOCÊ RECEBE</span>
+  </div>
+  <h1><span id="oi">Bora começar!</span> <span class="hl">Esse é o seu mês de Fase 1.</span></h1>
+  <ul class="obj">
+    <li>2 semanas preparando tudo e 2 semanas com o anúncio rodando no Google.</li>
+    <li>Foco no seu tratamento de celulite e nos seus blends, pra falar com a cliente certa.</li>
+  </ul>
+  <div class="meta">
+    <div id="para" hidden>Para <b id="para-nome"></b></div>
+    <div>Responsável <b>Élton Longaray</b></div>
+    <div>Duração <b>1 mês</b></div>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <div class="eyebrow">Como vai ser o mês</div>
+  <h2 class="title">Duas etapas, uma depois da outra</h2>
+  <p class="lead" style="margin-bottom:24px">Primeiro a gente constrói tudo. Depois liga o anúncio e acompanha.</p>
+  <div class="grid g2">
+    <div class="card etapa"><span class="sem">SEMANAS 1 E 2</span><h3>🧱 Preparação</h3><p class="sub">Eu monto tudo e te mostro antes de ir pro ar.</p>
+      <ul class="ben">
+        <li><b>Estratégia de vendas:</b> a oferta de Black Friday, o público certo e o caminho da cliente do anúncio até o seu WhatsApp.</li>
+        <li><b>Formulário com vitrine:</b> perguntas rápidas que filtram a cliente e mostram os seus blends com foto, sem preço.</li>
+        <li><b>Agenda online</b> pra cliente marcar sozinha, 24 horas. <span style="color:var(--verde);font-weight:700">Bônus</span></li>
+        <li><b>Ficha de atendimento digital</b> pra registrar cada sessão e mostrar a evolução. <span style="color:var(--verde);font-weight:700">Bônus</span></li>
+        <li><b>Guia do seu Instagram:</b> a bio nova pronta pra copiar e colar e como reorganizar os seus destaques.</li>
+        <li><b>Anúncio no Google montado:</b> as buscas da sua cliente na sua região, os textos e a configuração.</li>
+      </ul></div>
+    <div class="card etapa"><span class="sem">SEMANAS 3 E 4</span><h3>🚀 Anúncio rodando</h3><p class="sub">A campanha no ar, pegando a Black Friday.</p>
+      <ul class="ben">
+        <li><b>Anúncio no Google no ar</b> pra quem está pesquisando o seu serviço perto de você.</li>
+        <li><b>Acompanho todo dia</b> e ajusto o que precisar: palavras, horários e valor por clique.</li>
+        <li><b>A cliente chega no seu WhatsApp</b> com o horário marcado e o resumo das respostas.</li>
+        <li><b>Venda dos blends:</b> como oferecer depois do atendimento e como vender separado.</li>
+      </ul></div>
+  </div>
+</div></section>
+
+<section class="tint"><div class="wrap">
+  <div class="eyebrow">Já na primeira semana</div>
+  <h2 class="title">O que você mesma já pode fazer no Instagram</h2>
+  <p class="lead">Junto com a preparação eu te mando um guia simples, passo a passo, pra você deixar o perfil pronto pra receber quem vem do anúncio:</p>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card mod"><div class="ico">✍️</div><div><h3>Bio nova</h3><p>O texto exato, é só copiar e colar. Diz em uma linha o que você resolve e chama pro WhatsApp.</p></div></div>
+    <div class="card mod"><div class="ico">⭕</div><div><h3>Destaques organizados</h3><p>Quais destaques ter, em que ordem e o que vai dentro de cada um, pra cliente entender o seu forte de cara.</p></div></div>
+  </div>
+  <p class="fonte" style="margin-top:14px">O Instagram completo, com posts pensados pra vender, fica pra Fase 2.</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Se quiser continuar</div>
+  <h2 class="title">Mais 2 semanas de anúncio</h2>
+  <p class="lead">Se no fim do mês você quiser manter o anúncio no ar por mais 2 semanas, eu sigo acompanhando a campanha:</p>
+  <div class="invest ext">
+    <div class="row"><div><b>📈 Acompanhamento da campanha</b><div class="d">mais 2 semanas, metade do valor do meu trabalho</div></div><div class="v">R$ 150</div></div>
+    <div class="row"><div><b>🔎 Anúncio no Google</b><div class="d">o valor dessas 2 semanas, que vai inteiro pro Google</div></div><div class="v" style="font-size:16px;color:var(--muted)">você escolhe</div></div>
+    <div class="notes"><div>📺 Anúncio no YouTube ou em outros canais tem orçamento à parte.</div></div>
+  </div>
+</div></section>
+
+<section class="tint"><div class="wrap">
+  <div class="eyebrow">Sobre o valor</div>
+  <h2 class="title">Um preço que cabe no seu momento</h2>
+  <div class="aviso">O valor dessa fase está <b>bem abaixo do que se cobra no mercado</b>, porque eu montei de acordo com o seu faturamento de hoje. Vai ser sempre assim: <b>o valor acompanha o que você fatura</b>, de um jeito que você sempre consiga pagar. Conforme as suas vendas crescerem, os valores dos serviços vão sendo ajustados junto.</div>
+  <div class="aviso"><b>Não é mensalidade.</b> Você paga por fase. Essa fase dura 1 mês, e a próxima só começa quando você quiser.</div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Fase 1</div>
+  <h2 class="title">Investimento</h2>
+  <div class="invest">
+    <div class="row"><div><b>🛠️ Meu trabalho</b><div class="d">Preparação e acompanhamento do anúncio</div></div><div class="v"><s class="de">R$ 1.000</s> R$ 350<span class="bf">Preço de Black Friday</span></div></div>
+    <div class="row"><div><b>🎁 Bônus</b><div class="d">Agenda online e ficha de atendimento digital</div></div><div class="v" style="color:var(--verde)">de presente</div></div>
+    <div class="row"><div><b>🔎 Anúncio no Google</b><div class="d">2 semanas, eu pago direto pro Google</div>
+      <div class="gch"><label><input type="radio" name="gg" value="250" onchange="selPg()"> R$ 250</label><label><input type="radio" name="gg" value="300" checked onchange="selPg()"> R$ 300 <small>ideal pra começar</small></label></div></div><div class="v" id="v-gg">R$ 300</div></div>
+    <div class="row tot"><div><b>Total da Fase 1</b><div class="d">pago uma vez, pode parcelar</div></div><div class="v" id="v-tot">R$ 650</div></div>
+  </div>
+</div></section>
+
+<section class="final" id="aceite"><div class="wrap">
+  <div class="eyebrow" style="color:var(--vivo);font-size:24px;letter-spacing:.3px;text-transform:none">Parcelamento</div>
+  <p class="final-sub">No cartão, com a taxa da maquininha. Escolha em quantas vezes:</p>
+  <div class="payopts">
+    <div class="det" id="det">
+      <label for="parc">Quantas parcelas?</label>
+      <select id="parc" onchange="calc()"></select>
+      <div class="sum" id="sum"></div>
+    </div>
+  </div>
+  <h2 style="margin-top:36px">Tudo certo? Então bora!</h2>
+  <a class="btn" href="#" onclick="aceitar(event)">✅ Aceito a proposta</a>
+  <p style="margin:24px 0 0"><a href="#" onclick="duvida(event)" style="color:#8fa39b;font-size:13.5px">Ainda tenho dúvidas</a></p>
+</div></section>
+
+<footer>AltasVendas IA · Fase 1 da campanha de Black Friday</footer>
+
+<script>
+// === BLOCO 1: CONFIGURAÇÃO ===
+const ZAP = "5551982276577";
+const SERVICO = 350; // preço de Black Friday (de R$ 1.000)
+let TOTAL = SERVICO + 300;
+// Taxas de parcelamento da InfinitePay (mesmas da proposta da campanha)
+const FEES = {1:.042,2:.0609,3:.0701,4:.0791,5:.088,6:.0967,7:.1259,8:.1342,9:.1425,10:.1506,11:.1587,12:.1666};
+const brl = n => "R$ " + Number(n).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const brl0 = n => "R$ " + Number(n).toLocaleString("pt-BR");
+
+// === BLOCO 2: NOME PELO LINK ===
+// Nome da cliente só pelo link (?n=), nunca no código
+const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
+if (nome) {
+  document.getElementById("para").hidden = false;
+  document.getElementById("para-nome").textContent = nome;
+  document.getElementById("oi").textContent = "Bora começar, " + nome + "!";
+}
+
+// === BLOCO 3: VALORES E PARCELAS ===
+const parc = document.getElementById("parc");
+let escolha = "";
+function selPg() {
+  // Total = meu trabalho + o anúncio no Google que ela escolher
+  const gg = +document.querySelector('input[name="gg"]:checked').value, sel = parc.value || "";
+  TOTAL = SERVICO + gg;
+  document.getElementById("v-gg").textContent = brl0(gg);
+  document.getElementById("v-tot").textContent = brl0(TOTAL);
+  parc.innerHTML = `<option value="" disabled${sel ? "" : " selected"}>Escolha o número de parcelas</option>` +
+    Object.keys(FEES).map(n => `<option value="${n}"${n === sel ? " selected" : ""}>${n}x de ${brl(TOTAL / (1 - FEES[n]) / n)}</option>`).join("");
+  calc();
+}
+function calc() {
+  const sum = document.getElementById("sum");
+  if (!parc.value) { sum.style.display = "none"; escolha = ""; return; }
+  const n = +parc.value, total = TOTAL / (1 - FEES[n]);
+  sum.style.display = "block";
+  sum.innerHTML = `<b>${n}x de ${brl(total / n)}</b> · total ${brl(total)} com a taxa da maquininha`;
+  escolha = `${n}x de ${brl(total / n)} no cartão (total ${brl(total)})`;
+}
+
+// === BLOCO 4: ACEITE NO WHATSAPP ===
+function aceitar(e) {
+  e.preventDefault();
+  // Sem parcela escolhida não tem como fechar: leva ela de volta pro campo
+  if (!escolha) { parc.focus(); parc.scrollIntoView({ behavior: "smooth", block: "center" }); document.getElementById("det").style.outline = "2px solid var(--vivo)"; return; }
+  const gg = document.querySelector('input[name="gg"]:checked').value;
+  const msg = `Aceito a proposta da Fase 1! Total ${brl0(TOTAL)} (serviço R$ 350 + Google R$ ${gg}). Pagamento: ${escolha}.` + (nome ? ` — ${nome}` : "");
+  window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
+}
+function duvida(e) {
+  e.preventDefault();
+  window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent("Oi! Vi o que vem na Fase 1 e ainda tenho dúvidas."), "_blank");
+}
+selPg();
+</script>
+</body>
+</html>
