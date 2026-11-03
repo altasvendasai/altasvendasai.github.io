@@ -248,8 +248,13 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
   <div class="payopts">
     <label class="payopt"><input type="radio" name="pg" value="pix" onchange="selPg()"><div><b>a) Pix à vista</b><span id="pix-v">R$ 650 de uma vez</span></div></label>
     <label class="payopt"><input type="radio" name="pg" value="cartao" checked onchange="selPg()"><div><b>b) Cartão parcelado</b><span>em até 12x, com a taxa da maquininha</span></div></label>
+    <label class="payopt"><input type="radio" name="pg" value="entrada" onchange="selPg()"><div><b>c) Entrada no Pix + resto no cartão</b><span>você escolhe o valor da entrada e parcela o resto</span></div></label>
     <div class="det" id="det">
-      <label for="parc">Quantas parcelas?</label>
+      <div id="ent-box" style="display:none;margin-bottom:14px">
+        <label for="ent">Valor da entrada no Pix: <b id="ent-v" style="color:#fff"></b></label>
+        <input type="range" id="ent" step="10" oninput="selPg()" style="width:100%;accent-color:var(--vivo)">
+      </div>
+      <label for="parc" id="parc-lbl">Quantas parcelas?</label>
       <select id="parc" onchange="calc()"></select>
       <div class="sum" id="sum"></div>
     </div>
@@ -290,6 +295,7 @@ const brl = n => "R$ " + Number(n).toLocaleString("pt-BR", { minimumFractionDigi
 const nome = (new URLSearchParams(location.search).get("n") || "").trim().slice(0, 30).replace(/[<>&"]/g, "");
 if (nome) { document.getElementById("para").hidden = false; document.getElementById("para-nome").textContent = nome; }
 const parc = document.getElementById("parc");
+const ent = document.getElementById("ent");
 const brl0 = n => "R$ " + Number(n).toLocaleString("pt-BR");
 let escolha = "";
 function selPg() {
@@ -299,17 +305,31 @@ function selPg() {
   document.getElementById("v-gg").textContent = brl0(gg);
   document.getElementById("v-tot").textContent = brl0(TOTAL);
   document.getElementById("pix-v").textContent = brl0(TOTAL) + " de uma vez";
-  parc.innerHTML = Object.keys(FEES).map(n => `<option value="${n}"${n === sel ? " selected" : ""}>${n}x de ${brl(TOTAL / (1 - FEES[n]) / n)}</option>`).join("");
   const v = document.querySelector('input[name="pg"]:checked').value;
-  document.getElementById("det").style.display = v === "cartao" ? "block" : "none";
+  // Entrada vai de R$ 50 até sobrar pelo menos R$ 50 pro cartão
+  ent.min = 50; ent.max = TOTAL - 50;
+  if (!ent.dataset.ok) { ent.value = 200; ent.dataset.ok = 1; }
+  if (+ent.value > TOTAL - 50) ent.value = TOTAL - 50;
+  const entrada = v === "entrada" ? +ent.value : 0, resto = TOTAL - entrada;
+  document.getElementById("ent-box").style.display = entrada ? "block" : "none";
+  document.getElementById("ent-v").textContent = brl0(entrada);
+  document.getElementById("parc-lbl").textContent = entrada ? `Em quantas vezes no cartão o resto (${brl0(resto)})?` : "Quantas parcelas?";
+  parc.innerHTML = Object.keys(FEES).map(n => `<option value="${n}"${n === sel ? " selected" : ""}>${n}x de ${brl(resto / (1 - FEES[n]) / n)}</option>`).join("");
+  document.getElementById("det").style.display = v === "pix" ? "none" : "block";
   calc();
 }
 function calc() {
   const v = document.querySelector('input[name="pg"]:checked').value;
   if (v === "pix") { escolha = "Pix à vista, " + brl(TOTAL); return; }
-  const n = +parc.value, total = TOTAL / (1 - FEES[n]);
-  document.getElementById("sum").innerHTML = `<b>${n}x de ${brl(total / n)}</b> · total ${brl(total)} com a taxa da maquininha`;
-  escolha = `Cartão em ${n}x de ${brl(total / n)} (total ${brl(total)})`;
+  const entrada = v === "entrada" ? +ent.value : 0, resto = TOTAL - entrada;
+  const n = +parc.value, cartao = resto / (1 - FEES[n]);
+  if (entrada) {
+    document.getElementById("sum").innerHTML = `<b>${brl0(entrada)} de entrada no Pix</b> + <b>${n}x de ${brl(cartao / n)}</b> no cartão · total ${brl(entrada + cartao)} com a taxa da maquininha`;
+    escolha = `entrada de ${brl(entrada)} no Pix + ${n}x de ${brl(cartao / n)} no cartão (total ${brl(entrada + cartao)})`;
+  } else {
+    document.getElementById("sum").innerHTML = `<b>${n}x de ${brl(cartao / n)}</b> · total ${brl(cartao)} com a taxa da maquininha`;
+    escolha = `Cartão em ${n}x de ${brl(cartao / n)} (total ${brl(cartao)})`;
+  }
 }
 function aceitar(e) {
   e.preventDefault();
