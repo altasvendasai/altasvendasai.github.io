@@ -6,7 +6,7 @@ window.DIAG = {
   supabaseUrl: "https://gopqajnivmbxjqsiznqi.supabase.co",
   supabaseKey: "sb_publishable_YBF0cSQt0IlTqVhCyRlduQ_ij2CHBZ5",
   tabela: "acelera_diagnostico",
-  whatsapp: "5551982276577",
+  whatsapp: "5551994687046",
   // Modelo TERAPEUTAS (padrão da Alê): /diagnostico/
   perguntas: [
     // Sobre você
