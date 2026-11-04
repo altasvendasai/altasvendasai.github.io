@@ -157,6 +157,12 @@ table.comp tr:last-child td{border-bottom:0}
 .dep-item p{color:var(--cinza);margin:0;font-size:15px}
 .nota{color:var(--cinza-2);font-size:14px;margin-top:22px}
 [hidden]{display:none!important}
+.vagas{display:inline-flex;align-items:center;gap:10px;background:rgba(255,200,20,.1);border:1px solid rgba(255,200,20,.45);color:var(--gelo);border-radius:999px;padding:8px 16px;font-size:15px;line-height:1.3;font-weight:600}
+.vagas b{color:var(--amarelo)}
+.vagas i{flex:none;width:9px;height:9px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 0 rgba(255,200,20,.6);animation:pisca 1.6s infinite}
+@keyframes pisca{70%{box-shadow:0 0 0 9px rgba(255,200,20,0)}100%{box-shadow:0 0 0 0 rgba(255,200,20,0)}}
+@media (prefers-reduced-motion:reduce){.vagas i{animation:none}}
+.oferta .vagas{display:flex;justify-content:center;text-align:center;border-radius:14px;margin:0 0 18px}
 .titulo-bloco{margin:44px 0 18px;font-size:22px}
 .valor-normal{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:10px;padding:14px 0 0;border-top:1px dashed var(--linha);font-weight:700}
 .valor-normal span{min-width:0}
@@ -367,6 +373,7 @@ footer a{color:var(--verde);text-decoration:none;font-weight:600}
       <div id="revelado" hidden>
         <div class="preco-final"><small class="bf">Super Oferta Black Friday</small><b id="preco-final"></b><span>por mês · implantação inclusa</span></div>
         <p class="extra">Chip da sua IA: plano próprio, pago à&nbsp;parte.</p>
+        <div class="vagas"><i></i><span>Só <b><span class="js-vagas">10</span>&nbsp;vagas</b> na 1ª quinzena da Black&nbsp;November</span></div>
         <a class="btn" href="#contratar">Quero Meu Atendente</a>
       </div>
     </div>
@@ -457,6 +464,7 @@ footer a{color:var(--verde);text-decoration:none;font-weight:600}
 const CONFIG = {
   whatsapp: "5551982276577",
   preco: 500, // por mês, sem fidelidade (Super Oferta Black Friday)
+  vagas: 10, // vagas da 1ª quinzena da Black November (aparece na oferta)
   precoNormal: 1200, // valor normal por mês, aparece antes do botão
   implantacao: 1200, // valor "cheio" da implantação, que sai de graça
   // Benefícios com o valor de cada um (somados e riscados na oferta). valor: null = incluído
@@ -490,6 +498,7 @@ $("lista-preco").innerHTML = CONFIG.beneficios.map(b => `
   <div class="item-preco"><span>${nb(b.nome)}</span>${b.valor ? `<s>${brl(b.valor)}/mês</s>` : "<b>incluído</b>"}</div>`).join("") + `
   <div class="item-preco"><span>Implantação feita pela&nbsp;gente</span><s>${brl(CONFIG.implantacao)}</s></div>
   <div class="soma"><span>Tudo somado</span><s>${brl(somaMes)}/mês</s></div>`;
+document.querySelectorAll(".js-vagas").forEach(el => el.textContent = CONFIG.vagas);
 $("preco-normal").textContent = brl(CONFIG.precoNormal) + "/mês";
 // O valor só aparece quando a pessoa toca no botão (nunca rolando a tela)
 $("revelar").addEventListener("click", () => {
