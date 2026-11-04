@@ -76,7 +76,7 @@ dd.vazio{color:var(--cinza-claro)}
 <main class="wrap" id="app"><p class="vazio-lista">Carregando…</p></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../perguntas.js?v=11"></script>
+<script src="../perguntas.js?v=12"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // BLOCO 2: CONFIG DA PROPOSTA (mude os números aqui)
@@ -100,7 +100,7 @@ const PADRAO = {
 
 const sb = window.supabase.createClient(DIAG.supabaseUrl, DIAG.supabaseKey);
 const app = document.getElementById("app");
-const P = DIAG.perguntas;
+const P = DIAG.perguntas.concat(DIAG.perguntasEmpresas.filter(e => !DIAG.perguntas.some(p => p.id === e.id)));
 const esc = s => String(s??"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const brl = v => (Math.round(v)||0).toLocaleString("pt-BR", { style:"currency", currency:"BRL", maximumFractionDigits:0 });
 const BASE_URL = location.href.replace(/diagnostico\/painel\/.*$/, "");

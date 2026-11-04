@@ -95,7 +95,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--verde);box-shadow:0 0
 <main class="wrap" id="app" aria-live="polite"><p class="lead">Carregando…</p></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="perguntas.js?v=11"></script>
+<script src="perguntas.js?v=12"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // BLOCO 5: CONFIG E ESTADO
@@ -106,8 +106,9 @@ const sb = window.supabase.createClient(DIAG.supabaseUrl, DIAG.supabaseKey);
 const TOKEN = new URLSearchParams(location.search).get("c") || "";
 // Modo teste (&teste=1): passa sem responder e NÃO envia nada
 const TESTE = new URLSearchParams(location.search).has("teste");
-const CHAVE = "acelera-diag-v1" + (TOKEN ? "-" + TOKEN : "") + (new URLSearchParams(location.search).has("teste") ? "-teste" : "");
-let P = DIAG.perguntas.slice();
+const CHAVE = "acelera-diag-v1" + (window.DIAG_MODELO ? "-" + window.DIAG_MODELO : "") + (TOKEN ? "-" + TOKEN : "") + (new URLSearchParams(location.search).has("teste") ? "-teste" : "");
+const MODELO = window.DIAG_MODELO || "terapeutas";
+let P = (MODELO === "empresas" ? DIAG.perguntasEmpresas : DIAG.perguntas).slice();
 let nomeConhecido = "";
 let st = {i:-1, r:{}};
 try{ const s = JSON.parse(localStorage.getItem(CHAVE)||"null"); if(s && s.r) st = s; }catch(e){}
