@@ -76,7 +76,7 @@ dd.vazio{color:var(--cinza-claro)}
 <main class="wrap" id="app"><p class="vazio-lista">Carregando…</p></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../perguntas.js?v=13"></script>
+<script src="../perguntas.js?v=14"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // BLOCO 2: CONFIG DA PROPOSTA (mude os números aqui)
@@ -150,6 +150,7 @@ function telaLista(){
         ${r.negocio ? `<span style="color:var(--cinza)">${esc(r.negocio)}</span>` : ""}
         <span class="tag ${l.enviado_em ? "" : "espera"}">${l.enviado_em ? "Respondeu" : "Aguardando"}</span>
         ${l.proposta ? `<span class="tag wpp">Proposta montada</span>` : ""}
+        ${r.formulario ? `<span class="tag">${esc(r.formulario)}</span>` : ""}
         <span class="data">${new Date(l.criado_em).toLocaleDateString("pt-BR")}</span></div>`;
     }).join("") : `<p class="vazio-lista">Nenhum diagnóstico ainda.</p>`}</div>`;
   novo.onclick = telaNovo;
