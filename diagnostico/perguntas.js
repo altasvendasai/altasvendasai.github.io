@@ -167,6 +167,27 @@ window.DIAG = {
     {id:"preocupacao", grupo:G, tipo:"longo", q:"O que mais te preocupa nessa Black?", opcional:true,
       ajuda:"Ex.: gastar em anúncio e não vender · não dar conta de atender · dar desconto e perder dinheiro."}
   ];
+  // Form Reunião Atendimento (/diagnostico/atendimento/): CIRÚRGICO pra Automação de Atendimento.
+  // A página /atendimento já manda empresa, o que vende, quem atende e se tem número pra IA.
+  // Nome e empresa repetem só pra identificar no painel.
+  const A = "Seu atendimento";
+  DIAG.perguntasAtendimento = [
+    Object.assign({}, pega("nome"), {grupo:"Pra identificar"}),
+    Object.assign({}, pega("negocio"), {grupo:"Pra identificar"}),
+    Object.assign({}, pega("instagram"), {grupo:"Pra identificar"}),
+    Object.assign({}, pega("servicos"), {grupo:A}),
+    {id:"perguntas_freq", grupo:A, tipo:"longo", q:"Quais são as 3 perguntas que os clientes mais fazem no WhatsApp?",
+      ajuda:"Ex.: quanto custa · tem horário amanhã · parcela no cartão"},
+    {id:"desistencia", grupo:A, tipo:"longo", q:"Por que um cliente desiste de comprar?",
+      ajuda:"Ex.: acha caro · some depois que recebe o preço · diz que vai pensar"},
+    Object.assign({}, pega("contatos_dia"), {grupo:A}),
+    {id:"tempo_resposta", grupo:A, tipo:"escolha", q:"Hoje, em quanto tempo vocês costumam responder?",
+      ops:["Na hora","Em até 1 hora","Mais de 1 hora","Só no fim do dia ou no outro dia"]},
+    {id:"destino", grupo:A, tipo:"escolha", outro:true, q:"Quando o cliente decide comprar, pra onde a IA deve levar ele?",
+      ops:["Pra uma pessoa da equipe","Pra página de vendas ou link de pagamento","Pra agenda marcar horário"]},
+    {id:"quem_assume", grupo:A, tipo:"texto", q:"Em quais dias e horários tem alguém pra assumir quando o cliente pede uma pessoa?", ph:"Ex.: segunda a sábado, das 9h às 18h"},
+    Object.assign({}, pega("meta"), {grupo:A})
+  ];
   // Form Reunião Completo (/diagnostico/completo/): a página principal (20 dias grátis) já manda
   // empresa, o que vende, objetivo, faturamento, base de contatos, canais, tráfego pago, gasto e meta.
   DIAG.perguntasCompleto = tira(["negocio","whatsapp","segmento","prioridade","faturamento","lista","origem","anuncio","investimento","vender_agora","meta","ano_passado"])

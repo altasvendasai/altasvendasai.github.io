@@ -107,7 +107,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--verde);box-shadow:0 0
 <main class="wrap" id="app" aria-live="polite"><p class="lead">Carregando…</p></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="perguntas.js?v=16"></script>
+<script src="perguntas.js?v=17"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // BLOCO 5: CONFIG E ESTADO
@@ -120,7 +120,7 @@ const TOKEN = new URLSearchParams(location.search).get("c") || "";
 const TESTE = new URLSearchParams(location.search).has("teste");
 const CHAVE = "acelera-diag-v1" + (window.DIAG_MODELO ? "-" + window.DIAG_MODELO : "") + (TOKEN ? "-" + TOKEN : "") + (new URLSearchParams(location.search).has("teste") ? "-teste" : "");
 const MODELO = window.DIAG_MODELO || "terapeutas";
-const MODELOS = {empresas: DIAG.perguntasEmpresas, black: DIAG.perguntasBlack, completo: DIAG.perguntasCompleto};
+const MODELOS = {empresas: DIAG.perguntasEmpresas, black: DIAG.perguntasBlack, atendimento: DIAG.perguntasAtendimento, completo: DIAG.perguntasCompleto};
 let P = (MODELOS[MODELO] || DIAG.perguntas).slice();
 let nomeConhecido = "";
 let st = {i:-1, r:{}};
