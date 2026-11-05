@@ -114,6 +114,26 @@ window.DIAG = {
       ajuda:"Pensa no que cabe no caixa sem apertar. A gente monta a proposta dentro disso.",
       ops:["Até R$ 500","De R$ 500 a 1.000","De R$ 1.000 a 3.000","Mais de R$ 3.000","Ainda não sei"]},
     {id:"obs", grupo:"A Black Friday", tipo:"longo", q:"Quer contar mais alguma coisa sobre a sua empresa?", opcional:true}
+  ],
+
+  // Questionário dos blends (página /blends/?c=CODIGO). Respostas ficam na coluna "blends" do mesmo diagnóstico.
+  perguntasBlends: [
+    {id:"b_quais", grupo:"Sobre os blends", tipo:"longo", q:"Quais blends você faz hoje?", ajuda:"Me diz o nome e pra que serve cada um (celulite, flacidez, manchas…)."},
+    {id:"b_tamanhos", grupo:"Sobre os blends", tipo:"texto", q:"Os tamanhos são só 10 ml e 30 ml, ou tem outro?", ph:"Ex.: só 10 ml e 30 ml"},
+    {id:"b_precos", grupo:"Sobre os blends", tipo:"texto", q:"Os preços ainda são R$ 55 o de 10 ml e R$ 70 o de 30 ml?", ph:"Ex.: sim, continuam"},
+    {id:"b_frasco", grupo:"Sobre os blends", tipo:"texto", q:"Vem em que tipo de frasco?", ph:"Conta-gotas, roll-on, spray…"},
+    {id:"b_oleos", grupo:"O que vai dentro", tipo:"longo", q:"Quais óleos você usa em cada blend?", ajuda:"O óleo de base (ex.: semente de uva, amêndoas) e os óleos essenciais."},
+    {id:"b_oleos_preco", grupo:"O que vai dentro", tipo:"longo", q:"De cada óleo, quanto vem no frasco que você compra e quanto você paga em reais?", ajuda:"Ex.: \"óleo de amêndoas, frasco de 500 ml, R$ 40\"."},
+    {id:"b_gotas", grupo:"O que vai dentro", tipo:"longo", q:"Quanto vai de cada óleo essencial no blend de 10 ml e no de 30 ml?", ajuda:"Pode ser em gotas ou em ml."},
+    {id:"b_embalagem", grupo:"Frasco e embalagem", tipo:"longo", q:"O frasco vazio, o rótulo e a embalagem: quanto você pagou e quantas unidades vieram?", ajuda:"Embalagem = saquinho, caixinha, laço. Ex.: \"pacote com 50 frascos, R$ 60\"."},
+    {id:"b_frete", grupo:"Frasco e embalagem", tipo:"longo", q:"Você paga frete quando compra os óleos e os frascos?", ajuda:"Se paga, quanto costuma ser o frete e de quanto em quanto tempo você faz essas compras? Ex.: \"uns R$ 25 de frete, compro uma vez por mês\"."},
+    {id:"b_tempo", grupo:"Seu tempo", tipo:"texto", q:"Quanto tempo você leva pra preparar um blend?", ajuda:"Do começo até ele estar pronto pra entregar.", ph:"Ex.: uns 15 minutos"},
+    {id:"b_vendas", grupo:"Venda", tipo:"longo", q:"Quantos frascos você vende por mês, mais ou menos?", ajuda:"Separa por tamanho se der. Ex.: \"uns 5 de 10 ml e 3 de 30 ml\"."},
+    {id:"b_como_vende", grupo:"Venda", tipo:"longo", q:"Você vende mais junto com o atendimento ou separado?", ajuda:"Quando é separado, a cliente busca ou você entrega? Se entrega, quanto você gasta com isso?"},
+    {id:"b_sessao", grupo:"Venda", tipo:"longo", q:"Você usa blend dentro dos atendimentos também?", ajuda:"Se usa, quanto de produto vai em cada sessão? Pode ser em ml, em gotas ou em \"meio frasco de 10 ml\", do jeito que for mais fácil medir. E isso já está incluído no preço da sessão ou você cobra à parte?"},
+    {id:"b_maquininha", grupo:"Venda", tipo:"texto", q:"Quando a cliente paga no cartão, quanto a maquininha desconta, em %?", ajuda:"Se for diferente no débito e no crédito, me diz os dois.", ph:"Ex.: débito 1,5%, crédito 3,5%"},
+    {id:"b_350", grupo:"Pra fechar", tipo:"longo", q:"No formulário você colocou que gasta uns R$ 350. Esse valor é por mês? Com o que você gasta?"},
+    {id:"b_obs", grupo:"Pra fechar", tipo:"longo", q:"Quer contar mais alguma coisa sobre os blends?", opcional:true}
   ]
 };
 

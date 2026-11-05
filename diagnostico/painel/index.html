@@ -76,7 +76,7 @@ dd.vazio{color:var(--cinza-claro)}
 <main class="wrap" id="app"><p class="vazio-lista">Carregando…</p></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../perguntas.js?v=14"></script>
+<script src="../perguntas.js?v=15"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // BLOCO 2: CONFIG DA PROPOSTA (mude os números aqui)
@@ -131,8 +131,12 @@ async function carregar(){
   const { data, error } = await sb.from(DIAG.tabela).select("*").order("criado_em",{ascending:false});
   if(error) return app.innerHTML = `<p class="vazio-lista">Erro ao carregar: ${esc(error.message)}<br>Já rodou o SQL (diagnostico/sql.html)?</p>`;
   linhas = data || [];
-  const id = Number(location.hash.slice(1));
-  if(id && linhas.find(l => l.id === id)) return telaDetalhe(id);
+  const [hId, hForm] = location.hash.slice(1).split("/");
+  const id = Number(hId);
+  if(id && linhas.find(l => l.id === id)){
+    const f = FORMS.find(x => x.id === hForm);
+    return f ? f.abrir(id) : telaPasta(id);
+  }
   telaLista();
 }
 
@@ -141,20 +145,79 @@ const titulo = l => { const r = tudo(l); return r.nome || l.cliente || "Sem nome
 
 function telaLista(){
   history.replaceState(null, "", location.pathname);
-  app.innerHTML = `<div class="barra"><h1 class="esq">Diagnósticos</h1>
+  app.innerHTML = `<div class="barra"><h1 class="esq">Clientes</h1>
       <button class="btn" id="novo">+ Link De Cliente</button>
       <a class="btn ghost" href="../" target="_blank" rel="noopener">Formulário padrão</a></div>
     <div class="lista">${linhas.length ? linhas.map(l => {
       const r = tudo(l);
-      return `<div class="card" data-id="${l.id}"><span class="nome">${esc(titulo(l))}</span>
+      const fs = FORMS.filter(f => f.tem(l));
+      const ok = fs.filter(f => f.status(l).feito).length;
+      return `<div class="card" data-id="${l.id}"><span class="nome">📁 ${esc(titulo(l))}</span>
         ${r.negocio ? `<span style="color:var(--cinza)">${esc(r.negocio)}</span>` : ""}
-        <span class="tag ${l.enviado_em ? "" : "espera"}">${l.enviado_em ? "Respondeu" : "Aguardando"}</span>
+        <span class="tag ${ok === fs.length ? "" : "espera"}">${ok} de ${fs.length} formulários</span>
         ${l.proposta ? `<span class="tag wpp">Proposta montada</span>` : ""}
         ${r.formulario ? `<span class="tag">${esc(r.formulario)}</span>` : ""}
         <span class="data">${new Date(l.criado_em).toLocaleDateString("pt-BR")}</span></div>`;
     }).join("") : `<p class="vazio-lista">Nenhum diagnóstico ainda.</p>`}</div>`;
   novo.onclick = telaNovo;
-  app.querySelectorAll(".lista .card").forEach(c => c.onclick = () => telaDetalhe(Number(c.dataset.id)));
+  app.querySelectorAll(".lista .card").forEach(c => c.onclick = () => telaPasta(Number(c.dataset.id)));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 4B: PASTA DA CLIENTE (cada formulário separado, mesmo código de link)
+// Formulário novo: é só acrescentar uma entrada em FORMS
+// ═══════════════════════════════════════════════════════════════
+const FORMS = [
+  { id: "diag", icone: "📋", nome: "Diagnóstico", tem: () => true,
+    link: l => l.token ? `${BASE_URL}diagnostico/?c=${l.token}` : "",
+    status: l => l.enviado_em ? { feito: true, txt: "Respondeu em " + new Date(l.enviado_em).toLocaleDateString("pt-BR") } : { feito: false, txt: "Aguardando" },
+    abrir: id => telaDetalhe(id) },
+  { id: "blends", icone: "🌿", nome: "Blends · custo e lucro", tem: l => !!l.token,
+    link: l => `${BASE_URL}blends/?c=${l.token}`,
+    status: l => {
+      const n = (DIAG.perguntasBlends || []).filter(p => (l.blends || {})[p.id]).length;
+      return l.blends_em ? { feito: true, txt: "Respondeu em " + new Date(l.blends_em).toLocaleDateString("pt-BR") }
+        : { feito: false, txt: n ? `Parou na metade (${n} de ${DIAG.perguntasBlends.length})` : "Ainda não abriu" };
+    },
+    abrir: id => telaBlends(id) }
+];
+
+function telaPasta(id){
+  const l = linhas.find(x => x.id === id); if(!l) return telaLista();
+  history.replaceState(null, "", "#" + id);
+  const r = tudo(l), fs = FORMS.filter(f => f.tem(l));
+  app.innerHTML = `<div class="barra"><button class="btn ghost" id="volta">← Clientes</button></div>
+    <p class="eyebrow">Pasta da cliente</p>
+    <h1>📁 ${esc(titulo(l))}${r.negocio ? ` · ${esc(r.negocio)}` : ""}</h1>
+    <div class="lista">${fs.map(f => { const st = f.status(l), ln = f.link(l); return `<div class="card">
+      <h2 style="margin:0">${f.icone} ${esc(f.nome)} <span class="tag ${st.feito ? "" : "espera"}">${esc(st.txt)}</span></h2>
+      ${ln ? `<div class="link"><span style="flex:1">${esc(ln)}</span><button class="btn esc" data-cop="${f.id}">Copiar</button></div><p class="ok" id="ok-${f.id}"></p>` : ""}
+      <button class="btn ghost" data-abrir="${f.id}">Ver respostas →</button></div>`; }).join("")}</div>
+    <button class="btn perigo" id="apagar">Apagar esta cliente</button>`;
+  volta.onclick = telaLista;
+  app.querySelectorAll("[data-cop]").forEach(b => b.onclick = () => { const f = FORMS.find(x => x.id === b.dataset.cop); copiar(f.link(l), "ok-" + f.id); });
+  app.querySelectorAll("[data-abrir]").forEach(b => b.onclick = () => FORMS.find(x => x.id === b.dataset.abrir).abrir(id));
+  apagar.onclick = async () => {
+    if(!confirm("Apagar esta cliente e TODOS os formulários dela? Não dá pra desfazer.")) return;
+    const { error } = await sb.from(DIAG.tabela).delete().eq("id", id);
+    if(error) return alert(error.message);
+    linhas = linhas.filter(x => x.id !== id); telaLista();
+  };
+}
+
+function telaBlends(id){
+  const l = linhas.find(x => x.id === id); if(!l) return telaLista();
+  history.replaceState(null, "", "#" + id + "/blends");
+  const bl = l.blends || {}, PB = DIAG.perguntasBlends || [], st = FORMS[1].status(l);
+  let grupo = "";
+  app.innerHTML = `<div class="barra"><button class="btn ghost" id="volta">← Pasta de ${esc(titulo(l))}</button></div>
+    <p class="eyebrow">${esc(st.txt)}</p>
+    <h1>🌿 Blends · ${esc(titulo(l))}</h1>
+    <div class="card"><h2>Respostas</h2><dl>${PB.map(p => {
+      const g = p.grupo !== grupo ? `<h3>${esc(grupo = p.grupo)}</h3>` : "";
+      return g + `<dt>${esc(p.q)}</dt><dd class="${bl[p.id] ? "" : "vazio"}">${bl[p.id] ? esc(bl[p.id]) : "—"}</dd>`;
+    }).join("")}</dl></div>`;
+  volta.onclick = () => telaPasta(id);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -182,7 +245,7 @@ function telaNovo(){
     criar.disabled = true;
     const { data, error } = await sb.from(DIAG.tabela).insert({ token, cliente: cli.value.trim() || previas.nome || null, previas }).select().single();
     if(error){ criar.disabled = false; return er.textContent = "Não consegui criar: " + error.message; }
-    linhas.unshift(data); telaDetalhe(data.id);
+    linhas.unshift(data); telaPasta(data.id);
   };
 }
 
@@ -191,7 +254,7 @@ function telaNovo(){
 // ═══════════════════════════════════════════════════════════════
 function telaDetalhe(id){
   const l = linhas.find(x => x.id === id); if(!l) return telaLista();
-  history.replaceState(null, "", "#" + id);
+  history.replaceState(null, "", "#" + id + "/diag");
   const pv = l.previas || {}, rs = l.respostas || {};
   const linkCli = l.token ? `${BASE_URL}diagnostico/?c=${l.token}` : "";
   const faltam = l.token ? P.filter(p => !pv[p.id]).length : 0;
@@ -203,23 +266,16 @@ function telaDetalhe(id){
     return g + `<dt>${esc(p.q)}</dt><dd class="${v?"":"vazio"}">${v ? esc(v) + origem : "—"}</dd>`;
   }).join("");
 
-  app.innerHTML = `<div class="barra"><button class="btn ghost" id="volta">← Todos</button></div>
+  app.innerHTML = `<div class="barra"><button class="btn ghost" id="volta">← Pasta de ${esc(titulo(l))}</button></div>
     <p class="eyebrow">${l.enviado_em ? "Respondeu em " + new Date(l.enviado_em).toLocaleString("pt-BR") : "Ainda não respondeu"}</p>
-    <h1>${esc(titulo(l))}${(rs.negocio||pv.negocio) ? ` · ${esc(rs.negocio||pv.negocio)}` : ""}</h1>
+    <h1>📋 Diagnóstico · ${esc(titulo(l))}</h1>
     ${linkCli ? `<div class="card"><h2>Link dela (${faltam} perguntas)</h2>
       <div class="link"><span style="flex:1">${esc(linkCli)}</span><button class="btn esc" id="copLink">Copiar</button></div>
       <p class="ok" id="okLink"></p></div>` : ""}
     <div class="card"><h2>Respostas</h2><dl>${dl}</dl></div>
-    <div class="card" id="prop"></div>
-    <button class="btn perigo" id="apagar">Apagar este diagnóstico</button>`;
-  volta.onclick = () => { history.replaceState(null, "", location.pathname); telaLista(); };
+    <div class="card" id="prop"></div>`;
+  volta.onclick = () => telaPasta(id);
   if(linkCli) copLink.onclick = () => copiar(linkCli, "okLink");
-  apagar.onclick = async () => {
-    if(!confirm("Apagar este diagnóstico? Não dá pra desfazer.")) return;
-    const { error } = await sb.from(DIAG.tabela).delete().eq("id", id);
-    if(error) return alert(error.message);
-    linhas = linhas.filter(x => x.id !== id); telaLista();
-  };
   montarProposta(l);
 }
 
