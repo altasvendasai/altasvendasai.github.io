@@ -144,9 +144,29 @@ window.DIAG = {
 // ═══════════════════════════════════════════════════════════════
 (function(){
   const tira = ids => DIAG.perguntasEmpresas.filter(p => !ids.includes(p.id));
-  // Form Reunião Black (/diagnostico/black/): a página da Black já manda
-  // empresa, o que vende, produto da Black, preço, vendas/mês, Black do ano passado e pacote.
-  DIAG.perguntasBlack = tira(["negocio","whatsapp","segmento","vender_agora","vendas_mes","ano_passado","investimento"]);
+  // Form Reunião Black (/diagnostico/black/): CIRÚRGICO, só o que falta pra montar a estratégia.
+  // A página da Black já manda empresa, o que vende, produto, preço, destino, pacote, adicionais,
+  // vendas/mês, valor médio e Black do ano passado. Nome e empresa repetem só pra identificar no painel.
+  const G = "Sua Black";
+  const pega = id => DIAG.perguntasEmpresas.find(p => p.id === id);
+  DIAG.perguntasBlack = [
+    Object.assign({}, pega("nome"), {grupo:"Pra identificar"}),
+    Object.assign({}, pega("negocio"), {grupo:"Pra identificar"}),
+    Object.assign({}, pega("instagram"), {grupo:"Pra identificar"}),
+    {id:"oferta", grupo:G, tipo:"longo", q:"Qual é a oferta que você quer fazer na Black?",
+      ajuda:"Desconto, bônus, kit ou prazo. Ex.: de R$ 180 por R$ 129 até domingo · leve 2 e ganhe 15% · se ainda não sabe, escreva o que pensou."},
+    Object.assign({}, pega("margem"), {grupo:G, q:"De cada venda desse produto, quanto mais ou menos sobra de lucro pra você?"}),
+    Object.assign({}, pega("meta"), {grupo:G}),
+    {id:"capacidade", grupo:G, tipo:"escolha", q:"Quantos pedidos ou atendimentos A MAIS vocês dão conta por dia?",
+      ajuda:"Pensa em estoque, equipe e agenda na semana da Black.",
+      ops:["Até 5","De 6 a 20","De 21 a 50","Mais de 50","Não sei"]},
+    Object.assign({}, pega("lista"), {grupo:G}),
+    {id:"anuncio_cartao", grupo:G, tipo:"escolha", q:"Sobre anúncio pago, qual é a sua situação hoje?",
+      ajuda:"O dinheiro do anúncio não passa pela gente: você paga direto pra plataforma, no cartão.",
+      ops:["Já anunciei e tenho cartão","Nunca anunciei, mas tenho cartão","Já anunciei, mas não tenho cartão","Nunca anunciei e não tenho cartão"]},
+    {id:"preocupacao", grupo:G, tipo:"longo", q:"O que mais te preocupa nessa Black?", opcional:true,
+      ajuda:"Ex.: gastar em anúncio e não vender · não dar conta de atender · dar desconto e perder dinheiro."}
+  ];
   // Form Reunião Completo (/diagnostico/completo/): a página principal (20 dias grátis) já manda
   // empresa, o que vende, objetivo, faturamento, base de contatos, canais, tráfego pago, gasto e meta.
   DIAG.perguntasCompleto = tira(["negocio","whatsapp","segmento","prioridade","faturamento","lista","origem","anuncio","investimento","vender_agora","meta","ano_passado"])
