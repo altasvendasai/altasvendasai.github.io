@@ -76,7 +76,7 @@ dd.vazio{color:var(--cinza-claro)}
 <main class="wrap" id="app"><p class="vazio-lista">Carregando…</p></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../perguntas.js?v=13"></script>
+<script src="../perguntas.js?v=14"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // BLOCO 2: CONFIG DA PROPOSTA (mude os números aqui)
@@ -193,6 +193,10 @@ function telaDetalhe(id){
   history.replaceState(null, "", "#" + id);
   const pv = l.previas || {}, rs = l.respostas || {};
   const linkCli = l.token ? `${BASE_URL}diagnostico/?c=${l.token}` : "";
+  const linkBl = l.token ? `${BASE_URL}blends/?c=${l.token}` : "";
+  const bl = l.blends || {};
+  const PB = DIAG.perguntasBlends || [];
+  const nBl = PB.filter(p => bl[p.id]).length;
   const faltam = l.token ? P.filter(p => !pv[p.id]).length : 0;
   let grupo = "";
   const dl = P.map(p => {
@@ -209,10 +213,15 @@ function telaDetalhe(id){
       <div class="link"><span style="flex:1">${esc(linkCli)}</span><button class="btn esc" id="copLink">Copiar</button></div>
       <p class="ok" id="okLink"></p></div>` : ""}
     <div class="card"><h2>Respostas</h2><dl>${dl}</dl></div>
+    ${linkBl ? `<div class="card"><h2>Blends · ${l.blends_em ? "respondeu em " + new Date(l.blends_em).toLocaleString("pt-BR") : nBl ? `parou na metade (${nBl} de ${PB.length})` : "ainda não abriu"}</h2>
+      <div class="link"><span style="flex:1">${esc(linkBl)}</span><button class="btn esc" id="copBl">Copiar</button></div>
+      <p class="ok" id="okBl"></p>
+      ${nBl ? `<dl>${PB.map(p => `<dt>${esc(p.q)}</dt><dd class="${bl[p.id]?"":"vazio"}">${bl[p.id] ? esc(bl[p.id]) : "—"}</dd>`).join("")}</dl>` : ""}</div>` : ""}
     <div class="card" id="prop"></div>
     <button class="btn perigo" id="apagar">Apagar este diagnóstico</button>`;
   volta.onclick = () => { history.replaceState(null, "", location.pathname); telaLista(); };
   if(linkCli) copLink.onclick = () => copiar(linkCli, "okLink");
+  if(linkBl) copBl.onclick = () => copiar(linkBl, "okBl");
   apagar.onclick = async () => {
     if(!confirm("Apagar este diagnóstico? Não dá pra desfazer.")) return;
     const { error } = await sb.from(DIAG.tabela).delete().eq("id", id);

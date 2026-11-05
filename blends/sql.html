@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="google" content="notranslate">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL dos Blends</title>
+<style>
+  body{margin:0;font-family:system-ui,sans-serif;background:#F5F7F6;color:#0F1A16;padding:1.2rem;line-height:1.5}
+  h1{font-size:1.3rem;margin:0 0 .4rem} ol{padding-left:1.2rem;font-size:.95rem} li{margin:.3rem 0}
+  pre{background:#fff;border:1px solid #E3E9E6;border-radius:10px;padding:.9rem;font-size:.75rem;overflow-x:auto;white-space:pre}
+  button{width:100%;border:none;border-radius:999px;background:#25D366;color:#06231A;font-weight:800;font-size:1rem;padding:.9rem;margin:.6rem 0}
+  .ok{color:#128C4A;font-weight:700;text-align:center;min-height:1.4rem}
+</style>
+</head>
+<body>
+<h1>SQL do questionário dos Blends (AltasVendas IA)</h1>
+<ol>
+  <li>Abre o Supabase → projeto <b>realeza-holistica</b> (o mesmo do castelo e do diagnóstico).</li>
+  <li>SQL Editor → New query.</li>
+  <li>Toca em <b>Copiar SQL</b>, cola lá e clica em <b>Run</b>.</li>
+  <li>Tem que aparecer "Success. No rows returned". Pode rodar de novo sem problema.</li>
+</ol>
+<button id="b">Copiar SQL</button>
+<p class="ok" id="ok"></p>
+<pre id="sql">-- Respostas dos blends ficam no MESMO registro do diagnóstico da cliente
+alter table public.acelera_diagnostico add column if not exists blends jsonb;
+alter table public.acelera_diagnostico add column if not exists blends_em timestamptz;
+
+-- Abre o link: devolve o nome e o que ela já respondeu (pra continuar de onde parou)
+create or replace function public.acelera_blends_abrir(p_token text)
+returns jsonb language sql security definer set search_path = public as $$
+  select jsonb_build_object(
+    'nome', coalesce(previas->>'nome', respostas->>'nome'),
+    'respostas', coalesce(blends, '{}'::jsonb),
+    'enviado', blends_em is not null)
+  from public.acelera_diagnostico where token = p_token;
+$$;
+
+-- Salva a cada pergunta; p_final = true quando ela aperta Enviar (depois disso trava)
+create or replace function public.acelera_blends_salvar(p_token text, p_respostas jsonb, p_final boolean)
+returns boolean language plpgsql security definer set search_path = public as $$
+begin
+  if length(p_respostas::text) &gt; 20000 then return false; end if;
+  update public.acelera_diagnostico
+     set blends = p_respostas, blends_em = case when p_final then now() else null end
+   where token = p_token and blends_em is null;
+  return found;
+end $$;
+
+grant execute on function public.acelera_blends_abrir(text) to anon, authenticated;
+grant execute on function public.acelera_blends_salvar(text, jsonb, boolean) to anon, authenticated;
+</pre>
+<script>
+  document.getElementById("b").onclick = async () => {
+    const t = document.getElementById("sql").textContent;
+    try{ await navigator.clipboard.writeText(t); }
+    catch(e){ const a=document.createElement("textarea"); a.value=t; document.body.appendChild(a); a.select(); document.execCommand("copy"); a.remove(); }
+    document.getElementById("ok").textContent = "✓ Copiado! Agora cola no SQL Editor.";
+  };
+</script>
+</body>
+</html>

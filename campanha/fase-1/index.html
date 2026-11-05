@@ -252,6 +252,9 @@ footer{background:var(--tinta);color:#a9b8b2;text-align:center;padding:28px 20px
 <script>
 // === BLOCO 1: CONFIGURAÇÃO ===
 const ZAP = "5551982276577";
+// Apps Script na conta do Elton: recebe o aceite, cria o PDF no Drive e anota na planilha
+const ACEITE_URL = "";
+const CLIENTE = { nome: "Alexandra (Ale) - Espaço Viver", pasta: "Ale - Espaco Viver" };
 const SERVICO = 350; // preço de Black Friday (de R$ 1.000)
 let TOTAL = SERVICO + 300;
 // Taxas de parcelamento da InfinitePay (mesmas da proposta da campanha)
@@ -319,7 +322,24 @@ function aceitar(e) {
   if (!escolha) { parc.focus(); parc.scrollIntoView({ behavior: "smooth", block: "center" }); document.getElementById("det").style.outline = "2px solid var(--vivo)"; return; }
   const gg = document.querySelector('input[name="gg"]:checked').value;
   const msg = `Aceito a proposta da Fase 1! Total ${brl0(TOTAL)} (serviço R$ 350 + Google R$ ${gg}). Pagamento: ${escolha}.` + (nome ? ` — ${nome}` : "");
+  registrarAceite(msg, gg);
   window.open("https://wa.me/" + ZAP + "?text=" + encodeURIComponent(msg), "_blank");
+}
+function registrarAceite(msg, gg) {
+  // sendBeacon continua mesmo com a aba indo pro WhatsApp
+  if (!ACEITE_URL) return;
+  const dados = {
+    chave: "av-aceite-2026", cliente: CLIENTE.nome, pasta: CLIENTE.pasta,
+    proposta: "Fase 1 · Campanha de Black Friday", total: `${brl0(TOTAL)} (serviço R$ 350 + Google R$ ${gg})`, pagamento: escolha,
+    entregas: [
+      { titulo: "Semanas 1 e 2 · Preparação", itens: ["Estratégia de vendas (oferta de Black Friday)", "Formulário com vitrine dos blends", "Agenda online (bônus)", "Ficha de atendimento digital (bônus)", "Guia do Instagram (bio e destaques)", "Anúncio no Google montado"] },
+      { titulo: "Semanas 3 e 4 · Anúncio rodando", itens: ["Anúncio no Google no ar", "Acompanhamento diário e ajustes", "Cliente chega no WhatsApp com horário", "Venda dos blends"] }
+    ],
+    obs: "Duração: 1 mês (cobrança por fase, não é mensalidade)", mensagem: msg, pagina: location.href
+  };
+  const corpo = new Blob([JSON.stringify(dados)], { type: "text/plain" });
+  if (!(navigator.sendBeacon && navigator.sendBeacon(ACEITE_URL, corpo)))
+    fetch(ACEITE_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(dados), keepalive: true }).catch(() => {});
 }
 function duvida(e) {
   e.preventDefault();
