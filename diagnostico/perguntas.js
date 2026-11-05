@@ -136,3 +136,19 @@ window.DIAG = {
     {id:"b_obs", grupo:"Pra fechar", tipo:"longo", q:"Quer contar mais alguma coisa sobre os blends?", opcional:true}
   ]
 };
+
+// ═══════════════════════════════════════════════════════════════
+// Formulários de reunião ADAPTADOS por página: tiram o que a pessoa
+// já respondeu na página (vem pronto na mensagem do WhatsApp).
+// O nome fica pra identificar a resposta no painel.
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  const tira = ids => DIAG.perguntasEmpresas.filter(p => !ids.includes(p.id));
+  // Form Reunião Black (/diagnostico/black/): a página da Black já manda
+  // empresa, o que vende, produto da Black, preço, vendas/mês, Black do ano passado e pacote.
+  DIAG.perguntasBlack = tira(["negocio","whatsapp","segmento","vender_agora","vendas_mes","ano_passado","investimento"]);
+  // Form Reunião Completo (/diagnostico/completo/): a página principal (20 dias grátis) já manda
+  // empresa, o que vende, objetivo, faturamento, base de contatos, canais, tráfego pago, gasto e meta.
+  DIAG.perguntasCompleto = tira(["negocio","whatsapp","segmento","prioridade","faturamento","lista","origem","anuncio","investimento","vender_agora","meta","ano_passado"])
+    .map(p => p.grupo === "A Black Friday" ? Object.assign({}, p, {grupo:"Pra começar"}) : p);
+})();
