@@ -186,7 +186,13 @@ window.DIAG = {
     {id:"destino", grupo:A, tipo:"escolha", outro:true, q:"Quando o cliente decide comprar, pra onde a IA deve levar ele?",
       ops:["Pra uma pessoa da equipe","Pra página de vendas ou link de pagamento","Pra agenda marcar horário"]},
     {id:"quem_assume", grupo:A, tipo:"texto", q:"Em quais dias e horários tem alguém pra assumir quando o cliente pede uma pessoa?", ph:"Ex.: segunda a sábado, das 9h às 18h"},
-    Object.assign({}, pega("meta"), {grupo:A})
+    Object.assign({}, pega("vendas_mes"), {grupo:"Seus números"}),
+    Object.assign({}, pega("faturamento"), {grupo:"Seus números"}),
+    Object.assign({}, pega("margem"), {grupo:"Seus números", q:"Do seu produto ou serviço principal, quanto mais ou menos sobra de lucro em cada venda?"}),
+    {id:"gasto_vender", grupo:"Seus números", tipo:"escolha", q:"Quanto a empresa gasta por MÊS pra vender hoje?",
+      ajuda:"Some salário de quem atende, anúncio e ferramentas. Pode ser aproximado.",
+      ops:["Até R$ 500","De R$ 500 a 2 mil","De R$ 2 mil a 5 mil","Mais de R$ 5 mil","Não sei"]},
+    Object.assign({}, pega("meta"), {grupo:"Seus números"})
   ];
   // Form Reunião Completo (/diagnostico/completo/): a página principal (20 dias grátis) já manda
   // empresa, o que vende, objetivo, faturamento, base de contatos, canais, tráfego pago, gasto e meta.
