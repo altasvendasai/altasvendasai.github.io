@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Triagem</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F8F5FA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 1: IDENTIDADE (as cores vêm do modelo da profissional)
+   ═══════════════════════════════════════════════════════════════ */
+:root{ --fundo:#F8F5FA; --cor:#8B6FA0; --cor-clara:#EEE7F3; --tinta:#4E3B5A; --cinza:#7A6E82; --linha:#E4DCEA; --branco:#fff; --ease:cubic-bezier(.16,1,.3,1) }
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--fundo);color:var(--tinta);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:17px;line-height:1.5;
+  min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--cor);outline-offset:3px}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 2: TOPO E PROGRESSO
+   ═══════════════════════════════════════════════════════════════ */
+.topo{padding:18px 20px 0;max-width:34rem;margin:0 auto;width:100%}
+.marca{font-family:"Playfair Display",serif;font-weight:600;font-size:1.05rem;color:var(--tinta)}
+.marca small{display:block;font-family:"Plus Jakarta Sans";font-size:.72rem;color:var(--cinza);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.barra{height:4px;background:var(--cor-clara);border-radius:4px;margin-top:14px;overflow:hidden}
+.barra i{display:block;height:100%;width:0;background:var(--cor);transition:width .4s var(--ease)}
+
+.wrap{flex:1;width:100%;max-width:34rem;margin:0 auto;padding:26px 20px 36px;display:flex;flex-direction:column}
+.tela{flex:1;display:flex;flex-direction:column;animation:entra .35s var(--ease) both}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tela{animation:none}}
+.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cor)}
+h1{font-family:"Playfair Display",serif;font-size:clamp(1.9rem,7.5vw,2.4rem);line-height:1.15;font-weight:600;margin:.5rem 0 .9rem}
+h1 em{color:var(--cor)}
+.q{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,6vw,1.85rem);line-height:1.2;font-weight:600;margin:.4rem 0 .5rem}
+.lead{color:var(--cinza);margin-bottom:.8rem}
+.ajuda{font-size:.9rem;color:var(--cinza);margin-bottom:1rem}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 3: OPÇÕES E VITRINE
+   ═══════════════════════════════════════════════════════════════ */
+.ops{display:flex;flex-direction:column;gap:.55rem;margin-top:.3rem}
+.op{text-align:left;font-size:1rem;font-weight:600;color:var(--tinta);background:var(--branco);border:1.5px solid var(--linha);border-radius:16px;
+  padding:.85rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.75rem;transition:border-color .15s,background .15s,transform .1s}
+.op:active{transform:scale(.99)}
+.op .ic{font-size:1.25rem;flex:none;width:1.6rem;text-align:center}
+.op .marca-op{margin-left:auto;flex:none;width:1.25rem;height:1.25rem;border-radius:50%;border:2px solid var(--linha)}
+.op.multi .marca-op{border-radius:6px}
+.op[aria-checked="true"]{background:var(--cor-clara);border-color:var(--cor)}
+.op[aria-checked="true"] .marca-op{background:var(--cor);border-color:var(--cor);box-shadow:inset 0 0 0 3px var(--cor-clara)}
+.vit{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.3rem}
+.prod{background:var(--branco);border:1.5px solid var(--linha);border-radius:18px;padding:.9rem;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:.35rem}
+.prod .foto{height:84px;border-radius:12px;background:var(--cor-clara);display:grid;place-items:center;font-size:2rem;overflow:hidden}
+.prod .foto img{width:100%;height:100%;object-fit:cover}
+.prod b{font-size:.95rem}
+.prod span{font-size:.8rem;color:var(--cinza);line-height:1.35}
+.prod[aria-checked="true"]{border-color:var(--cor);background:var(--cor-clara)}
+.prod[aria-checked="true"] b::after{content:" ✓";color:var(--cor)}
+.erro{color:#B42318;font-size:.88rem;margin-top:.6rem;min-height:1.2rem}
+.aviso{background:var(--branco);border:1px solid var(--linha);border-left:4px solid var(--cor);border-radius:12px;padding:.8rem 1rem;font-size:.9rem;color:var(--cinza);margin-top:.8rem}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOCO 4: NAVEGAÇÃO E RESULTADO
+   ═══════════════════════════════════════════════════════════════ */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.3rem}
+.btn{border:none;cursor:pointer;background:var(--cor);color:#fff;font-weight:800;font-size:1.02rem;padding:.95rem 1.6rem;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:.5rem}
+.btn.full{width:100%}
+.btn.sec{background:var(--branco);color:var(--tinta);border:1.5px solid var(--linha)}
+.voltar{background:none;border:none;color:var(--cinza);font-size:.95rem;font-weight:600;cursor:pointer;padding:.5rem 0}
+.card{background:var(--branco);border:1px solid var(--linha);border-radius:18px;padding:1rem 1.1rem;margin-top:1rem}
+.card h3{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cor);margin-bottom:.4rem}
+.indic{font-family:"Playfair Display",serif;font-size:1.35rem;font-weight:600;line-height:1.25}
+.resumo div{font-size:.92rem;padding:.25rem 0;border-bottom:1px dashed var(--linha)}
+.resumo div:last-child{border:none}
+.resumo b{color:var(--tinta)}
+.rodape{margin-top:auto;padding-top:1.6rem;font-size:.75rem;color:var(--cinza);text-align:center}
+</style>
+</head>
+<body>
+<header class="topo"><div class="marca" id="marca"></div><div class="barra"><i id="barra"></i></div></header>
+<main class="wrap" id="app" aria-live="polite"><p class="lead">Carregando…</p></main>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 5: CARREGA O MODELO DA PROFISSIONAL (?p=ale → modelos/ale.js)
+// O motor é o mesmo pra todo mundo; cada profissional só muda o arquivo do modelo.
+// ═══════════════════════════════════════════════════════════════
+const P = (new URLSearchParams(location.search).get("p") || "ale").replace(/[^a-z0-9-]/gi, "");
+const s = document.createElement("script");
+s.src = `modelos/${P}.js?v=1`;
+s.onload = iniciar;
+s.onerror = () => { document.getElementById("app").innerHTML = '<p class="lead">Formulário não encontrado.</p>'; };
+document.head.appendChild(s);
+
+const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let M, CHAVE, st;
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 6: ESTADO (fica salvo no celular: se sair, continua de onde parou)
+// ═══════════════════════════════════════════════════════════════
+function iniciar() {
+  M = window.TRIAGEM;
+  const c = M.cores || {};
+  const raiz = document.documentElement.style;
+  if (c.principal) raiz.setProperty("--cor", c.principal);
+  if (c.clara) raiz.setProperty("--cor-clara", c.clara);
+  if (c.fundo) { raiz.setProperty("--fundo", c.fundo); document.body.style.background = c.fundo; }
+  if (c.tinta) raiz.setProperty("--tinta", c.tinta);
+  document.title = M.profissional.negocio + " · " + (M.titulo || "Triagem");
+  document.getElementById("marca").innerHTML = `${esc(M.profissional.negocio)}<small>${esc(M.profissional.nome)}</small>`;
+  CHAVE = "triagem-" + P;
+  st = { i: -1, r: {} };
+  try { const x = JSON.parse(localStorage.getItem(CHAVE) || "null"); if (x && x.r) st = x; } catch (e) {}
+  st.i >= 0 && passos().length ? tela() : intro();
+}
+const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(st)); } catch (e) {} };
+
+// Lista de passos que valem pra essa pessoa (perguntas condicionais somem se não se aplicam)
+function passos() {
+  const lista = M.perguntas.filter(p => !p.mostrarSe || condicao(p.mostrarSe));
+  if (M.vitrine) lista.push({ id: "__vitrine", tipo: "vitrine" });
+  return lista;
+}
+function condicao(c) {
+  const v = st.r[c.campo];
+  const arr = Array.isArray(v) ? v : (v ? [v] : []);
+  return c.algumDe.some(x => arr.includes(x));
+}
+function progresso() {
+  const n = passos().length;
+  document.getElementById("barra").style.width = (st.i < 0 ? 0 : st.i >= n ? 100 : Math.round(st.i / n * 100)) + "%";
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 7: TELAS
+// ═══════════════════════════════════════════════════════════════
+const app = document.getElementById("app");
+
+function intro() {
+  const retomar = Object.keys(st.r).length > 0;
+  app.innerHTML = `<section class="tela">
+    <p class="eyebrow">${esc(M.intro.eyebrow || "")}</p>
+    <h1>${M.intro.titulo}</h1>
+    <p class="lead">${esc(M.intro.texto)}</p>
+    <div class="nav"><span></span><button class="btn" id="go">${retomar ? "Continuar de onde parei" : "Começar"} →</button></div>
+    <p class="rodape">${esc(M.intro.rodape || "Leva menos de 1 minuto.")}</p></section>`;
+  go.onclick = () => { st.i = retomar ? Math.min(Math.max(st.i, 0), passos().length - 1) : 0; salvar(); tela(); };
+  progresso();
+}
+
+function tela() {
+  const L = passos();
+  if (st.i >= L.length) return resultado();
+  const p = L[st.i];
+  if (p.tipo === "vitrine") return vitrine();
+  const v = st.r[p.id];
+  const marcado = o => p.tipo === "multi" ? (v || []).includes(o.v) : v === o.v;
+  app.innerHTML = `<section class="tela">
+    <p class="eyebrow">${esc(p.grupo || "")}</p>
+    <h2 class="q">${esc(p.q)}</h2>
+    ${p.ajuda ? `<p class="ajuda">${esc(p.ajuda)}</p>` : ""}
+    <div class="ops" role="${p.tipo === "multi" ? "group" : "radiogroup"}">
+      ${p.ops.map(o => `<button type="button" class="op ${p.tipo === "multi" ? "multi" : ""}" role="${p.tipo === "multi" ? "checkbox" : "radio"}" aria-checked="${marcado(o)}" data-v="${esc(o.v)}">
+        ${o.icone ? `<span class="ic">${o.icone}</span>` : ""}<span>${esc(o.v)}</span><span class="marca-op"></span></button>`).join("")}
+    </div>
+    <p class="erro" id="erro"></p>
+    <div id="avisoBox"></div>
+    <div class="nav"><button class="voltar" id="volta">← Voltar</button>
+      <button class="btn" id="seg">Continuar →</button></div></section>`;
+  progresso();
+  const avisar = () => {
+    const at = (p.avisos || []).find(a => (Array.isArray(st.r[p.id]) ? st.r[p.id] : [st.r[p.id]]).includes(a.se));
+    avisoBox.innerHTML = at ? `<div class="aviso">${esc(at.texto)}</div>` : "";
+  };
+  avisar();
+  app.querySelectorAll(".op").forEach(b => b.onclick = () => {
+    const val = b.dataset.v;
+    if (p.tipo === "multi") {
+      let a = st.r[p.id] || [];
+      const exclusivo = (p.exclusivas || []).includes(val);
+      if (a.includes(val)) a = a.filter(x => x !== val);
+      else a = exclusivo ? [val] : [...a.filter(x => !(p.exclusivas || []).includes(x)), val];
+      st.r[p.id] = a; salvar();
+      app.querySelectorAll(".op").forEach(x => x.setAttribute("aria-checked", a.includes(x.dataset.v)));
+      avisar();
+    } else {
+      st.r[p.id] = val; salvar();
+      app.querySelectorAll(".op").forEach(x => x.setAttribute("aria-checked", x.dataset.v === val));
+      avisar();
+      if (!(p.avisos || []).some(a => a.se === val)) setTimeout(avancar, 230);
+    }
+  });
+  seg.onclick = avancar;
+  volta.onclick = voltar;
+}
+
+function vitrine() {
+  const V = M.vitrine, sel = st.r.__vitrine || [];
+  app.innerHTML = `<section class="tela">
+    <p class="eyebrow">${esc(V.eyebrow || "")}</p>
+    <h2 class="q">${esc(V.titulo)}</h2>
+    <p class="ajuda">${esc(V.ajuda || "")}</p>
+    <div class="vit">${V.itens.map(it => `<button type="button" class="prod" role="checkbox" aria-checked="${sel.includes(it.nome)}" data-v="${esc(it.nome)}">
+      <div class="foto">${it.foto ? `<img src="${esc(it.foto)}" alt="">` : (it.icone || "🌿")}</div>
+      <b>${esc(it.nome)}</b><span>${esc(it.serve)}</span></button>`).join("")}</div>
+    <div class="nav"><button class="voltar" id="volta">← Voltar</button>
+      <button class="btn" id="seg">${sel.length ? "Continuar" : "Pular"} →</button></div></section>`;
+  progresso();
+  app.querySelectorAll(".prod").forEach(b => b.onclick = () => {
+    let a = st.r.__vitrine || [];
+    a = a.includes(b.dataset.v) ? a.filter(x => x !== b.dataset.v) : [...a, b.dataset.v];
+    st.r.__vitrine = a; salvar();
+    b.setAttribute("aria-checked", a.includes(b.dataset.v));
+    seg.textContent = (a.length ? "Continuar" : "Pular") + " →";
+  });
+  seg.onclick = () => { st.i++; salvar(); tela(); };
+  volta.onclick = voltar;
+}
+
+function avancar() {
+  const p = passos()[st.i];
+  const v = st.r[p.id];
+  if (!p.opcional && (!v || (Array.isArray(v) && !v.length))) { erro.textContent = p.tipo === "multi" ? "Marca pelo menos uma opção." : "Escolhe uma opção pra continuar."; return; }
+  st.i++; salvar(); tela(); window.scrollTo({ top: 0 });
+}
+function voltar() { if (st.i <= 0) { st.i = -1; salvar(); intro(); } else { st.i--; salvar(); tela(); } }
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCO 8: RESULTADO (indicação + resumo + agendar / WhatsApp)
+// ═══════════════════════════════════════════════════════════════
+function resumoLinhas() {
+  const L = M.perguntas.filter(p => !p.mostrarSe || condicao(p.mostrarSe));
+  const linhas = L.map(p => [p.curto || p.q, [].concat(st.r[p.id] || []).join(", ")]).filter(x => x[1]);
+  if ((st.r.__vitrine || []).length) linhas.push(["Blends que interessaram", st.r.__vitrine.join(", ")]);
+  return linhas;
+}
+function resultado() {
+  document.getElementById("barra").style.width = "100%";
+  const ind = M.indicacao(st.r);
+  const linhas = resumoLinhas();
+  const msg = [`Oi ${M.profissional.nome}! Fiz a triagem pelo teu link 💜`, ``, `✨ Indicação: ${ind.servico}`, ...linhas.map(([k, v]) => `• ${k}: ${v}`), ``, `Quero agendar!`].join("\n");
+  const wa = `https://wa.me/${M.profissional.whatsapp}?text=${encodeURIComponent(msg)}`;
+  // Preparado pro Falcon: a agenda vai ler ?servico= e as respostas (r=) quando a integração estiver pronta
+  const dados = btoa(unescape(encodeURIComponent(JSON.stringify({ servico: ind.servico, respostas: Object.fromEntries(linhas) }))));
+  const agenda = M.profissional.agenda ? `${M.profissional.agenda}?servico=${encodeURIComponent(ind.servico)}&r=${encodeURIComponent(dados)}` : "";
+  app.innerHTML = `<section class="tela">
+    <p class="eyebrow">Pra você</p>
+    <h1>${esc(M.resultado?.titulo || "Achei o cuidado certo pra você")}</h1>
+    <div class="card"><h3>Minha indicação</h3><p class="indic">${esc(ind.servico)}</p><p class="ajuda" style="margin:.4rem 0 0">${esc(ind.porque)}</p></div>
+    ${ind.aviso ? `<div class="aviso">${esc(ind.aviso)}</div>` : ""}
+    <div class="card resumo"><h3>O que você me contou</h3>${linhas.map(([k, v]) => `<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join("")}</div>
+    <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:1.3rem">
+      ${M.modoFinal === "agenda" && agenda ? `<a class="btn full" href="${agenda}">📅 Escolher meu horário</a>` : ""}
+      <a class="btn full ${M.modoFinal === "agenda" ? "sec" : ""}" href="${wa}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+      <button class="voltar" id="refazer" style="text-align:center">Refazer as respostas</button>
+    </div>
+    <p class="rodape">${esc(M.profissional.negocio)} · ${esc(M.profissional.endereco || "")}</p></section>`;
+  refazer.onclick = () => { st = { i: -1, r: {} }; salvar(); intro(); };
+}
+</script>
+</body>
+</html>
