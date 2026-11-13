@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Triagem</title>
 <meta name="robots" content="noindex">
+<meta property="og:title" content="Qual é o cuidado certo pra você?">
+<meta property="og:description" content="Responda rapidinho e receba a indicação da Alê · Espaço Viver">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://altasvendasai.github.io/triagem/img/previa.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F8F5FA">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,6 +66,7 @@ h1 em{color:var(--cor)}
 .prod .foto img{width:100%;height:100%;object-fit:cover}
 .prod b{font-size:.95rem}
 .prod span{font-size:.8rem;color:var(--cinza);line-height:1.35}
+.prod .selo{font-style:normal;font-size:.68rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:var(--cor);border-radius:999px;padding:.15rem .55rem;align-self:flex-start}
 .prod[aria-checked="true"]{border-color:var(--cor);background:var(--cor-clara)}
 .prod[aria-checked="true"] b::after{content:" ✓";color:var(--cor)}
 .erro{color:#B42318;font-size:.88rem;margin-top:.6rem;min-height:1.2rem}
@@ -92,7 +100,7 @@ h1 em{color:var(--cor)}
 // ═══════════════════════════════════════════════════════════════
 const P = (new URLSearchParams(location.search).get("p") || "ale").replace(/[^a-z0-9-]/gi, "");
 const s = document.createElement("script");
-s.src = `modelos/${P}.js?v=1`;
+s.src = `modelos/${P}.js?v=2`;
 s.onload = iniciar;
 s.onerror = () => { document.getElementById("app").innerHTML = '<p class="lead">Formulário não encontrado.</p>'; };
 document.head.appendChild(s);
@@ -125,6 +133,12 @@ function passos() {
   const lista = M.perguntas.filter(p => !p.mostrarSe || condicao(p.mostrarSe));
   if (M.vitrine) lista.push({ id: "__vitrine", tipo: "vitrine" });
   return lista;
+}
+// Vitrine sempre aparece (é propaganda); os ligados ao que a pessoa marcou ("para") vêm primeiro com selo
+function itensVitrine() {
+  const marcados = Object.values(st.r).flat();
+  const indicado = it => (it.para || []).some(x => marcados.includes(x));
+  return M.vitrine.itens.map(it => ({ ...it, indicado: indicado(it) })).sort((a, b) => b.indicado - a.indicado);
 }
 function condicao(c) {
   const v = st.r[c.campo];
@@ -200,14 +214,14 @@ function tela() {
 }
 
 function vitrine() {
-  const V = M.vitrine, sel = st.r.__vitrine || [];
+  const V = M.vitrine, sel = st.r.__vitrine || [], itens = itensVitrine();
   app.innerHTML = `<section class="tela">
     <p class="eyebrow">${esc(V.eyebrow || "")}</p>
     <h2 class="q">${esc(V.titulo)}</h2>
     <p class="ajuda">${esc(V.ajuda || "")}</p>
-    <div class="vit">${V.itens.map(it => `<button type="button" class="prod" role="checkbox" aria-checked="${sel.includes(it.nome)}" data-v="${esc(it.nome)}">
+    <div class="vit">${itens.map(it => `<button type="button" class="prod" role="checkbox" aria-checked="${sel.includes(it.nome)}" data-v="${esc(it.nome)}">
       <div class="foto">${it.foto ? `<img src="${esc(it.foto)}" alt="">` : (it.icone || "🌿")}</div>
-      <b>${esc(it.nome)}</b><span>${esc(it.serve)}</span></button>`).join("")}</div>
+      ${it.indicado ? `<em class="selo">Indicado pra você</em>` : ""}<b>${esc(it.nome)}</b><span>${esc(it.serve)}</span></button>`).join("")}</div>
     <div class="nav"><button class="voltar" id="volta">← Voltar</button>
       <button class="btn" id="seg">${sel.length ? "Continuar" : "Pular"} →</button></div></section>`;
   progresso();
@@ -243,7 +257,7 @@ function resultado() {
   document.getElementById("barra").style.width = "100%";
   const ind = M.indicacao(st.r);
   const linhas = resumoLinhas();
-  const msg = [`Oi ${M.profissional.nome}! Fiz a triagem pelo teu link 💜`, ``, `✨ Indicação: ${ind.servico}`, ...linhas.map(([k, v]) => `• ${k}: ${v}`), ``, `Quero agendar!`].join("\n");
+  const msg = [`Oi ${M.profissional.nome}! Fiz a triagem pelo teu link 💜`, ``, `✨ Indicação: ${ind.servico}`, ...(ind.junto ? [`➕ Combina com: ${ind.junto}`] : []), ...linhas.map(([k, v]) => `• ${k}: ${v}`), ``, `Quero agendar!`].join("\n");
   const wa = `https://wa.me/${M.profissional.whatsapp}?text=${encodeURIComponent(msg)}`;
   // Preparado pro Falcon: a agenda vai ler ?servico= e as respostas (r=) quando a integração estiver pronta
   const dados = btoa(unescape(encodeURIComponent(JSON.stringify({ servico: ind.servico, respostas: Object.fromEntries(linhas) }))));
@@ -251,7 +265,8 @@ function resultado() {
   app.innerHTML = `<section class="tela">
     <p class="eyebrow">Pra você</p>
     <h1>${esc(M.resultado?.titulo || "Achei o cuidado certo pra você")}</h1>
-    <div class="card"><h3>Minha indicação</h3><p class="indic">${esc(ind.servico)}</p><p class="ajuda" style="margin:.4rem 0 0">${esc(ind.porque)}</p></div>
+    <div class="card"><h3>Minha indicação</h3><p class="indic">${esc(ind.servico)}</p><p class="ajuda" style="margin:.4rem 0 0">${esc(ind.porque)}</p>
+      ${ind.junto ? `<p class="ajuda" style="margin:.6rem 0 0"><b style="color:var(--cor)">Combina com:</b> ${esc(ind.junto)}</p>` : ""}</div>
     ${ind.aviso ? `<div class="aviso">${esc(ind.aviso)}</div>` : ""}
     <div class="card resumo"><h3>O que você me contou</h3>${linhas.map(([k, v]) => `<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join("")}</div>
     <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:1.3rem">
