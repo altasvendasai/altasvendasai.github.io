@@ -70,6 +70,14 @@ window.TRIAGEM = {
         { v: "Cuidar de mim com constância", icone: "🦋" },
         { v: "Experimentar uma sessão primeiro", icone: "✨" }
       ] },
+    { id: "pele", grupo: "Tua pele", tipo: "multi", curto: "Pele e cabelo",
+      q: "E a tua pele, tem algo que te incomoda?", ajuda: "Com isso eu monto um blend feito pra você. Pode marcar mais de uma.",
+      exclusivas: ["Nada disso"],
+      ops: [
+        { v: "Manchas ou melasma", icone: "🌗" }, { v: "Acne e espinhas", icone: "🌸" }, { v: "Cravos e poros abertos", icone: "🔍" },
+        { v: "Oleosidade", icone: "💧" }, { v: "Ressecamento", icone: "🏜️" }, { v: "Olheiras", icone: "👁️" },
+        { v: "Flacidez no rosto", icone: "✨" }, { v: "Queda de cabelo", icone: "💇" }, { v: "Nada disso" }
+      ] },
     { id: "saude", grupo: "Tua segurança", tipo: "multi", curto: "Saúde",
       q: "Algo que eu precise saber sobre tua saúde?", ajuda: "É pra eu cuidar de você com segurança.",
       exclusivas: ["Nada disso"],
@@ -106,8 +114,8 @@ window.TRIAGEM = {
     const principal = inc[0];
     const corpo = ["Celulite", "Flacidez", "Gordura localizada / medidas"];
     if (corpo.includes(principal)) {
-      if (experimentar) return { servico: principal === "Celulite" ? "Sessão para celulite" : "Esculpe Detox – Desincha / Elimina Toxinas / Modela", porque: "Uma sessão pra você sentir o resultado e a gente montar teu plano.", junto: "Blend Celulite pra continuar em casa", aviso };
-      return { servico: "Deusa Grega – Pele Porcelana / Reduz Medida / Modela / Desinflama", porque: "Meu método completo: avaliação + 4 sessões que unem modelagem, detox e os blends pra cuidar de dentro pra fora.", junto: "Blend Celulite pra continuar em casa", aviso };
+      if (experimentar) return { servico: principal === "Celulite" ? "Sessão para celulite" : "Esculpe Detox – Desincha / Elimina Toxinas / Modela", porque: "Uma sessão pra você sentir o resultado e a gente montar teu plano.", junto: "Teu blend personalizado pra continuar em casa", aviso };
+      return { servico: "Deusa Grega – Pele Porcelana / Reduz Medida / Modela / Desinflama", porque: "Meu método completo: avaliação + 4 sessões que unem modelagem, detox e os blends pra cuidar de dentro pra fora.", junto: "Teu blend personalizado pra continuar em casa", aviso };
     }
     if (principal === "Inchaço e retenção") return { servico: "Esculpe Detox – Desincha / Elimina Toxinas / Modela", porque: "Pra desinchar, eliminar o que o corpo está retendo e modelar.", junto: "Drenagem linfática pra manter", aviso };
     if (principal === "Dores e tensão") {
@@ -118,11 +126,37 @@ window.TRIAGEM = {
       return { servico: "Massagem terapêutica", porque: "Pra soltar a tensão, destravar o músculo e aliviar a dor.", junto: "Liberação miofascial nos pontos mais travados", aviso };
     }
     if (principal === "Ansiedade e estresse")
-      return { servico: "Massagem relaxante", porque: "Um momento pra desacelerar o corpo e a mente.", junto: "Reiki pra equilibrar a energia + Blend Calma pra levar o cuidado pra casa", aviso };
-    if (principal === "Manchas") return { servico: "Tratamento para manchas", porque: "Clareamento com blends e técnicas pra uniformizar a pele.", junto: "Blend Clareamento pra continuar em casa", aviso };
-    if (principal === "Acne / pele oleosa") return { servico: "Limpeza de pele", porque: "Limpeza profunda pra controlar a oleosidade e cuidar da acne.", junto: "Blend Pele pra continuar em casa", aviso };
+      return { servico: "Massagem relaxante", porque: "Um momento pra desacelerar o corpo e a mente.", junto: "Reiki pra equilibrar a energia + teu blend personalizado pra levar o cuidado pra casa", aviso };
+    if (principal === "Manchas") return { servico: "Tratamento para manchas", porque: "Clareamento com blends e técnicas pra uniformizar a pele.", junto: "Teu blend personalizado pra continuar em casa", aviso };
+    if (principal === "Acne / pele oleosa") return { servico: "Limpeza de pele", porque: "Limpeza profunda pra controlar a oleosidade e cuidar da acne.", junto: "Teu blend personalizado pra continuar em casa", aviso };
     if (principal === "Queda de cabelo") return { servico: "Blend Capilar", porque: "Fórmula pra fortalecer os fios e estimular o crescimento — eu te explico como usar.", junto: "Uma conversa rápida pra eu entender a causa da queda", aviso };
     return { servico: "Massagem relaxante", porque: "Um momento só seu pra desacelerar.", junto: "Blend Calma pra levar o cuidado pra casa", aviso };
+  },
+
+  // === BLOCO 5: BLEND PERSONALIZADO (junta tudo que a pessoa marcou num blend só dela) ===
+  blendPersonalizado(r) {
+    const focos = {
+      "Manchas ou melasma": ["rosto", "clareamento das manchas"], "Acne e espinhas": ["rosto", "controle da acne"],
+      "Cravos e poros abertos": ["rosto", "limpeza dos poros"], "Oleosidade": ["rosto", "controle da oleosidade"],
+      "Ressecamento": ["rosto", "hidratação profunda"], "Olheiras": ["rosto", "suavizar as olheiras"],
+      "Flacidez no rosto": ["rosto", "firmeza da pele"], "Queda de cabelo": ["cabelo", "fortalecer os fios"],
+      "Celulite": ["corpo", "ativar a circulação na celulite"], "Flacidez": ["corpo", "firmeza do corpo"],
+      "Gordura localizada / medidas": ["corpo", "modelar as medidas"], "Inchaço e retenção": ["corpo", "desinchar"],
+      "Ansiedade e estresse": ["calma", "calma e sono melhor"], "Manchas": ["rosto", "clareamento das manchas"],
+      "Acne / pele oleosa": ["rosto", "controle da acne"]
+    };
+    const marcados = [...(r.incomodo || []), ...(r.pele || [])].filter(x => focos[x]);
+    if (!marcados.length) return null;
+    const areas = [...new Set(marcados.map(x => focos[x][0]))];
+    const para = [...new Set(marcados.map(x => focos[x][1]))];
+    const nomes = { rosto: "Blend Facial Personalizado", corpo: "Blend Corporal Personalizado", cabelo: "Blend Capilar Personalizado", calma: "Blend Calma Personalizado" };
+    const icones = { rosto: "🌸", corpo: "🍑", cabelo: "🌿", calma: "🕯️" };
+    return {
+      nome: areas.length === 1 ? nomes[areas[0]] : "Blend Personalizado da Alê",
+      icone: areas.length === 1 ? icones[areas[0]] : "🌿",
+      para,
+      porque: "Feito sob medida por mim, com os óleos certos pro que você me contou. Eu preparo o teu frasco e te explico como usar em casa."
+    };
   },
 
   resultado: { titulo: "Achei o cuidado certo pra você" }

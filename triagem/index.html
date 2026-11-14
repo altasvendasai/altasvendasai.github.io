@@ -86,6 +86,12 @@ h1 em{color:var(--cor)}
 .resumo div{font-size:.92rem;padding:.25rem 0;border-bottom:1px dashed var(--linha)}
 .resumo div:last-child{border:none}
 .resumo b{color:var(--tinta)}
+.blend{border-left:4px solid var(--cor)}
+.blend-row{display:flex;gap:.8rem;align-items:center}
+.blend-foto{flex:none;width:68px;height:68px;border-radius:14px;background:var(--cor-clara);display:grid;place-items:center;font-size:1.9rem;overflow:hidden}
+.blend-foto img{width:100%;height:100%;object-fit:cover}
+.focos{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+.focos span{font-size:.78rem;font-weight:700;background:var(--cor-clara);color:var(--cor);border-radius:999px;padding:.2rem .65rem}
 .rodape{margin-top:auto;padding-top:1.6rem;font-size:.75rem;color:var(--cinza);text-align:center}
 </style>
 </head>
@@ -100,7 +106,7 @@ h1 em{color:var(--cor)}
 // ═══════════════════════════════════════════════════════════════
 const P = (new URLSearchParams(location.search).get("p") || "ale").replace(/[^a-z0-9-]/gi, "");
 const s = document.createElement("script");
-s.src = `modelos/${P}.js?v=2`;
+s.src = `modelos/${P}.js?v=3`;
 s.onload = iniciar;
 s.onerror = () => { document.getElementById("app").innerHTML = '<p class="lead">Formulário não encontrado.</p>'; };
 document.head.appendChild(s);
@@ -256,8 +262,10 @@ function resumoLinhas() {
 function resultado() {
   document.getElementById("barra").style.width = "100%";
   const ind = M.indicacao(st.r);
+  const blend = M.blendPersonalizado ? M.blendPersonalizado(st.r) : null;
   const linhas = resumoLinhas();
-  const msg = [`Oi ${M.profissional.nome}! Fiz a triagem pelo teu link 💜`, ``, `✨ Indicação: ${ind.servico}`, ...(ind.junto ? [`➕ Combina com: ${ind.junto}`] : []), ...linhas.map(([k, v]) => `• ${k}: ${v}`), ``, `Quero agendar!`].join("\n");
+  const msg = [`Oi ${M.profissional.nome}! Fiz a triagem pelo teu link 💜`, ``, `✨ Indicação: ${ind.servico}`, ...(ind.junto ? [`➕ Combina com: ${ind.junto}`] : []),
+    ...(blend ? [`🌿 Meu blend personalizado: ${blend.nome}${blend.para.length ? " (" + blend.para.join(" + ") + ")" : ""}`] : []), ...linhas.map(([k, v]) => `• ${k}: ${v}`), ``, `Quero agendar!`].join("\n");
   const wa = `https://wa.me/${M.profissional.whatsapp}?text=${encodeURIComponent(msg)}`;
   // Preparado pro Falcon: a agenda vai ler ?servico= e as respostas (r=) quando a integração estiver pronta
   const dados = btoa(unescape(encodeURIComponent(JSON.stringify({ servico: ind.servico, respostas: Object.fromEntries(linhas) }))));
@@ -267,6 +275,10 @@ function resultado() {
     <h1>${esc(M.resultado?.titulo || "Achei o cuidado certo pra você")}</h1>
     <div class="card"><h3>Minha indicação</h3><p class="indic">${esc(ind.servico)}</p><p class="ajuda" style="margin:.4rem 0 0">${esc(ind.porque)}</p>
       ${ind.junto ? `<p class="ajuda" style="margin:.6rem 0 0"><b style="color:var(--cor)">Combina com:</b> ${esc(ind.junto)}</p>` : ""}</div>
+    ${blend ? `<div class="card blend"><h3>🌿 Teu blend personalizado</h3>
+      <div class="blend-row"><div class="blend-foto">${blend.foto ? `<img src="${esc(blend.foto)}" alt="">` : (blend.icone || "🌿")}</div>
+      <div><p class="indic" style="font-size:1.15rem">${esc(blend.nome)}</p><p class="ajuda" style="margin:.3rem 0 0">${esc(blend.porque)}</p></div></div>
+      ${blend.para.length ? `<div class="focos">${blend.para.map(f => `<span>${esc(f)}</span>`).join("")}</div>` : ""}</div>` : ""}
     ${ind.aviso ? `<div class="aviso">${esc(ind.aviso)}</div>` : ""}
     <div class="card resumo"><h3>O que você me contou</h3>${linhas.map(([k, v]) => `<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join("")}</div>
     <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:1.3rem">
