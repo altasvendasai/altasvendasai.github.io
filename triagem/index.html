@@ -106,7 +106,7 @@ h1 em{color:var(--cor)}
 // ═══════════════════════════════════════════════════════════════
 const P = (new URLSearchParams(location.search).get("p") || "ale").replace(/[^a-z0-9-]/gi, "");
 const s = document.createElement("script");
-s.src = `modelos/${P}.js?v=5`;
+s.src = `modelos/${P}.js?v=6`;
 s.onload = iniciar;
 s.onerror = () => { document.getElementById("app").innerHTML = '<p class="lead">Formulário não encontrado.</p>'; };
 document.head.appendChild(s);
@@ -128,13 +128,13 @@ function iniciar() {
   document.title = M.profissional.negocio + " · " + (M.titulo || "Triagem");
   document.getElementById("marca").innerHTML = `${esc(M.profissional.negocio)}<small>${esc(M.profissional.nome)}</small>`;
   // Tag do Google da profissional (Google Ads), só se o modelo tiver uma
-  if (M.googleTag) {
+  if (M.googleTag || M.googleAds) {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { dataLayer.push(arguments); };
     gtag("js", new Date());
-    const g = document.createElement("script");
-    g.async = true; g.src = "https://www.googletagmanager.com/gtm.js?id=" + M.googleTag;
-    document.head.appendChild(g);
+    const tag = (src) => { const g = document.createElement("script"); g.async = true; g.src = src; document.head.appendChild(g); };
+    if (M.googleTag) tag("https://www.googletagmanager.com/gtm.js?id=" + M.googleTag);
+    if (M.googleAds) { tag("https://www.googletagmanager.com/gtag/js?id=" + M.googleAds); gtag("config", M.googleAds); }
   }
   CHAVE = "triagem-" + P;
   st = { i: -1, r: {} };
@@ -301,7 +301,7 @@ function resultado() {
   app.querySelectorAll("a.btn").forEach(a => a.addEventListener("click", () => {
     if (!window.dataLayer) return;
     dataLayer.push({ event: "triagem_enviada", profissional: P, servico: ind.servico });
-    if (M.conversao) gtag("event", "conversion", { send_to: M.conversao });
+    if (M.conversao) gtag("event", "conversion", { send_to: M.conversao, transport_type: "beacon" });
   }));
 }
 </script>

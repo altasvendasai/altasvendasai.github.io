@@ -18,9 +18,10 @@ window.TRIAGEM = {
   // "whatsapp" = só o botão do WhatsApp; "agenda" = botão da agenda Falcon em destaque + WhatsApp
   modoFinal: "whatsapp",
 
-  // Google Ads (conta 845-725-3405). conversao = "AW-XXXX/rótulo" quando a ação de conversão for criada
+  // Google Ads (conta 845-725-3405). conversão "Triagem enviada" criada 14/11
   googleTag: "GTM-N48CWL3C",
-  conversao: "",
+  googleAds: "AW-11325048329",
+  conversao: "AW-11325048329/H9K_CKHYvbgdEImMmpgq", // "Triagem enviada" (clique em Agendar)
 
   intro: {
     eyebrow: "Cuidado sob medida",
