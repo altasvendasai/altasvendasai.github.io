@@ -20,9 +20,12 @@ window.TRIAGEM = {
 
   intro: {
     eyebrow: "Cuidado sob medida",
-    titulo: "Vamos descobrir o <em>cuidado certo</em> pra você?",
-    texto: "Responde algumas perguntas rápidas e eu te indico o tratamento ideal pro teu corpo e pra tua pele.",
-    rodape: "Leva menos de 1 minuto · tuas respostas ficam só comigo."
+    titulo: "Oi! 💜",
+    texto: [
+      "Antes de agendar, umas perguntinhas rápidas (2 min) pra Alê entender teu caso e te indicar o cuidado certo.",
+      "Depois tu escolhe teu horário, e tuas respostas chegam no WhatsApp dela, onde tu já pode tirar qualquer dúvida."
+    ],
+    rodape: ""
   },
 
   // === BLOCO 2: PERGUNTAS (uma por tela; "mostrarSe" faz a pergunta aparecer só quando faz sentido) ===
