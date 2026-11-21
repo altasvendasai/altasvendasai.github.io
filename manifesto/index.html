@@ -66,6 +66,12 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
 .btn-voltar:hover{color:#fff}
 .btn-voltar[disabled]{opacity:.35;cursor:default}
 .btn-principal.espera{opacity:.55}
+.setas{display:flex;justify-content:center;gap:2px;margin:0 0 16px;opacity:0;transition:opacity 400ms var(--curva);cursor:pointer;background:none;border:0;padding:8px}
+.setas.on{opacity:1}
+.setas svg{width:28px;height:28px;stroke:var(--vivo);opacity:.25;animation:seta 1.2s infinite}
+.setas svg:nth-child(2){animation-delay:.2s}.setas svg:nth-child(3){animation-delay:.4s}
+@keyframes seta{0%,100%{opacity:.25;transform:none}40%{opacity:1;transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){.setas svg{animation:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.bloco{transform:none;transition:opacity 300ms linear}.barra span{transition:none}}
 </style>
 </head>
@@ -78,6 +84,9 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
   </div>
   <div class="barra" aria-hidden="true"><span id="barra"></span></div>
   <main id="tela" tabindex="-1" aria-live="polite"></main>
+  <button class="setas" id="setas" type="button" aria-label="Avançar">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
   <div class="acoes">
     <button class="btn btn-voltar" id="voltar" type="button" aria-label="Tela anterior">Voltar</button>
     <button class="btn btn-principal" id="avancar" type="button">Próximo &gt;&gt;&gt;</button>
@@ -125,7 +134,8 @@ let atual = 0, timers = [], revelando = false;
 
 function limpar(){ timers.forEach(clearTimeout); timers = []; }
 function revelarTudo(){ limpar(); $tela.querySelectorAll('.bloco').forEach(b => b.classList.add('on')); fimRevelar(); }
-function fimRevelar(){ revelando = false; $av.classList.remove('espera'); }
+const $setas = document.getElementById('setas');
+function fimRevelar(){ revelando = false; $av.classList.remove('espera'); $setas.classList.add('on'); }
 
 function mostrar(i){
   limpar(); atual = i; revelando = true;
@@ -135,7 +145,7 @@ function mostrar(i){
   $barra.style.transform = `scaleX(${(i + 1) / TELAS.length})`;
   $vo.disabled = i === 0;
   $av.textContent = ultima ? 'Sim, quero ver >>>' : 'Próximo >>>';
-  $av.classList.add('espera');
+  $av.classList.add('espera'); $setas.classList.remove('on');
   const blocos = [...$tela.querySelectorAll('.bloco')];
   const passo = calmo ? 150 : 750;
   blocos.forEach((b, k) => timers.push(setTimeout(() => b.classList.add('on'), 120 + k * passo)));
@@ -149,6 +159,11 @@ $av.onclick = () => {
   if (atual === TELAS.length - 1) { location.href = DESTINO + location.search; return; }
   mostrar(atual + 1);
 };
+$setas.onclick = () => $av.click();
+// Arrastar pro lado: esquerda avança, direita volta
+let x0 = null;
+$tela.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive:true});
+$tela.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (dx < -50) $av.click(); else if (dx > 50) $vo.click(); });
 $vo.onclick = () => { if (atual > 0) mostrar(atual - 1); };
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); $av.click(); }
