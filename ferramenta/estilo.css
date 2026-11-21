@@ -23,7 +23,7 @@ p{margin:0 0 12px;text-wrap:pretty}
 .logo i svg{width:16px;height:16px}
 .hero .eyebrow{color:var(--vivo)}
 .hero h1{font-size:36px;line-height:40px;letter-spacing:-.5px;margin:12px 0 16px;max-width:680px;text-wrap:balance;
-  background:linear-gradient(90deg,#FFFFFF,#9B9B9B);-webkit-background-clip:text;background-clip:text;color:transparent}
+  background:linear-gradient(90deg,#FFFFFF,#9B9B9B);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:8px}
 .hero .sub{color:#C9D6D0;font-size:18px;line-height:28px;max-width:680px}
 .hero .sub b{color:#fff}
 .hero-acoes{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
