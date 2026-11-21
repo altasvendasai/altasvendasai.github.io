@@ -68,10 +68,13 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
 .btn-principal.espera{opacity:.55}
 .setas{display:flex;justify-content:center;gap:2px;margin:0 0 16px;opacity:0;transition:opacity 400ms var(--curva);cursor:pointer;background:none;border:0;padding:8px}
 .setas.on{opacity:1}
-.setas svg{width:28px;height:28px;stroke:var(--vivo);opacity:.25;animation:seta 1.2s infinite}
-.setas svg:nth-child(2){animation-delay:.2s}.setas svg:nth-child(3){animation-delay:.4s}
-@keyframes seta{0%,100%{opacity:.25;transform:none}40%{opacity:1;transform:translateX(4px)}}
-@media (prefers-reduced-motion:reduce){.setas svg{animation:none;opacity:1}}
+.setas svg{width:120px;height:32px;overflow:visible}
+.setas path{fill:none;stroke:var(--vivo);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.setas .onda{animation:risco 2.4s var(--curva) infinite}
+.setas .ponta{animation:ponta 2.4s var(--curva) infinite}
+@keyframes risco{0%{stroke-dashoffset:1;opacity:1}45%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes ponta{0%,42%{stroke-dashoffset:1;opacity:1}60%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@media (prefers-reduced-motion:reduce){.setas path{animation:none;stroke-dashoffset:0}}
 @media (prefers-reduced-motion:reduce){.bloco{transform:none;transition:opacity 300ms linear}.barra span{transition:none}}
 </style>
 </head>
@@ -85,7 +88,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
   <div class="barra" aria-hidden="true"><span id="barra"></span></div>
   <main id="tela" tabindex="-1" aria-live="polite"></main>
   <button class="setas" id="setas" type="button" aria-label="Avançar">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    <svg viewBox="0 0 120 32" aria-hidden="true"><path class="onda" pathLength="1" d="M4 16 C14 4, 24 28, 34 16 S54 4, 64 16 S84 28, 94 16 L112 16"/><path class="ponta" pathLength="1" d="M101 7 L112 16 L101 25"/></svg>
   </button>
   <div class="acoes">
     <button class="btn btn-voltar" id="voltar" type="button" aria-label="Tela anterior">Voltar</button>
