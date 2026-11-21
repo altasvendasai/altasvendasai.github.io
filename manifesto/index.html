@@ -66,10 +66,10 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
 .btn-voltar:hover{color:#fff}
 .btn-voltar[disabled]{opacity:.35;cursor:default}
 .btn-principal.espera{opacity:.55}
-.setas{display:flex;justify-content:center;gap:2px;margin:0 0 16px;opacity:0;transition:opacity 400ms var(--curva);cursor:pointer;background:none;border:0;padding:8px}
+.setas{display:flex;justify-content:center;gap:2px;margin:32px auto 0;opacity:0;transition:opacity 400ms var(--curva);cursor:pointer;background:none;border:0;padding:8px}
 .setas.on{opacity:1}
 .setas img{display:block;width:84px;height:auto;animation:mao .9s ease-in-out infinite alternate;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
-@keyframes mao{from{transform:translateX(-8px)}to{transform:translateX(10px)}}
+@keyframes mao{from{transform:translateX(-10px)}to{transform:translateX(10px)}}
 @media (prefers-reduced-motion:reduce){.setas img{animation:none}}
 @media (prefers-reduced-motion:reduce){.bloco{transform:none;transition:opacity 300ms linear}.barra span{transition:none}}
 </style>
@@ -144,7 +144,7 @@ function mostrar(i){
   $barra.style.transform = `scaleX(${(i + 1) / TELAS.length})`;
   $vo.disabled = i === 0;
   $av.textContent = ultima ? 'Sim, quero ver >>>' : 'Próximo >>>';
-  $av.classList.add('espera'); $setas.classList.remove('on');
+  $av.classList.add('espera'); $setas.classList.remove('on'); $tela.appendChild($setas);
   const blocos = [...$tela.querySelectorAll('.bloco')];
   const passo = calmo ? 150 : 750;
   blocos.forEach((b, k) => timers.push(setTimeout(() => b.classList.add('on'), 120 + k * passo)));
