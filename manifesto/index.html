@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manifesto · AltasVendas IA</title>
+<meta name="description" content="Nem esquerda, nem direita. A união dos empreendedores é o que muda o Brasil.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A1411">
+<meta property="og:title" content="Você é de direita? De esquerda? Não importa.">
+<meta property="og:description" content="Nem esquerda, nem direita. Apenas diferente. Um manifesto pra quem empreende no Brasil.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://altasvendasai.github.io/manifesto/">
+<meta property="og:image" content="https://altasvendasai.github.io/manifesto/previa.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* === BLOCO 1: CORES E BASE === */
+:root{--fundo:#0A1411;--fundo2:#111E1A;--texto:#EAF3EF;--suave:#A9B8B2;--vivo:#25D366;--linha:rgba(169,184,178,.22);
+  --curva:cubic-bezier(0.22,1,0.36,1)}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--fundo);color:var(--texto);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:inherit}
+.pular{position:absolute;left:-999px;top:8px;background:var(--vivo);color:#06231A;padding:8px 12px;border-radius:8px;z-index:9}
+.pular:focus{left:16px}
+
+/* === BLOCO 2: MOLDURA (TOPO, BARRA DE PROGRESSO, RODAPÉ) === */
+.app{height:100dvh;display:flex;flex-direction:column;max-width:640px;margin:0 auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.topo{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;gap:8px;align-items:center;font-weight:700;letter-spacing:.03em;font-size:14px;white-space:nowrap}
+.logo i{width:32px;height:32px;border-radius:8px;background:var(--vivo);display:grid;place-items:center}
+.logo i svg{width:16px;height:16px}
+.contador{font-size:12px;color:var(--suave);font-variant-numeric:tabular-nums}
+.barra{height:4px;border-radius:4px;background:var(--linha);margin-top:12px;overflow:hidden}
+.barra span{display:block;height:100%;width:100%;background:var(--vivo);transform-origin:left;transform:scaleX(0);transition:transform 500ms var(--curva)}
+
+/* === BLOCO 3: TELA E BLOCOS QUE APARECEM AOS POUCOS === */
+main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0;overflow-y:auto}
+.bloco{opacity:0;transform:translateY(16px);transition:opacity 600ms var(--curva),transform 600ms var(--curva);margin:0 0 16px}
+.bloco.on{opacity:1;transform:none}
+.t-grande{font-size:36px;line-height:40px;font-weight:700;letter-spacing:-.5px;text-wrap:balance;background:linear-gradient(90deg,#FFFFFF,#9B9B9B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.t-enorme{font-size:60px;line-height:1;font-weight:700;letter-spacing:-1px;color:var(--vivo)}
+.t-medio{font-size:24px;line-height:32px;font-weight:700;text-wrap:balance}
+.t-texto{font-size:18px;line-height:28px;color:#C9D6D0;text-wrap:pretty}
+.t-texto b{color:#fff;font-weight:700}
+.verde{color:var(--vivo)}
+.obra{border:1px solid var(--linha);border-radius:12px;padding:12px 16px;background:var(--fundo2)}
+.obra b{display:block;font-size:16px;line-height:24px;color:#fff}
+.obra span{display:block;font-size:14px;line-height:20px;color:var(--suave)}
+.obra small{display:block;font-size:12px;line-height:16px;color:var(--vivo);font-weight:600;margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
+
+/* === BLOCO 4: BOTÕES === */
+.acoes{display:flex;gap:12px;align-items:center}
+.btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font:600 16px/24px Manrope,system-ui,sans-serif;cursor:pointer;transition:transform 300ms var(--curva),opacity 300ms var(--curva),background-color 300ms var(--curva)}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.btn:active{transform:scale(.98)}
+.btn-principal{flex:1;background:var(--vivo);color:#06231A}
+.btn-principal:hover{background:#3BE07A}
+.btn-voltar{background:transparent;color:var(--suave);border:1px solid var(--linha)}
+.btn-voltar:hover{color:#fff}
+.btn-voltar[disabled]{opacity:.35;cursor:default}
+.btn-principal.espera{opacity:.55}
+@media (prefers-reduced-motion:reduce){.bloco{transform:none;transition:opacity 300ms linear}.barra span{transition:none}}
+</style>
+</head>
+<body>
+<a class="pular" href="#tela">Pular para o conteúdo</a>
+<div class="app">
+  <div class="topo">
+    <span class="logo"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></svg></i>ALTASVENDAS IA</span>
+    <span class="contador" id="contador" aria-live="polite"></span>
+  </div>
+  <div class="barra" aria-hidden="true"><span id="barra"></span></div>
+  <main id="tela" tabindex="-1" aria-live="polite"></main>
+  <div class="acoes">
+    <button class="btn btn-voltar" id="voltar" type="button" aria-label="Tela anterior">Voltar</button>
+    <button class="btn btn-principal" id="avancar" type="button">Continuar</button>
+  </div>
+</div>
+
+<script>
+// === BLOCO 5: TELAS DO MANIFESTO (cada item da lista aparece em sequência) ===
+const G = t => ['t-grande', t], M = t => ['t-medio', t], T = t => ['t-texto', t];
+const O = (tag, nome, desc) => ['obra', `<small>${tag}</small><b>${nome}</b><span>${desc}</span>`];
+const TELAS = [
+  [G('Você é de direita?'), T('Não?')],
+  [G('Você é de esquerda?')],
+  [G('Não importa!'), T('Se você é empreendedor aqui no Brasil, se prepara. Agora eu vou te mostrar uma coisa nova.')],
+  [G('Nem esquerda, nem direita.'), ['t-grande verde-txt', '<span class="verde">Apenas diferente.</span>']],
+  [T('Afinal, quem está por trás dos presidentes e do sistema como um todo só quer uma coisa…'), ['t-enorme', 'Te controlar.']],
+  [T('E você já sabe como: colocando uns contra os outros.'), M('Pobres contra ricos.'), M('Mulheres contra homens.'), M('Gays contra héteros.'), M('Brancos contra negros.'), ['t-medio verde', 'Esquerda contra direita.']],
+  [T('Quanto mais miserável e dividida a sociedade, mais fácil controlar a massa e deixá-la dependente de um governo que vive tomando péssimas decisões.'), T('Decisões que interessam a quem?'), G('A eles mesmos.'), T('A lei gira em torno deles. <b>E o nosso dinheiro também.</b>')],
+  [T('E eu sei que, no fundo, o que você quer é'), ['t-grande', 'liberdade e segurança.'], T('Tudo o que você não tem hoje.')],
+  [T('Agora eu vou te contar como esse jogo pode virar <b>sem depender da política</b>, essa em que você vive gastando energia e nada muda.'), T('Uma mudança real. E ela tem nome:')],
+  [['t-enorme', 'UNIÃO.'], T('Não existe nada mais forte no Brasil do que a <b>união dos empreendedores</b>.')],
+  [T('Olha só o que a gente já construiu:'),
+    O('Fé', 'Cristo Redentor · Rio de Janeiro, RJ', 'Erguido com doações do povo e de empresários nos anos 1920.'),
+    O('Fé', 'Cristo Luz · Balneário Camboriú, SC', 'Idealizado pelo empresário Mário Pretto e feito em parceria com empresas privadas, em 1997.'),
+    O('Fé', 'Cristo Protetor · Encantado, RS', '43 metros erguidos com doações de empresários e da comunidade.')],
+  [O('Cultura', 'MASP · São Paulo, SP', 'Criado por Assis Chateaubriand e Pietro Maria Bardi, com apoio de empresários.'),
+    O('Cultura', 'Inhotim · Brumadinho, MG', 'O maior museu a céu aberto da América Latina, criado pelo empresário Bernardo Paz.'),
+    O('Educação', 'Fundação Bradesco · Brasil', 'Mais de 40 escolas gratuitas em regiões pobres, mantidas desde 1956.')],
+  [O('Saúde', 'Hospital de Amor · Barretos, SP', 'O maior centro gratuito de tratamento de câncer do país, de pé com doações e leilões do agronegócio.'),
+    O('Saúde', 'Albert Einstein e Sírio-Libanês · São Paulo, SP', 'Criados por comunidades de empresários, com atendimento filantrópico.'),
+    O('Saúde', 'Hospital Pequeno Príncipe · Curitiba, PR', 'O maior hospital pediátrico do país, mantido por doações de empresas.')],
+  [T('E quando o Rio Grande do Sul foi pra debaixo d’água, em maio de 2024…'), G('ninguém perguntou o partido de ninguém.'), T('Empreendedores e gente comum chegaram com barcos, jet skis e caminhões. Galpões viraram abrigo, cozinhas viraram refeitório.'), M('Todo mundo se ajudou.')],
+  [T('Acho que eu posso parar por aqui, né?'), T('Educação, saúde, segurança: tudo precisa melhorar. Mas pra mudar as coisas, você precisa de dinheiro.'), T('<b>Você tem que vir em primeiro lugar</b> e conquistar a sua tão merecida liberdade nesse país rico em beleza natural que é o Brasil.')],
+  [G('Se a gente se unir e encher o bolso de dinheiro,'), ['t-grande', 'quem vai mudar esse país <span class="verde" style="-webkit-text-fill-color:var(--vivo)">somos nós mesmos.</span>']],
+  [T('Por isso eu te convido a fazer parte da nossa comunidade: gente que trabalha, que quer crescer, que quer decidir a própria vida e viver com dignidade, sem depender de ninguém.'), M('Se você é empreendedor, você precisa vender.'), T('E pra vender no máximo do seu potencial, precisa da comunicação certa, de um processo de vendas que funciona e de um sistema automatizado que praticamente anda sozinho.')],
+  [T('Comece a construir esse sistema com a gente a partir de <b>R$ 147</b>, com uma ferramenta simples e incrível de inteligência artificial.'), T('Daqui ela pode crescer até virar um sistema completo que vende por você <b>24 horas por dia, 7 dias por semana</b>.'), M('Quer ver agora tudo o que essa ferramenta pode entregar de resultado pro seu negócio?')]
+];
+const DESTINO = '../ferramenta/';
+
+// === BLOCO 6: MOTOR (mostra a tela, revela bloco por bloco) ===
+const $tela = document.getElementById('tela'), $av = document.getElementById('avancar'), $vo = document.getElementById('voltar');
+const $cont = document.getElementById('contador'), $barra = document.getElementById('barra');
+const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let atual = 0, timers = [], revelando = false;
+
+function limpar(){ timers.forEach(clearTimeout); timers = []; }
+function revelarTudo(){ limpar(); $tela.querySelectorAll('.bloco').forEach(b => b.classList.add('on')); fimRevelar(); }
+function fimRevelar(){ revelando = false; $av.classList.remove('espera'); }
+
+function mostrar(i){
+  limpar(); atual = i; revelando = true;
+  const ultima = i === TELAS.length - 1;
+  $tela.innerHTML = TELAS[i].map(([cls, html]) => `<div class="bloco ${cls}">${html}</div>`).join('');
+  $cont.textContent = `${i + 1} de ${TELAS.length}`;
+  $barra.style.transform = `scaleX(${(i + 1) / TELAS.length})`;
+  $vo.disabled = i === 0;
+  $av.textContent = ultima ? 'Sim, quero ver' : 'Continuar';
+  $av.classList.add('espera');
+  const blocos = [...$tela.querySelectorAll('.bloco')];
+  const passo = calmo ? 150 : 750;
+  blocos.forEach((b, k) => timers.push(setTimeout(() => b.classList.add('on'), 120 + k * passo)));
+  timers.push(setTimeout(fimRevelar, 120 + blocos.length * passo));
+  $tela.scrollTop = 0;
+}
+
+// Toque em "Continuar" enquanto revela: mostra tudo de uma vez. Toque de novo: avança.
+$av.onclick = () => {
+  if (revelando) return revelarTudo();
+  if (atual === TELAS.length - 1) { location.href = DESTINO + location.search; return; }
+  mostrar(atual + 1);
+};
+$vo.onclick = () => { if (atual > 0) mostrar(atual - 1); };
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); $av.click(); }
+  if (e.key === 'ArrowLeft') $vo.click();
+});
+mostrar(0);
+</script>
+</body>
+</html>

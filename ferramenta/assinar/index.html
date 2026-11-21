@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Assinar · AltasVendas IA</title>
+<meta name="description" content="Finalize a assinatura da sua IA de atendimento no WhatsApp.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A1411">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../estilo.css?v=1">
+</head>
+<body>
+<header class="hero" style="padding-bottom:24px">
+  <div class="wrap">
+    <nav class="topo" style="padding-bottom:0" aria-label="Principal">
+      <a class="logo" href="../"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#06231A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></svg></i>ALTASVENDAS IA</a>
+    </nav>
+  </div>
+</header>
+
+<main class="caixa" id="conteudo">
+  <a class="voltar-link" href="../#planos">← Voltar aos planos</a>
+
+  <!-- === BLOCO 1: ESCOLHA DO PLANO === -->
+  <p class="eyebrow">Passo 1 de 2</p>
+  <h2>Seu plano</h2>
+  <div class="opcoes" role="radiogroup" aria-label="Plano">
+    <label class="opcao"><input type="radio" name="plano" value="starter"><div><b>Starter</b><span>Pra quem atende sozinho</span></div><span class="valor">R$ 147/mês</span></label>
+    <label class="opcao"><input type="radio" name="plano" value="pro"><div><b>Pró</b><span>Pra equipes, clínicas e salões</span></div><span class="valor">R$ 247/mês</span></label>
+  </div>
+
+  <!-- === BLOCO 2: IMPLEMENTAÇÃO (OPCIONAL) === -->
+  <p class="eyebrow">Passo 2 de 2</p>
+  <h2>Quer que a gente implemente pra você?</h2>
+  <div class="opcoes" role="radiogroup" aria-label="Implementação">
+    <label class="opcao"><input type="radio" name="impl" value="nao" checked><div><b>Não, eu configuro</b><span>Com os vídeos passo a passo e o suporte humano pra tirar dúvidas</span></div><span class="valor">Incluso</span></label>
+    <label class="opcao"><input type="radio" name="impl" value="sim"><div><b>Sim, implementem pra mim</b><span>A gente configura e treina a sua IA pro seu negócio, e você só acompanha</span></div><span class="valor">+ R$ 997</span></label>
+  </div>
+
+  <!-- === BLOCO 3: RESUMO E PAGAMENTO === -->
+  <div class="resumo" aria-live="polite">
+    <div class="linha"><span id="r-plano"></span><span id="r-plano-v"></span></div>
+    <div class="linha" id="r-impl-l" hidden><span>Implementação (pagamento único)</span><span>R$ 997</span></div>
+    <div class="linha"><span>Mapa de Otimização de Vendas</span><span>bônus</span></div>
+    <div class="total"><span>Hoje</span><span id="r-total"></span></div>
+  </div>
+  <button class="btn btn-principal btn-cheio" id="pagar" type="button">Ir para o pagamento</button>
+  <p class="selo" style="text-align:center">Pagamento no cartão · 7 dias de garantia · sem fidelidade<br>Depois do pagamento, você responde as perguntas do seu Mapa.</p>
+</main>
+
+<a class="wpp" id="wpp" target="_blank" rel="noopener" aria-label="Tirar dúvidas com uma pessoa no WhatsApp" data-msg="Oi! Estou na página de assinatura da IA de atendimento e queria tirar uma dúvida.">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.6a10.6 10.6 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.2-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.4 14.4 0 0 0 5.5 4.9c2 .9 2.8.9 3.8.8a3.3 3.3 0 0 0 2.1-1.5 2.6 2.6 0 0 0 .2-1.5c-.1-.1-.3-.2-.6-.3z"/></svg>
+  <span>Dúvidas? Fale com uma pessoa</span>
+</a>
+
+<script src="../comum.js?v=1"></script>
+<script>
+// === BLOCO 4: CONFIGURAÇÃO DOS LINKS DE PAGAMENTO ===
+// Quando os links (Asaas ou Mercado Pago) existirem, cole aqui. Vazio = manda pro WhatsApp de uma pessoa fechar.
+const LINKS = {
+  starter: { nao: '', sim: '' },
+  pro:     { nao: '', sim: '' }
+};
+const PLANOS = { starter: ['Starter', 147], pro: ['Pró', 247] };
+
+// === BLOCO 5: RESUMO AO VIVO ===
+const q = new URLSearchParams(location.search);
+const inicial = PLANOS[q.get('plano')] ? q.get('plano') : 'pro';
+document.querySelector(`input[name=plano][value=${inicial}]`).checked = true;
+const brl = v => 'R$ ' + v.toLocaleString('pt-BR');
+function sel(n){ return document.querySelector(`input[name=${n}]:checked`).value; }
+function atualizar(){
+  const p = sel('plano'), i = sel('impl'), [nome, valor] = PLANOS[p];
+  document.getElementById('r-plano').textContent = `Plano ${nome} (1º mês)`;
+  document.getElementById('r-plano-v').textContent = brl(valor);
+  document.getElementById('r-impl-l').hidden = i !== 'sim';
+  document.getElementById('r-total').textContent = brl(valor + (i === 'sim' ? 997 : 0));
+}
+document.querySelectorAll('input').forEach(e => e.addEventListener('change', atualizar));
+atualizar();
+
+// === BLOCO 6: IR PARA O PAGAMENTO ===
+document.getElementById('pagar').onclick = () => {
+  const p = sel('plano'), i = sel('impl'), link = LINKS[p][i];
+  if (link) { location.href = link; return; }
+  const [nome, valor] = PLANOS[p];
+  const msg = `Oi! Quero assinar a IA de atendimento.\nPlano: ${nome} (${brl(valor)}/mês)\nImplementação feita por vocês: ${i === 'sim' ? 'sim (+R$ 997)' : 'não, eu configuro'}\nMe manda o link de pagamento?`;
+  window.open(`https://wa.me/${AV_HUMANO}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+};
+</script>
+</body>
+</html>

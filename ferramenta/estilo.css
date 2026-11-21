@@ -1,0 +1,109 @@
+/* === BLOCO 1: CORES E BASE === */
+:root{--fundo:#F5F7F6;--card:#FFFFFF;--texto:#0F1A16;--suave:#5B6762;--linha:#E3E9E6;--escuro:#0A1411;--escuro2:#111E1A;
+  --vivo:#25D366;--verde:#128C4A;--verde-sf:#E7F6EE;--curva:cubic-bezier(0.22,1,0.36,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fundo);color:var(--texto);font-family:Manrope,system-ui,sans-serif;font-size:16px;line-height:24px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+section.wrap{padding-top:64px;padding-bottom:0}
+h1,h2,h3{margin:0;font-weight:700}
+h2{font-size:30px;line-height:36px;letter-spacing:-.3px;margin:8px 0 12px;text-wrap:balance;max-width:680px}
+h3{font-size:18px;line-height:28px;margin-bottom:4px}
+p{margin:0 0 12px;text-wrap:pretty}
+.eyebrow{color:var(--verde);font-size:12px;line-height:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0}
+.lead{color:var(--suave);font-size:18px;line-height:28px;max-width:680px}
+.pular{position:absolute;left:-999px;top:8px;background:var(--vivo);color:#06231A;padding:8px 12px;border-radius:8px;z-index:20}
+.pular:focus{left:16px}
+
+/* === BLOCO 2: TOPO ESCURO === */
+.hero{background:var(--escuro);color:#EAF3EF;padding-bottom:64px}
+.topo{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0 48px}
+.logo{display:flex;gap:8px;align-items:center;font-weight:700;letter-spacing:.03em;font-size:14px;text-decoration:none;white-space:nowrap}
+.logo i{width:32px;height:32px;border-radius:8px;background:var(--vivo);display:grid;place-items:center}
+.logo i svg{width:16px;height:16px}
+.hero .eyebrow{color:var(--vivo)}
+.hero h1{font-size:36px;line-height:40px;letter-spacing:-.5px;margin:12px 0 16px;max-width:680px;text-wrap:balance;
+  background:linear-gradient(90deg,#FFFFFF,#9B9B9B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{color:#C9D6D0;font-size:18px;line-height:28px;max-width:680px}
+.hero .sub b{color:#fff}
+.hero-acoes{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
+.selo{font-size:14px;line-height:20px;color:var(--suave);margin:12px 0 0}
+.hero .selo{color:#A9B8B2;margin:0}
+@media (max-width:640px){.hero h1 br{display:none}.hero h1{font-size:30px;line-height:36px}h2{font-size:24px;line-height:32px}}
+
+/* === BLOCO 3: BOTÕES === */
+.btn{display:inline-block;text-decoration:none;border:0;border-radius:12px;padding:12px 16px;font:600 16px/24px Manrope,system-ui,sans-serif;cursor:pointer;text-align:center;
+  transition:transform 300ms var(--curva),background-color 300ms var(--curva)}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible,.wpp:focus-visible,summary:focus-visible,.opcao:focus-within{outline:2px solid var(--verde);outline-offset:2px}
+.btn-principal{background:var(--vivo);color:#06231A}
+.btn-principal:hover{background:#3BE07A}
+.btn-pequeno{font-size:14px;line-height:20px;padding:8px 12px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(169,184,178,.3)}
+.btn-pequeno:hover{background:rgba(255,255,255,.16)}
+
+/* === BLOCO 4: CARDS, GRADES E LISTAS === */
+.grade{display:grid;gap:16px;margin-top:24px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:860px){.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.g3,.g2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:24px}
+.card p{color:var(--suave);font-size:14px;line-height:20px;margin:0}
+.card.realce{border-color:#BFE6CF;background:var(--verde-sf);margin-top:24px}
+.card.realce p{font-size:16px;line-height:24px;color:var(--texto);margin-bottom:12px}
+.card.realce p:last-child{margin-bottom:0}
+.lista{list-style:none;padding:0;margin:16px 0;display:grid;gap:8px}
+.lista li{position:relative;padding-left:24px;font-size:16px;line-height:24px}
+.lista li::before{content:"";position:absolute;left:0;top:6px;width:12px;height:12px;border-radius:4px;background:var(--vivo)}
+.plano{display:flex;flex-direction:column;position:relative}
+.plano .pra{margin-bottom:8px}
+.plano .preco{font-size:16px;color:var(--suave)}
+.plano .preco b{font-size:36px;line-height:40px;color:var(--texto)}
+.plano .lista{flex:1}
+.plano.popular{border:2px solid var(--vivo)}
+.tag-pop{position:absolute;top:16px;right:16px;font-size:12px;line-height:16px;font-weight:700;color:var(--verde);background:var(--verde-sf);padding:4px 8px;border-radius:8px}
+.passos{padding-left:24px;margin:16px 0 0;display:grid;gap:12px;max-width:680px}
+.passos li{font-size:16px;line-height:24px;color:var(--suave)}
+.passos b{color:var(--texto)}
+.faq{margin-top:16px;display:grid;gap:8px;max-width:760px}
+.faq details{background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:16px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{color:var(--suave);margin:8px 0 0}
+.final{text-align:center;padding-bottom:64px}
+.final h2{margin-left:auto;margin-right:auto}
+.rodape{border-top:1px solid var(--linha);padding:24px 16px 96px;font-size:14px;line-height:20px;color:var(--suave)}
+
+/* === BLOCO 5: FRASE EM DESTAQUE (palavra por palavra) === */
+.destaque{background:var(--escuro);margin-top:64px;padding:96px 16px}
+.frase{max-width:680px;margin:0 auto;font-size:36px;line-height:40px;font-weight:700;letter-spacing:-.5px;color:#EAF3EF;text-wrap:balance}
+.frase .p{opacity:.3;transition:opacity 500ms var(--curva)}
+.frase .p.on{opacity:1}
+@media (min-width:860px){.frase{font-size:48px;line-height:1.05}}
+
+/* === BLOCO 6: ENTRADA SUAVE DAS SEÇÕES === */
+.revela{opacity:0;transform:translateY(32px);transition:opacity 700ms var(--curva),transform 700ms var(--curva)}
+.revela.on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.revela{transform:none;transition:opacity 300ms linear}}
+
+/* === BLOCO 7: BOTÃO FLUTUANTE DO WHATSAPP === */
+.wpp{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:10;display:flex;align-items:center;gap:8px;
+  background:#fff;color:var(--texto);border:1px solid var(--linha);border-radius:999px;padding:8px 16px 8px 8px;text-decoration:none;font-size:14px;line-height:20px;font-weight:600;
+  box-shadow:0 8px 24px rgba(10,20,17,.12);transition:transform 300ms var(--curva)}
+.wpp:hover{transform:translateY(-2px)}
+.wpp svg{width:40px;height:40px;padding:8px;border-radius:999px;background:var(--vivo);color:#fff}
+@media (max-width:420px){.wpp span{display:none}.wpp{padding:8px}}
+
+/* === BLOCO 8: TELA DE ASSINATURA === */
+.caixa{max-width:560px;margin:0 auto;padding:32px 16px 96px}
+.opcoes{display:grid;gap:12px;margin:16px 0 24px}
+.opcao{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:16px;cursor:pointer;transition:border-color 300ms var(--curva)}
+.opcao:has(input:checked){border:2px solid var(--vivo);padding:15px}
+.opcao input{margin-top:4px;accent-color:var(--verde);width:18px;height:18px;flex:0 0 auto}
+.opcao b{display:block}
+.opcao span{display:block;color:var(--suave);font-size:14px;line-height:20px}
+.opcao .valor{margin-left:auto;font-weight:700;white-space:nowrap;color:var(--texto);font-size:16px}
+.resumo{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:16px;margin-bottom:16px}
+.resumo .linha{display:flex;justify-content:space-between;gap:12px;font-size:14px;line-height:20px;color:var(--suave);margin-bottom:8px}
+.resumo .total{display:flex;justify-content:space-between;font-weight:700;border-top:1px solid var(--linha);padding-top:12px}
+.voltar-link{display:inline-block;font-size:14px;color:var(--suave);margin-bottom:16px}
+.btn-cheio{width:100%}
