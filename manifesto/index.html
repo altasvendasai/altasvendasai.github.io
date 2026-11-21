@@ -87,7 +87,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
     <img src="mao.png" alt="" width="84" height="60">
   </button>
   <div class="acoes">
-    <button class="btn btn-voltar" id="voltar" type="button" aria-label="Tela anterior">Voltar</button>
+    <button class="btn btn-voltar" id="voltar" type="button" disabled aria-label="Tela anterior">Voltar</button>
     <button class="btn btn-principal" id="avancar" type="button">Próximo &gt;&gt;&gt;</button>
   </div>
 </div>
@@ -128,8 +128,7 @@ const DESTINO = '../ferramenta/';
 // === BLOCO 6: MOTOR (mostra a tela, revela bloco por bloco) ===
 const $tela = document.getElementById('tela'), $av = document.getElementById('avancar'), $vo = document.getElementById('voltar');
 const $cont = document.getElementById('contador'), $barra = document.getElementById('barra');
-const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let atual = 0, timers = [], revelando = false;
+let atual = 0, timers = [], revelando = false, iniciado = false;
 
 function limpar(){ timers.forEach(clearTimeout); timers = []; }
 function revelarTudo(){ limpar(); $tela.querySelectorAll('.bloco').forEach(b => b.classList.add('on')); fimRevelar(); }
@@ -137,7 +136,7 @@ const $setas = document.getElementById('setas');
 function fimRevelar(){ revelando = false; $av.classList.remove('espera'); $setas.classList.add('on'); }
 
 function mostrar(i){
-  limpar(); atual = i; revelando = true;
+  limpar(); atual = i; revelando = true; iniciado = true;
   const ultima = i === TELAS.length - 1;
   $tela.innerHTML = TELAS[i].map(([cls, html]) => `<div class="bloco ${cls}">${html}</div>`).join('');
   $cont.textContent = `${i + 1} de ${TELAS.length}`;
@@ -146,14 +145,15 @@ function mostrar(i){
   $av.textContent = ultima ? 'Sim, quero ver >>>' : 'Próximo >>>';
   $av.classList.add('espera'); $setas.classList.remove('on'); if (i === 0) $tela.appendChild($setas); else $setas.remove();
   const blocos = [...$tela.querySelectorAll('.bloco')];
-  const passo = calmo ? 150 : 750;
+  const passo = 900;
   blocos.forEach((b, k) => timers.push(setTimeout(() => b.classList.add('on'), 120 + k * passo)));
-  timers.push(setTimeout(fimRevelar, 120 + blocos.length * passo));
+  timers.push(setTimeout(fimRevelar, 120 + blocos.length * passo + (i === 0 ? 300 : 0)));
   $tela.scrollTop = 0;
 }
 
 // Toque em "Continuar" enquanto revela: mostra tudo de uma vez. Toque de novo: avança.
 $av.onclick = () => {
+  if (!iniciado) return;
   if (revelando) return revelarTudo();
   if (atual === TELAS.length - 1) { location.href = DESTINO + location.search; return; }
   mostrar(atual + 1);
@@ -168,7 +168,10 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); $av.click(); }
   if (e.key === 'ArrowLeft') $vo.click();
 });
-mostrar(0);
+// Só começa quando a página está visível de verdade (link aberto do WhatsApp/Instagram carrega por trás)
+function comecar(){ if (document.hidden) return; document.removeEventListener('visibilitychange', comecar); setTimeout(() => mostrar(0), 500); }
+document.addEventListener('visibilitychange', comecar);
+comecar();
 </script>
 </body>
 </html>
