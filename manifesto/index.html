@@ -144,7 +144,7 @@ function mostrar(i){
   $barra.style.transform = `scaleX(${(i + 1) / TELAS.length})`;
   $vo.disabled = i === 0;
   $av.textContent = ultima ? 'Sim, quero ver >>>' : 'Próximo >>>';
-  $av.classList.add('espera'); $setas.classList.remove('on'); $tela.appendChild($setas);
+  $av.classList.add('espera'); $setas.classList.remove('on'); if (i === 0) $tela.appendChild($setas); else $setas.remove();
   const blocos = [...$tela.querySelectorAll('.bloco')];
   const passo = calmo ? 150 : 750;
   blocos.forEach((b, k) => timers.push(setTimeout(() => b.classList.add('on'), 120 + k * passo)));
