@@ -88,9 +88,9 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
 const G = t => ['t-grande', t], M = t => ['t-medio', t], T = t => ['t-texto', t];
 const O = (tag, nome, desc) => ['obra', `<small>${tag}</small><b>${nome}</b><span>${desc}</span>`];
 const TELAS = [
-  [G('Você é de direita?'), T('Não?')],
-  [G('Você é de esquerda?')],
-  [G('Não importa!'), T('Se você é empreendedor aqui no Brasil, se prepara. Agora eu vou te mostrar uma coisa nova.')],
+  [G('Você é de esquerda?'), T('Não?')],
+  [T('Bom, talvez você seja'), G('de direita.')],
+  [G('Na verdade, isso não importa.'), T('Se você é empreendedor aqui no Brasil, se prepara. Agora eu vou te mostrar uma coisa nova.')],
   [G('Nem esquerda, nem direita.'), ['t-grande verde-txt', '<span class="verde">Apenas diferente.</span>']],
   [T('Afinal, quem está por trás dos presidentes e do sistema como um todo só quer uma coisa…'), ['t-enorme', 'Te controlar.']],
   [T('E você já sabe como: colocando uns contra os outros.'), M('Pobres contra ricos.'), M('Mulheres contra homens.'), M('Gays contra héteros.'), M('Brancos contra negros.'), ['t-medio verde', 'Esquerda contra direita.']],
