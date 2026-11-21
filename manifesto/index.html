@@ -79,7 +79,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
   <main id="tela" tabindex="-1" aria-live="polite"></main>
   <div class="acoes">
     <button class="btn btn-voltar" id="voltar" type="button" aria-label="Tela anterior">Voltar</button>
-    <button class="btn btn-principal" id="avancar" type="button">Continuar</button>
+    <button class="btn btn-principal" id="avancar" type="button">Próximo &gt;&gt;&gt;</button>
   </div>
 </div>
 
@@ -133,7 +133,7 @@ function mostrar(i){
   $cont.textContent = `${i + 1} de ${TELAS.length}`;
   $barra.style.transform = `scaleX(${(i + 1) / TELAS.length})`;
   $vo.disabled = i === 0;
-  $av.textContent = ultima ? 'Sim, quero ver' : 'Continuar';
+  $av.textContent = ultima ? 'Sim, quero ver >>>' : 'Próximo >>>';
   $av.classList.add('espera');
   const blocos = [...$tela.querySelectorAll('.bloco')];
   const passo = calmo ? 150 : 750;
