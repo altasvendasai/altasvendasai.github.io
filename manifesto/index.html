@@ -45,6 +45,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
 .bloco.on{opacity:1;transform:none}
 .t-grande{font-size:36px;line-height:40px;font-weight:700;letter-spacing:-.5px;text-wrap:balance;background:linear-gradient(90deg,#FFFFFF,#9B9B9B);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:8px;margin-bottom:8px}
 .t-enorme{font-size:60px;line-height:1;font-weight:700;letter-spacing:-1px;color:var(--vivo)}
+.centro{text-align:center;margin-top:24px}
 .t-medio{font-size:24px;line-height:32px;font-weight:700;text-wrap:balance}
 .t-texto{font-size:18px;line-height:28px;color:#C9D6D0;text-wrap:pretty}
 .t-texto b{color:#fff;font-weight:700}
@@ -88,9 +89,9 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32
 const G = t => ['t-grande', t], M = t => ['t-medio', t], T = t => ['t-texto', t];
 const O = (tag, nome, desc) => ['obra', `<small>${tag}</small><b>${nome}</b><span>${desc}</span>`];
 const TELAS = [
-  [G('Você é de esquerda?'), T('Não?')],
+  [G('Você é de esquerda?'), ['t-enorme centro', 'Não???']],
   [T('Bom, talvez você seja'), G('de direita.')],
-  [G('Na verdade, isso não importa.'), T('Se você é empreendedor aqui no Brasil, se prepara. Agora eu vou te mostrar uma coisa nova.')],
+  [G('Na verdade, isso não importa.'), T('Se você é empreendedor aqui no Brasil, prepare-se para conhecer uma coisa nova.')],
   [G('Nem esquerda, nem direita.'), ['t-grande verde-txt', '<span class="verde">Apenas diferente.</span>']],
   [T('Afinal, quem está por trás dos presidentes e do sistema como um todo só quer uma coisa…'), ['t-enorme', 'Te controlar.']],
   [T('E você já sabe como: colocando uns contra os outros.'), M('Pobres contra ricos.'), M('Mulheres contra homens.'), M('Gays contra héteros.'), M('Brancos contra negros.'), ['t-medio verde', 'Esquerda contra direita.']],
